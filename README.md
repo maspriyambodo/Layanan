@@ -9,4 +9,5 @@ Berikut cara menjalankan aplikasi ini :
     - bagian aplikasi : config path di file .htaccess
     - database : sesuaikan dengan konfigurasi database di pc Anda
 5. Buat database baru dan import file database template di folder *db_template*
+6. Cek konfigurasi default layout di file *application/config/template.php* pada bagian *default_layout*, ganti dengan nama folder template yang akan digunakan di *application/views/templates*
 6. Setelah semua konfigurasi selesai, coba test jalankan
