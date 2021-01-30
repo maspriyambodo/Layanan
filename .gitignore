@@ -1,0 +1,30 @@
+.DS_Store
+.AppleDouble
+.LSOverride
+
+._*
+Thumbs.db
+__MACOSX
+Desktop.ini
+
+.DocumentRevisions-V100
+fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+/application/cache
+/uploads
+/application/config
+/application/logs
+
+.editorconfig
+.htaccess
