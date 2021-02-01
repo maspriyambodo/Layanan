@@ -6,7 +6,7 @@
                     <select id="filter_provinsi" class="w200 display-inline form-control" onchange="Page.SetFilterKabupaten()">
                         <option value="">- Provinsi -</option>
                         <?php foreach ($provinsi as $p) : ?>
-                            <option value="<?php echo $p->provinsi_id ?>"><?php echo $p->provinsi_name ?></option>
+                            <option value="<?php echo $p->id_provinsi ?>"><?php echo $p->nama ?></option>
                         <?php endforeach; ?>
                     </select>
                     <select id="filter_kabupaten" class="w300 display-inline form-control">
@@ -110,24 +110,24 @@ echo $js_inlines;
                     // locked: true,
                 },
                 {
-                    index: 'is_actived',
-                    title: 'Status',
+                    index: 'nama_abbr',
+                    title: 'Singkatan',
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'provinsi_lat',
+                    index: 'latitude',
                     title: 'Latitude',
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'provinsi_long',
+                    index: 'longitude',
                     title: 'Longitude',
                     width: 150,
                     // locked: true,
                 }, {
-                    index: 'provinsi_id',
+                    index: 'id_provinsi',
                     title: 'Control',
                     ellipsis: false,
                     // width: 95,

@@ -87,7 +87,7 @@ echo $js_inlines;
                 ellipsis: true
             },
             columns: [{
-                    index: 'kabupaten_id',
+                    index: 'id_kabupaten',
                     title: 'No.',
                     width: 50,
                     // locked: true,
@@ -104,19 +104,19 @@ echo $js_inlines;
                     // locked: true,
                 },
                 {
-                    index: 'kabupaten_name',
+                    index: 'nama',
                     title: 'Kabupaten',
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'kabupaten_kode',
+                    index: 'id_kabupaten',
                     title: 'Kode Kabupaten',
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'kabupaten_id',
+                    index: 'id_kabupaten',
                     title: 'Control',
                     ellipsis: false,
                     // width: 95,

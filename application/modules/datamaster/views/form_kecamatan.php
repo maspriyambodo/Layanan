@@ -1,5 +1,5 @@
 <form id="formKecamatan" data-bind="with:Page.FormData">
-<input type="hidden" name="kecamatan_id" data-bind="value:kecamatan_id" />
+<!-- <input type="hidden" name="kecamatan_id" data-bind="value:kecamatan_id" /> -->
 <div class="widget-list">
     <div class="col-md-12 widget-holder widget-full-height">
         <div class="widget-bg">
@@ -24,18 +24,18 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-3 col-form-label">
-                            <label for="usr">Nama Kecamatan</label>
+                            <label for="usr">Kode</label>
                         </div>
                         <div class="col-md-9">
-                            <input data-bind="value:kecamatan_name" id="kecamatan_name" type="text" class="form-control" required data-vindicate="required">
+                            <input data-bind="value:id_kecamatan" id="id_kecamatan" type="text" class="form-control" <?php if($formMode == "edit"){ echo "disabled='disabled'"; } ?>>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-3 col-form-label">
-                            <label for="usr">Kode</label>
+                            <label for="usr">Nama Kecamatan</label>
                         </div>
                         <div class="col-md-9">
-                            <input data-bind="value:kecamatan_kode" id="kecamatan_kode" type="text" class="form-control" <?php if($formMode == "edit"){ echo "disabled='disabled'"; } ?>>
+                            <input data-bind="value:nama" id="nama" type="text" class="form-control" required data-vindicate="required">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -64,11 +64,10 @@ var Page = {};
 Page.FormMode = ko.observable("<?php echo $formMode; ?>")
 Page.Cek = $('#formKecamatan').cek();
 Page.FormData = ko.observable({
-    provinsi_id : ko.observable(""),
-    kabupaten_id : ko.observable(""),
-    kecamatan_id : ko.observable(""),
-    kecamatan_kode : ko.observable(""),
-    kecamatan_name : ko.observable(""),
+    id_provinsi : ko.observable(""),
+    id_kabupaten : ko.observable(""),
+    id_kecamatan : ko.observable(""),
+    nama : ko.observable(""),
 });
 Page.Save = function(e){
     $('#btnSave').attr('disabled', 'disabled');
@@ -95,8 +94,8 @@ Page.Save = function(e){
       e.preventDefault();
       var url = '<?php echo site_url("datamaster/address/save_kecamatan") ?>';
       var dataKab = ko.mapping.toJS(Page.FormData());
-      dataKab.provinsi_id = $("#dd_province").val();
-      dataKab.kabupaten_id = $("#dd_city").val();
+      dataKab.id_provinsi = $("#dd_province").val();
+      dataKab.id_kabupaten = $("#dd_city").val();
       
       var formData = new FormData();
       formData.append("formData", JSON.stringify(dataKab));
@@ -144,7 +143,7 @@ function getRekomendasiKode() {
         contentType: false,
         processData: false,
         success: function (data) {
-            Page.FormData().kecamatan_kode(data.data);
+            Page.FormData().id_kecamatan(data.data);
         }
       });
 }
@@ -178,8 +177,8 @@ Page.PopulateMasterProvince = function(urlProv,urlCity,urlDistrict,needLoadMasji
                     data: data.data,
                     placeholder: "Pilih Provinsi"
                 });
-                if (Page.FormData().provinsi_id() != 0){
-                    $("#dd_province").val(Page.FormData().provinsi_id());
+                if (Page.FormData().id_provinsi() != 0){
+                    $("#dd_province").val(Page.FormData().id_provinsi());
                     $("#dd_province").select2().trigger("change");
                 }
                 $("#dd_province").select2().on("change", function(){
@@ -228,8 +227,8 @@ Page.PopulateMasterCities = function(urlCity, urlDistrict, needLoadMasjid) {
                     data: data.data,
                     placeholder: "Pilih Kabupaten/Kota"
                 });
-                if (Page.FormData().kabupaten_id() != 0){
-                    $("#dd_city").val(Page.FormData().kabupaten_id());
+                if (Page.FormData().id_kabupaten() != 0){
+                    $("#dd_city").val(Page.FormData().id_kabupaten());
                     $("#dd_city").select2().trigger("change");
                 }
                 <?php if($formMode != "edit") : ?>
