@@ -420,7 +420,7 @@ class Address extends MX_Controller {
     }
 
     public function populateKabupatenAllAttributes(){
-        $this->db->select("kab.*, prov.nama as nama as provinsi_name");
+        $this->db->select("kab.*, prov.nama as provinsi_name");
         $this->db->from("mt_wil_kabupaten kab");
         $this->db->join("mt_wil_provinsi prov","kab.id_provinsi = prov.id_provinsi");
         $this->db->order_by("prov.id_provinsi, kab.id_kabupaten, kab.nama");
@@ -435,7 +435,7 @@ class Address extends MX_Controller {
     }
 
     public function populateKecamatanAllAttributes(){
-        $this->db->select("kec.*, kab.nama as kabupaten_name, prov.nama as nama as provinsi_name");
+        $this->db->select("kec.*, kab.nama as kabupaten_name, prov.nama as provinsi_name");
         $this->db->from("mt_wil_kecamatan kec");
         $this->db->join("mt_wil_kabupaten kab","kec.id_kabupaten = kab.id_kabupaten");
         $this->db->join("mt_wil_provinsi prov","kab.id_provinsi = prov.id_provinsi");
@@ -474,13 +474,13 @@ class Address extends MX_Controller {
         }
         $this->db->join("mt_wil_provinsi prov","kab.id_provinsi = prov.id_provinsi");
         $this->db->order_by("kab.id_kabupaten");
-        $this->db->select("kab.*, prov.nama as nama as provinsi_name", FALSE);
+        $this->db->select("kab.*, prov.nama as provinsi_name", FALSE);
         $get = $this->db->get('mt_wil_kabupaten kab');
         $data = [];
         foreach($get->result() as $d) {
             array_push($data, (object)[
                     'id' => $d->id_kabupaten,
-                    'text' => $d->kabupaten_name,
+                    'text' => $d->nama,
                     'lat' => $d->latitude,
                     'long' => $d->longitude,
                     'prov' => $d->provinsi_name,
@@ -500,7 +500,7 @@ class Address extends MX_Controller {
         $this->db->join("mt_wil_kabupaten kab","kec.id_kabupaten = kab.id_kabupaten");
         $this->db->join("mt_wil_provinsi prov","kab.id_provinsi = prov.id_provinsi");
         $this->db->order_by("kec.id_kecamatan");
-        $this->db->select("kec.*, kab.nama as kabupaten_name, prov.nama as nama as provinsi_name", FALSE);
+        $this->db->select("kec.*, kab.nama as kabupaten_name, prov.nama as provinsi_name", FALSE);
         $get = $this->db->get('mt_wil_kecamatan kec');
         $data = [];
         foreach($get->result() as $d) {
