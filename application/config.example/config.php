@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 // get protocol
-$appnamepath = "kemenaglayanan";
+$appnamepath = "layanan";
 $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || 
     $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 $config['base_url'] = $protocol . $_SERVER['SERVER_NAME'] . ( $appnamepath!="" ? "/" . $appnamepath : "" );

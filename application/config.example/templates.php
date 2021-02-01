@@ -1,5 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$config['template'] = 'default';
+$config['template'] = 'app';
 $config['layout_main'] = 'layout.php';  

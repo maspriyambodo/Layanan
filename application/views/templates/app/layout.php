@@ -25,7 +25,7 @@
     <link href="<?php echo base_url(); ?>assets/app/vendors/mono-social-icons/monosocialiconsfont.css" rel="stylesheet" type="text/css" />
 
     <link href="<?php echo base_url(); ?>assets/app/js/plugins/perfect-scrollbar.min.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo base_url(); ?>assets/app/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
     <link href="<?php echo base_url(); ?>assets/app/vendors/weather-icons-master/weather-icons.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/app/vendors/weather-icons-master/weather-icons-wind.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/app/js/plugins/swal/sweetalert2.min.css" rel="stylesheet" type="text/css" />

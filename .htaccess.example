@@ -2,7 +2,7 @@ Options +FollowSymLinks
 Options -Indexes
 DirectoryIndex index.php
 RewriteEngine on
-RewriteBase /kemenaglayanan/
+RewriteBase /layanan/
 RewriteCond $1 !^(index\.php|images|robots\.txt)
 
 RewriteCond %{REQUEST_FILENAME} !-f
