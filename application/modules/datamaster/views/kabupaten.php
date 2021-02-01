@@ -116,7 +116,7 @@ echo $js_inlines;
                     // locked: true,
                 },
                 {
-                    index: 'kabupaten_id',
+                    index: 'id_kabupaten',
                     title: 'Control',
                     ellipsis: false,
                     // width: 95,

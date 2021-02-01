@@ -110,18 +110,18 @@ echo $js_inlines;
                     // locked: true,
                 },
                 {
-                    index: 'kecamatan_name',
+                    index: 'nama',
                     title: 'Kecamatan',
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'kecamatan_kode',
+                    index: 'id_kecamatan',
                     title: 'Kode Kecamatan',
                     width: 150,
                     // locked: true,
                 }, {
-                    index: 'kecamatan_id',
+                    index: 'id_kecamatan',
                     title: 'Control',
                     ellipsis: false,
                     // width: 95,

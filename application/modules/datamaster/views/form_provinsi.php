@@ -1,5 +1,5 @@
 <form id="formProvinsi" data-bind="with:Page.FormData">
-<input type="hidden" name="provinsi_id" data-bind="value:provinsi_id" />
+<!-- <input type="hidden" name="provinsi_id" data-bind="value:provinsi_id" /> -->
 <div class="widget-list">
     <div class="col-md-12 widget-holder widget-full-height">
         <div class="widget-bg">
@@ -8,10 +8,18 @@
                 <!-- <h5 class=""><i class="material-icons">book</i> Data Umum</h5> -->
                     <div class="form-group row">
                         <div class="col-md-3 col-form-label">
+                            <label for="usr">Kode</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input data-bind="value:id_provinsi" id="id_provinsi" type="text" class="form-control" <?php if($formMode == "edit"){ echo "disabled='disabled'"; } ?>>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3 col-form-label">
                             <label for="usr">Nama Provinsi</label>
                         </div>
                         <div class="col-md-9">
-                            <input data-bind="value:provinsi_name" id="provinsi_name" type="text" class="form-control" required data-vindicate="required">
+                            <input data-bind="value:nama" id="nama" type="text" class="form-control" required data-vindicate="required">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -19,7 +27,7 @@
                             <label for="usr">Singkatan</label>
                         </div>
                         <div class="col-md-9">
-                            <input data-bind="value:pn" id="pn" type="text" class="form-control" required data-vindicate="required">
+                            <input data-bind="value:nama_abbr" id="nama_abbr" type="text" class="form-control" required data-vindicate="required">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -27,7 +35,7 @@
                             <label for="usr">Latitude</label>
                         </div>
                         <div class="col-md-9">
-                            <input data-bind="value:provinsi_lat" id="provinsi_lat" type="text" class="form-control">
+                            <input data-bind="value:latitude" id="latitude" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -35,15 +43,7 @@
                             <label for="usr">Longitude</label>
                         </div>
                         <div class="col-md-9">
-                            <input data-bind="value:provinsi_long" id="provinsi_long" type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-3 col-form-label">
-                            <label for="usr">Kode</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input data-bind="value:provinsi_kode" id="provinsi_kode" type="text" class="form-control" <?php if($formMode == "edit"){ echo "disabled='disabled'"; } ?>>
+                            <input data-bind="value:longitude" id="longitude" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -72,12 +72,11 @@ var Page = {};
 Page.FormMode = ko.observable("<?php echo $formMode; ?>")
 Page.Cek = $('#formProvinsi').cek();
 Page.FormData = ko.observable({
-    provinsi_id : ko.observable(""),
-    provinsi_name : ko.observable(""),
-    provinsi_kode : ko.observable(""),
-    pn : ko.observable(""),
-    provinsi_lat : ko.observable(""),
-    provinsi_long : ko.observable("")
+    nama : ko.observable(""),
+    id_provinsi : ko.observable(""),
+    nama_abbr : ko.observable(""),
+    latitude : ko.observable(""),
+    longitude : ko.observable("")
 });
 Page.Save = function(e){
     $('#btnSave').attr('disabled', 'disabled');
@@ -133,7 +132,7 @@ Page.Save = function(e){
 }
 
 $(function() { 
-    Page.FormData().provinsi_kode("<?php echo $rekomendasi_kode ?>");
+    Page.FormData().id_provinsi("<?php echo $rekomendasi_kode ?>");
     <?php if($formMode == "edit"): ?>
         var dataProv = <?php echo $dataProvinsi; ?>;
         Page.FormData(ko.mapping.fromJS(dataProv));
