@@ -87,7 +87,7 @@ echo $js_inlines;
                 ellipsis: true
             },
             columns: [{
-                    index: 'provinsi_id',
+                    index: 'id_provinsi',
                     title: 'No.',
                     width: 50,
                     // locked: true,
@@ -98,31 +98,31 @@ echo $js_inlines;
                         return o;
                     }
                 },{
-                    index: 'provinsi_name',
+                    index: 'nama',
                     title: 'Nama Provinsi',
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'provinsi_kode',
+                    index: 'id_provinsi',
                     title: 'Kode Provinsi',
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'pn',
-                    title: 'Singkatan',
+                    index: 'is_actived',
+                    title: 'Status',
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'provinsi_lat',
+                    index: 'latitude',
                     title: 'Latitude',
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'provinsi_long',
+                    index: 'longitude',
                     title: 'Longitude',
                     width: 150,
                     // locked: true,
