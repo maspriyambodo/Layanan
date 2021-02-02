@@ -98,7 +98,7 @@ echo $js_inlines;
                         return o;
                     }
                 }, {
-                    index: 'provinsi_name',
+                    index: 'id_provinsi',
                     title: 'Provinsi',
                     width: 150,
                     // locked: true,

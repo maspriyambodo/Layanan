@@ -110,8 +110,13 @@ echo $js_inlines;
                     // locked: true,
                 },
                 {
+<<<<<<< HEAD
+                    index: 'is_actived',
+                    title: 'Status',
+=======
                     index: 'nama_abbr',
                     title: 'Singkatan',
+>>>>>>> e4adcb963370e8397e7eec98e81f18129d770481
                     width: 150,
                     // locked: true,
                 },

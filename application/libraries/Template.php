@@ -211,7 +211,7 @@ class Template {
 		if($return) return ob_get_contents();
 	}
 
-    function _parseView($viewfile, $data = array(), $contentText) {
+    function _parseView($viewfile, $data = array(), $contentText="") {
 		$return = array(
 			"js" => "",
 			"content" => "",
