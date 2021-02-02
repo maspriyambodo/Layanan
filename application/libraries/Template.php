@@ -36,7 +36,7 @@ class Template {
 
 		$this->CI->load->library("Catetan");
 		$this->catetan = $this->CI->catetan;
-
+                
 		$this->_breadcrumbs = array();
 		$this->_cssFiles = array();
 		$this->_jsFiles = array();

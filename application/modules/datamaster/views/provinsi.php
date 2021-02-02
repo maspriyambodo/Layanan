@@ -6,7 +6,7 @@
                     <select id="filter_provinsi" class="w200 display-inline form-control" onchange="Page.SetFilterKabupaten()">
                         <option value="">- Provinsi -</option>
                         <?php foreach ($provinsi as $p) : ?>
-                            <option value="<?php echo $p->provinsi_id ?>"><?php echo $p->provinsi_name ?></option>
+                            <option value="<?php echo $p->id_provinsi ?>"><?php echo $p->nama ?></option>
                         <?php endforeach; ?>
                     </select>
                     <select id="filter_kabupaten" class="w300 display-inline form-control">
@@ -110,44 +110,49 @@ echo $js_inlines;
                     // locked: true,
                 },
                 {
+<<<<<<< HEAD
                     index: 'is_actived',
                     title: 'Status',
+=======
+                    index: 'nama_abbr',
+                    title: 'Singkatan',
+>>>>>>> e4adcb963370e8397e7eec98e81f18129d770481
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'provinsi_lat',
+                    index: 'latitude',
                     title: 'Latitude',
                     width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'provinsi_long',
+                    index: 'longitude',
                     title: 'Longitude',
                     width: 150,
                     // locked: true,
                 }, {
-                    index: 'provinsi_id',
+                    index: 'id_provinsi',
                     title: 'Control',
                     ellipsis: false,
                     // width: 95,
                     // rightLocked: true,
                     render: function(o) {
-                        o.value = ''
-                        <?php if ($this->izin->delete) : ?>
-                                +
-                                ('<a class="text-danger" href="javascript:;" onclick="Page.Remove(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Delete"><i class="fa fa-remove"></i></a>')
-                        <?php endif; ?>
-                        <?php if ($this->izin->edit) : ?>
-                                +
-                                ('&nbsp;&nbsp;<a class="text-warning" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit"><i class="fa fa-pencil"></i></a>') <?php endif; ?>
-                            <?php if ($this->izin->gapunya) : ?>
-                                    +
-                                    ''
-                            <?php endif; ?>
-                            ;
-
-                            return o;
+                    o.style['text-align'] = 'center';
+                    o.value = ''
+<?php if ($this->izin->delete) : ?>
+                        +
+                                ('<div class="btn-group" role="group" aria-label="Control button"><a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Remove(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Delete"><i class="far fa-trash-alt text-danger"></i></a>')
+<?php endif; ?>
+<?php if ($this->izin->edit) : ?>
+                        +
+                                ('<a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit"><i class="fas fa-pencil-alt text-warning"></i></a></div>') <?php endif; ?>
+<?php if ($this->izin->gapunya) : ?>
+                        +
+                                ''
+<?php endif; ?>
+                    ;
+                    return o;
                     },
                 }
             ],
