@@ -211,7 +211,7 @@
     <script src="<?php echo base_url(); ?>assets/app/js/theme.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/custom.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/app.js"></script>
-
+    
     <script type="text/javascript">
         var App = {};
         App.IsLoading = ko.observable(false);

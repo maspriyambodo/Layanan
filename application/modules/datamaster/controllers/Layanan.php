@@ -57,8 +57,7 @@ class Layanan extends CI_Controller {
         $this->template->setCssFiles($css_lib_files);
         $this->template->setJsFiles($js_lib_files);
         $data["js_inlines"] = $js_inlines;
-        $data['kategori'] = $this->M_Layanan->Kategori();
-        $data['layanan'] = $this->M_Layanan->index();
+
         $this->template->setSiteTitle($sitetitle);
         $this->template->setPageTitle($pagetitle);
         $this->template->setBreadcrumbs($breadcrumbs);
@@ -69,18 +68,60 @@ class Layanan extends CI_Controller {
     public function Add() {
         $data = [
             'mt_layanan.nama_layanan' => $this->input->post('nama', true),
-            'mt_layanan.jenis_layanan' => $this->bodo->Dec($this->input->post('kategori', true)),
+            'mt_layanan.jenis_layanan' => $this->input->post('direk', true),
+            'mt_layanan.keterangan' => $this->input->post('ket', true),
             '`mt_layanan`.`stat`' => 1 + false,
             '`mt_layanan`.`syscreateuser`' => $this->session->userdata('id') + false,
             'mt_layanan.syscreatedate' => date("Y-m-d H:i:s")
         ];
         $exec = $this->M_Layanan->Add($data);
         if ($exec == true) {
-            $direct = redirect(base_url('datamaster/Layanan/index/'), $this->session->set_flashdata('success', 'Nama Layanan berhasil disimpan!'));
+            $direct = redirect(base_url('datamaster/Layanan/index/'), 'refresh');
         } else {
-            $direct = redirect(base_url('datamaster/Layanan/index/'), $this->session->set_flashdata('error', 'Nama Layanan gagal disimpan!'));
+            $direct = redirect(base_url('datamaster/Layanan/index/'), 'refresh');
         }
         return $direct;
+    }
+
+    public function Tambah() {
+        $this->template->setPageId("MASTER_LAYANAN");
+        $data = array();
+
+        $sitetitle = "Tambah Nama Layanan";
+        $pagetitle = "Tambah Nama Layanan";
+        $view = "layanan/layanan_add";
+        $breadcrumbs = array(
+            array(
+                "title" => "Data Layanan",
+                "link" => base_url('datamaster/Layanan/index/'),
+                "is_actived" => false,
+            ),
+            array(
+                "title" => "Tambah Nama Layanan",
+                "link" => "",
+                "is_actived" => true,
+            ),
+        );
+
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data["js_inlines"] = $js_inlines;
+        $data['direktorat'] = $this->M_Layanan->Direktorat();
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
     }
 
     public function Delete() {
@@ -92,26 +133,68 @@ class Layanan extends CI_Controller {
         ];
         $exec = $this->M_Layanan->Update($id, $data);
         if ($exec == true) {
-            $direct = redirect(base_url('datamaster/Layanan/index/'), 'refresh');
+            $direct = toJSON(resultSuccess("OK", 1));
         } else {
-            $direct = redirect(base_url('datamaster/Layanan/index/'), 'refresh');
+            $direct = toJSON(resultSuccess("Error", 0));
         }
         return $direct;
     }
 
+    public function Edit($id) {
+        $this->template->setPageId("MASTER_LAYANAN");
+        $data = [];
+        $sitetitle = "Ubah Nama Layanan";
+        $pagetitle = "Ubah Nama Layanan";
+        $view = "layanan/layanan_edit";
+        $breadcrumbs = [
+            [
+                "title" => "Data Layanan",
+                "link" => base_url('datamaster/Layanan/index/'),
+                "is_actived" => false
+            ],
+            [
+                "title" => "Ubah Nama Layanan",
+                "link" => "",
+                "is_actived" => true
+            ]
+        ];
+
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data["js_inlines"] = $js_inlines;
+        $data['layanan'] = $this->M_Layanan->Get($id);
+        $data['direktorat'] = $this->M_Layanan->Direktorat();
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
     public function Update() {
-        $id = $this->bodo->Dec($this->input->post('e_id', true));
+        $id = $this->input->post('e_id', true);
         $data = [
             'mt_layanan.nama_layanan' => $this->input->post('e_nama', true),
-            '`mt_layanan`.`jenis_layanan`' => $this->bodo->Dec($this->input->post('e_direk', true)) + false,
+            'mt_layanan.keterangan' => $this->input->post('ket', true),
+            '`mt_layanan`.`jenis_layanan`' => $this->input->post('e_direk', true) + false,
             '`mt_layanan`.`sysupdateuser`' => $this->session->userdata('id') + false,
             'mt_layanan.sysupdatedate' => date("Y-m-d H:i:s")
         ];
         $exec = $this->M_Layanan->Update($id, $data);
         if ($exec == true) {
-            $direct = redirect(base_url('datamaster/Layanan/index/'), $this->session->set_flashdata('success', 'Nama Layanan berhasil diubah!'));
+            $direct = redirect(base_url('datamaster/Layanan/index/'), 'refresh');
         } else {
-            $direct = redirect(base_url('datamaster/Layanan/index/'), $this->session->set_flashdata('error', 'Nama Layanan gagal diubah!'));
+            $direct = redirect(base_url('datamaster/Layanan/index/'), 'refresh');
         }
         return $direct;
     }
