@@ -34,7 +34,7 @@
                     <textarea class="form-control" name="ket" required="" rows="8"><?php echo $layanan[0]->keterangan; ?></textarea>
                 </div>
                 <div class="clearfix" style="margin: 20px 0px;"></div>
-                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
+                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Update</button>
                 <a href="<?php echo base_url('datamaster/Layanan/index/'); ?>" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a>
             </form>
         </div>

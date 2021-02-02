@@ -26,23 +26,23 @@ class Layanan extends CI_Controller {
 
     public function index() {
         $this->template->setPageId("MASTER_LAYANAN");
-        $data = array();
+        $data = [];
 
         $sitetitle = "Daftar Nama Layanan";
         $pagetitle = "Daftar Nama Layanan";
         $view = "layanan/layanan";
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 "title" => "Data Layanan",
                 "link" => "",
-                "is_actived" => false,
-            ),
-            array(
+                "is_actived" => false
+            ],
+            [
                 "title" => "Daftar Nama Layanan",
                 "link" => "",
-                "is_actived" => true,
-            ),
-        );
+                "is_actived" => true
+            ]
+        ];
 
         $sql = "";
         $mejo = new Mejo();
@@ -71,7 +71,7 @@ class Layanan extends CI_Controller {
             'mt_layanan.jenis_layanan' => $this->input->post('direk', true),
             'mt_layanan.keterangan' => $this->input->post('ket', true),
             '`mt_layanan`.`stat`' => 1 + false,
-            '`mt_layanan`.`syscreateuser`' => $this->session->userdata('id') + false,
+            '`mt_layanan`.`syscreateuser`' => $this->session->userdata('DX_user_id') + false,
             'mt_layanan.syscreatedate' => date("Y-m-d H:i:s")
         ];
         $exec = $this->M_Layanan->Add($data);
@@ -85,23 +85,23 @@ class Layanan extends CI_Controller {
 
     public function Tambah() {
         $this->template->setPageId("MASTER_LAYANAN");
-        $data = array();
+        $data = [];
 
         $sitetitle = "Tambah Nama Layanan";
         $pagetitle = "Tambah Nama Layanan";
         $view = "layanan/layanan_add";
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 "title" => "Data Layanan",
                 "link" => base_url('datamaster/Layanan/index/'),
-                "is_actived" => false,
-            ),
-            array(
+                "is_actived" => false
+            ],
+            [
                 "title" => "Tambah Nama Layanan",
                 "link" => "",
-                "is_actived" => true,
-            ),
-        );
+                "is_actived" => true
+            ]
+        ];
 
         $sql = "";
         $mejo = new Mejo();
@@ -128,7 +128,7 @@ class Layanan extends CI_Controller {
         $id = $this->input->post('id', true);
         $data = [
             '`mt_layanan`.`stat`' => 3 + false,
-            '`mt_layanan`.`sysdeleteuser`' => $this->session->userdata('id') + false,
+            '`mt_layanan`.`sysdeleteuser`' => $this->session->userdata('DX_user_id') + false,
             'mt_layanan.sysdeletedate' => date("Y-m-d H:i:s")
         ];
         $exec = $this->M_Layanan->Update($id, $data);
@@ -187,7 +187,7 @@ class Layanan extends CI_Controller {
             'mt_layanan.nama_layanan' => $this->input->post('e_nama', true),
             'mt_layanan.keterangan' => $this->input->post('ket', true),
             '`mt_layanan`.`jenis_layanan`' => $this->input->post('e_direk', true) + false,
-            '`mt_layanan`.`sysupdateuser`' => $this->session->userdata('id') + false,
+            '`mt_layanan`.`sysupdateuser`' => $this->session->userdata('DX_user_id') + false,
             'mt_layanan.sysupdatedate' => date("Y-m-d H:i:s")
         ];
         $exec = $this->M_Layanan->Update($id, $data);
@@ -201,10 +201,7 @@ class Layanan extends CI_Controller {
 
     public function Get_all() {
         $data = $this->M_Layanan->index();
-        $result = array(
-            "data" => $data,
-            "success" => true,
-        );
+        $result = ["data" => $data, "success" => true];
         $this->output
                 ->set_status_header(200)
                 ->set_content_type('application/json', 'utf-8')
