@@ -66,16 +66,16 @@
                         <td><b>Lembaga</b></td>
                         <td>: <?php echo $detil[0]->lemb_keg; ?></td>
                         <td><b>Estimasi</b></td>
-                        <td>: <?php echo $detil[0]->esti_keg; ?></td>
+                        <td>: <?php echo $detil[0]->esti_keg; ?> Peserta</td>
                     </tr>
                     <tr>
                         <td><b>Lokasi</b></td>
                         <td>: <?php echo $detil[0]->alamat_keg; ?></td>
                         <td><b>Narasumber</b></td>
-                        <td>: 
+                        <td>
                             <?php
                             $narsum_unique = [];
-                            $array2 = []; 
+                            $array2 = [];
                             foreach ($detil as $narsum) {
                                 if (!in_array($narsum->narsum, $narsum_unique)) {
                                     $narsum_unique[] = $narsum->narsum;
@@ -84,7 +84,7 @@
                                 }
                             }
                             foreach ($narsum_unique as $narsum2) {
-                                echo $narsum2;
+                                echo '- ' . $narsum2 . '<br>';
                             }
                             ?>
                         </td>
