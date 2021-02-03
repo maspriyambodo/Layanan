@@ -91,7 +91,7 @@
                     </tr>
                     <tr>
                         <td><b>Alamat</b></td>
-                        <td colspan="3">: Aceh, Aceh Selatan, Bakongan, Keude Bakongan. ACEH, KAB. ACEH SELATAN, Bakongan, Keude Bakongan</td>
+                        <td colspan="3">: <?php echo 'Provinsi ' . $detil[0]->provinsi . ', ' . $detil[0]->kabupaten . '<br>&nbsp;&nbsp;Kec. ' . $detil[0]->kecamatan . ', Kel. ' . $detil[0]->kelurahan; ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -106,22 +106,29 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md">
-                <a href="http://localhost/Layanan_/" class="card card-custom bg-info bg-hover-state-light card-stretch gutter-b" target="_new">
-                    <div class="card-body">
-                        <span class="svg-icon svg-icon-white svg-icon-3x ml-n1"> <i class="fas fa-sitemap" style="font-size: 48px; color: white;"></i> </span>
-                        <div class="font-weight-bold text-inverse-danger" style="margin: 5px 0px; font-size: 20px;"></div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md">
-                <a href="http://localhost/Layanan_/" class="card card-custom bg-info bg-hover-state-light card-stretch gutter-b" target="_new">
-                    <div class="card-body">
-                        <span class="svg-icon svg-icon-white svg-icon-3x ml-n1"> <i class="fas fa-sitemap" style="font-size: 48px; color: white;"></i> </span>
-                        <div class="font-weight-bold text-inverse-danger" style="margin: 5px 0px; font-size: 20px;"></div>
-                    </div>
-                </a>
-            </div>
+            <?php
+            $dok_unique = [];
+            $array3 = [];
+            foreach ($detil as $dokumen) {
+                if (!in_array($dokumen->nama_file, $dok_unique)) {
+                    $dok_unique[] = $dokumen->nama_file;
+                } else {
+                    $array3[] = $dokumen->nama_file;
+                }
+            }
+            foreach ($dok_unique as $dokumen2) {
+                ?>
+                <div class="col-md" style="margin: 10px 0px;">
+                    <a href="http://localhost/Layanan_/<?php echo $dokumen2; ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                        <div class="card-body">
+                            <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+                                <i class="fas fa-sitemap" style="font-size: 48px; color: white;"></i>
+                            </span>
+                            <div class="font-weight-bold text-inverse-danger" style="margin: 5px 0px; font-size: 20px;"><?php echo $dokumen2; ?></div>
+                        </div>
+                    </a>
+                </div>
+            <?php } ?>
         </div>
     </div>
     <div class="card-footer">
