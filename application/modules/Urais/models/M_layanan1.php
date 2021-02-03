@@ -36,4 +36,18 @@ class M_layanan1 extends CI_Model {
         return $exec;
     }
 
+    public function Update($id, $data) {
+        $this->db->trans_begin();
+        $this->db->set($data)
+                ->where('`dt_layanan`.`id`', $id, false)
+                ->update('dt_layanan');
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            $this->db->trans_commit();
+            return true;
+        }
+    }
+
 }

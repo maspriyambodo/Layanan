@@ -119,7 +119,7 @@
             foreach ($dok_unique as $dokumen2) {
                 ?>
                 <div class="col-md" style="margin: 10px 0px;">
-                    <a href="http://localhost/Layanan_/<?php echo $dokumen2; ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                    <a href="<?php echo base_url('assets/images/' . $dokumen2); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
                         <div class="card-body">
                             <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                                 <i class="fas fa-sitemap" style="font-size: 48px; color: white;"></i>
@@ -133,8 +133,8 @@
     </div>
     <div class="card-footer">
         <div class="text-right">
-            <a href="#" class="btn btn-success"><i class="fas fa-check"></i> Terima</a>
-            <a href="#" class="btn btn-danger"><i class="fas fa-times"></i> Tolak</a>
+            <a href="<?php echo base_url('Urais/Layanan_1/Update/' . $detil[0]->id_layanan); ?>" class="btn btn-success"><i class="fas fa-check"></i> Terima</a>
+            <a href="<?php echo base_url('Urais/Layanan_1/Reject/' . $detil[0]->id_layanan); ?>" class="btn btn-danger"><i class="fas fa-times"></i> Tolak</a>
         </div>
     </div>
 </div>

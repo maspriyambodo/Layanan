@@ -100,4 +100,19 @@ class Layanan_1 extends MX_Controller {
         $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
     }
 
+    public function Update($id_layanan) {
+        $data = [
+            '`dt_layanan`.`id_stat`' => 2 + false,
+            '`dt_layanan`.`sysupdateuser`' => $this->session->userdata('DX_user_id') + false,
+            'dt_layanan.sysupdatedate' => date("Y-m-d H:i:s")
+        ];
+        $exec = $this->M_layanan1->Update($id_layanan,$data);
+        if ($exec == true) {
+            $direct = redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
+        } else {
+            $direct = redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
+        }
+        return $direct;
+    }
+
 }
