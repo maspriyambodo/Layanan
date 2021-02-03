@@ -48,15 +48,7 @@ echo $js_inlines;
                     emptyText: 'Search',
                     paramsMenu: true,
                     paramsText: 'Columns'
-                }, <?php if ($this->izin->add) : ?> {
-                        type: 'button',
-                        text: '<i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Tambah Baru',
-                        cls: 'mejo-btn mejo-btn-blue',
-                        width: 120,
-                        handler: function () {
-                            window.location.href = '<?php echo site_url("datamaster/Status/Tambah/"); ?>';
-                        }
-                    }, <?php endif; ?>
+                }
             ],
             paging: true,
             defaults: {
