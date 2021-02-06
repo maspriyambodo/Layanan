@@ -19,9 +19,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class M_layanan1 extends CI_Model {
 
-    public function index() {
+    public function index($data) {
         $exec = $this->db->select()
                 ->from('admin_izin_kegiatan_keagamaan')
+                ->where([
+                    'admin_izin_kegiatan_keagamaan.id_stat' => $data['id_stat'] + false,
+                    'admin_izin_kegiatan_keagamaan.jenis_layanan' => $data['jenis_layanan'] + false
+                ])
+                ->get()
+                ->result();
+        return $exec;
+    }
+
+    public function Get_proses() {
+        $exec = $this->db->select()
+                ->from('admin_status_proses_IKK')
                 ->get()
                 ->result();
         return $exec;
@@ -48,6 +60,18 @@ class M_layanan1 extends CI_Model {
             $this->db->trans_commit();
             return true;
         }
+    }
+
+    public function Stat() {
+        $exec = $this->db->select()
+                ->from('admin_IKK_persetujuan')
+                ->get()
+                ->result();
+        return $exec;
+    }
+
+    public function Proses_verif($param) {
+        $this->db->query('CALL verif_IKK(' . $param['e'] . ',' . $param['a'] . ',' . $param['b'] . ',' . $param['c'] . ',"' . $param['d'] . '")');
     }
 
 }

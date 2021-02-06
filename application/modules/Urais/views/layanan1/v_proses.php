@@ -1,4 +1,4 @@
-<div class="card" style="margin-top:1.32857em;">
+<div class="card mt-4">
     <div class="card-body">
         {CONTENT BLOCK}
     </div>
@@ -32,7 +32,8 @@ echo $js_inlines;
                 remoteFilter: false,
                 remoteSort: false,
                 proxy: {
-                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=1&jenis_layanan=1'); ?>'
+                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=2&jenis_layanan=1'); ?>',
+                    params: {}
                 }
             },
             trackOver: true,
@@ -62,21 +63,31 @@ echo $js_inlines;
                 {
                     index: 'nm_keg',
                     title: 'JUDUL',
-                    width: 500
+                    width: 350
+                },
+                {
+                    index: 'keterangan',
+                    title: 'KETERANGAN',
+                    width: 400
                 },
                 {
                     index: 'tgl_awal_keg',
                     title: 'PELAKSANAAN',
-                    width: 200,
+                    width: 150,
                     render: function (o) {
                         o.style['text-align'] = 'center';
                         return o;
                     }
                 },
                 {
-                    index: 'keterangan',
-                    title: 'KETERANGAN',
-                    width: 200
+                    index: 'nama_stat',
+                    title: 'STATUS PERMOHONAN',
+                    width: 150,
+                    render: function (o) {
+                        o.style['text-align'] = 'center';
+                        o.value = '' + ('<div class="fancy-grid-cell-inner" style="margin-top:0px !important;"><span class="badge badge-orange">Dalam proses</span></div>');
+                        return o;
+                    }
                 },
                 {
                     index: 'id_layanan',
@@ -93,7 +104,7 @@ echo $js_inlines;
         });
     };
     Page.Detail = function (id) {
-        window.location.href = '<?php echo base_url('Urais/Layanan_1/Detail/'); ?>' + id;
+        window.location.href = '<?php echo base_url('Urais/Layanan_1/Detail_Proses/'); ?>' + id;
     };
     $(function () {
         Page.InitGrid();

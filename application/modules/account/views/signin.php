@@ -34,7 +34,7 @@ else if($jamnow > 18 || $jamnow < 4) {
         <div class="col-10 ml-sm-auto col-sm-6 col-md-4 login-right login-wrapper">
             <div class="navbar-header text-center">
                 <a href="<?php echo base_url(); ?>">
-                    <img alt="" src="<?php echo base_url(); ?>assets/app/img/logo.png" />
+                    <img alt="" src="<?php echo base_url(); ?>assets/app/img/Logo_B_Islam.png" style="max-width: 50%;"/>
                 </a>
             </div>
             <form method="post">    
@@ -48,6 +48,11 @@ else if($jamnow > 18 || $jamnow < 4) {
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" placeholder="password" class="form-control" name="password" id="password" autocomplete="off" require />
+                </div>
+                <div class="form-group">
+                    <div class="text-right">
+                        <span class="text-muted font-weight-bold font-size-h4">New Here? <a href="<?php echo base_url('Register/index/');?>" class="text-primary font-weight-bolder">Create an Account</a></span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-block btn-color-scheme ripple" type="button" onclick="Login.DoSignIn()">Login</button>
