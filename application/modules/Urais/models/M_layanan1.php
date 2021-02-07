@@ -31,14 +31,6 @@ class M_layanan1 extends CI_Model {
         return $exec;
     }
 
-    public function Get_proses() {
-        $exec = $this->db->select()
-                ->from('admin_status_proses_IKK')
-                ->get()
-                ->result();
-        return $exec;
-    }
-
     public function Detail($id) {
         $exec = $this->db->select()
                 ->from('detail_izin_kegiatan_keagamaan')

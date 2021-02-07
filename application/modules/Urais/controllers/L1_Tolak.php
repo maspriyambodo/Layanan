@@ -1,6 +1,5 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * Product:        System of kementerian agama Republik Indonesia
  * License Type:   Government
@@ -13,11 +12,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 
 /**
- * Description of L1_Setuju
- * LAYANAN IZIN KEGIATAN KEAGAMAAN YANG TELAH DISETUJUI!
+ * Description of L1_Tolak
+ * LAYANAN IZIN KEGIATAN KEAGAMAAN YANG TELAH DITOLAK!
  * @author centos
  */
-class L1_Setuju extends MX_Controller {
+class L1_Tolak extends MX_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -25,11 +24,11 @@ class L1_Setuju extends MX_Controller {
     }
 
     public function index() {
-        $this->template->setPageId("DISETUJUI_IKK");
+        $this->template->setPageId("DITOLAK_IKK");
         $data = [];
-        $sitetitle = "Permohonan yang telah disetujui";
-        $pagetitle = "Permohonan di Setujui";
-        $view = "layanan1/v_setuju";
+        $sitetitle = "Permohonan yang telah ditolak";
+        $pagetitle = "Permohonan di Tolak";
+        $view = "layanan1/v_tolak";
         $breadcrumbs = [
             [
                 "title" => "Izin Kegiatan Keagamaan",

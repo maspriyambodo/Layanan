@@ -61,6 +61,12 @@ echo $js_inlines;
                         window.location.href = '<?php echo site_url("datamaster/Status/Tambah/"); ?>';
                         },
                 }, <?php endif; ?>
+<?php if ($this->izin->publish): ?>{
+                type: 'button',
+                        text: '<i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Export Data',
+                        cls: 'mejo-btn mejo-btn-green',
+                        width: 120
+                }<?php endif; ?>
             ],
             paging: true,
             defaults: {
@@ -95,7 +101,7 @@ echo $js_inlines;
             },
             {
             index: 'id',
-                    title: 'Control',
+                    title: 'CONTROL',
                     // width: 95,
                     // rightLocked: true,
                     render: function(o) {

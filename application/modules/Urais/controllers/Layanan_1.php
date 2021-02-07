@@ -177,7 +177,7 @@ class Layanan_1 extends MX_Controller {
         }
         $data = ['a' => $this->input->post('hasil'), 'b' => $alasan, 'c' => $this->session->userdata('DX_user_id'), 'd' => date("Y-m-d H:i:s"), 'e' => $this->input->post('id_layanan')];
         $this->M_layanan1->Proses_verif($data);
-        redirect(base_url('Urais/L1_Setuju/index/'), 'refresh');
+        redirect(base_url('Urais/Layanan_1/Proses/'), 'refresh');
     }
 
 }
