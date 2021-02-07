@@ -173,7 +173,7 @@ class Layanan_1 extends MX_Controller {
         if (empty($this->input->post('alasan'))) {
             $alasan = "NULL";
         } else {
-            $alasan = $this->input->post('alasan');
+            $alasan = '"' . $this->input->post('alasan') . '"';
         }
         $data = ['a' => $this->input->post('hasil'), 'b' => $alasan, 'c' => $this->session->userdata('DX_user_id'), 'd' => date("Y-m-d H:i:s"), 'e' => $this->input->post('id_layanan')];
         $this->M_layanan1->Proses_verif($data);

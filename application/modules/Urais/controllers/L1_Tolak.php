@@ -53,18 +53,4 @@ class L1_Tolak extends MX_Controller {
         $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
     }
 
-    public function Get_data() {
-        $data = [
-            'id_stat' => $this->input->get('id')/* input get id_stat */,
-            'jenis_layanan' => $this->input->get('jenis_layanan')/* input get jenis_layanan */
-        ];
-        $result = ["data" => $this->M_layanan1->index($data), "success" => true];
-        $this->output
-                ->set_status_header(200)
-                ->set_content_type('application/json', 'utf-8')
-                ->set_output(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
-                ->_display();
-        exit;
-    }
-
 }
