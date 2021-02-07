@@ -93,6 +93,10 @@
                         <td><b>Alamat</b></td>
                         <td colspan="3">: <?php echo 'Provinsi ' . $detil[0]->provinsi . ', ' . $detil[0]->kabupaten . '<br>&nbsp;&nbsp;Kec. ' . $detil[0]->kecamatan . ', Kel. ' . $detil[0]->kelurahan; ?></td>
                     </tr>
+                    <tr>
+                        <td><b>Keterangan</b></td>
+                        <td colspan="3">: <?php echo $detil[0]->keterangan; ?></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

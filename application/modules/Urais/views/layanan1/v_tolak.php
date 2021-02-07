@@ -33,7 +33,7 @@ echo $js_inlines;
                     remoteFilter: false,
                     remoteSort: false,
                     proxy: {
-                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=3&jenis_layanan=1'); ?>',
+                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=4&jenis_layanan=1'); ?>',
                             params: {}
                     }
             },
