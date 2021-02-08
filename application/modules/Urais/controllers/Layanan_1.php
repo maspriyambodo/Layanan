@@ -49,7 +49,6 @@ class Layanan_1 extends MX_Controller {
                 ->subject('Status Permohonan: ' . $exec[0]->nm_keg)
                 ->message($this->load->view("layanan1/v_email", $exec, true))
                 ->send();
-        print_r($this->email->print_debugger(array('headers')));die;
     }
 
     public function Contoh($param) {
@@ -145,8 +144,8 @@ class Layanan_1 extends MX_Controller {
             'dt_layanan.sysupdatedate' => date("Y-m-d H:i:s")
         ];
         $exec = $this->M_layanan1->Update($id_layanan, $data);
-        $mail = $this->M_layanan1->Detail($id_layanan);
-        $this->Mail($mail);
+        //$mail = $this->M_layanan1->Detail($id_layanan);
+        //$this->Mail($mail);
         if ($exec == true) {
             $direct = redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
         } else {
@@ -213,8 +212,8 @@ class Layanan_1 extends MX_Controller {
         }
         $data = ['a' => $this->input->post('hasil'), 'b' => $alasan, 'c' => $this->session->userdata('DX_user_id'), 'd' => date("Y-m-d H:i:s"), 'e' => $this->input->post('id_layanan')];
         $this->M_layanan1->Proses_verif($data);
-        $mail = $this->M_layanan1->Detail($this->input->post('id_layanan'));
-        $this->Mail($mail);
+        //$mail = $this->M_layanan1->Detail($this->input->post('id_layanan'));
+        //$this->Mail($mail);
         redirect(base_url('Urais/Layanan_1/Proses/'), 'refresh');
     }
 
