@@ -50,6 +50,12 @@ class Layanan_1 extends MX_Controller {
                 ->send();
     }
 
+    public function Contoh($param) {
+        $mail['value'] = $this->M_layanan1->Detail($param);
+//        $this->Mail($mail);
+        $this->load->view('layanan1/v_email', $mail);
+    }
+
     public function index() {
         $this->template->setPageId("DITERIMA_IKK");
         $data = [];
