@@ -29,6 +29,7 @@ class Layanan_1 extends MX_Controller {
         $exec['value'] = $exec;
         $this->load->library('email');
         $config = [
+            'useragent' => 'DITJEN BIMASISLAM',
             'protocol' => 'smtp',
             'smtp_host' => 'smtp.gmail.com',
             'smtp_user' => 'layanan.bimasislam@gmail.com',
@@ -48,6 +49,7 @@ class Layanan_1 extends MX_Controller {
                 ->subject('Status Permohonan: ' . $exec[0]->nm_keg)
                 ->message($this->load->view("layanan1/v_email", $exec, true))
                 ->send();
+        print_r($this->email->print_debugger(array('headers')));die;
     }
 
     public function Contoh($param) {
