@@ -24,6 +24,32 @@ class Layanan_1 extends MX_Controller {
         $this->load->model('M_layanan1');
     }
 
+    private function Mail($exec) {
+        //$exec = Array ( [0] => stdClass Object ( [id_layanan] => 4 [id_user] => 12 [nik] => 3175063838830001 [tgl_lhr] => 1981-02-01 [telp] => 085714411167 [nama_user] => Hj. Muslihah [mail] => muslihah@mail.com [nm_keg] => Tuntas Baca Tulis [tgl_awal_keg] => 2021-02-07 [tgl_akhir_keg] => 2021-02-08 [alamat_keg] => SUGIHWARAS [narsum] => Mumu Mubarok [esti_keg] => 60 [lemb_keg] => AISIYAH RANTNG SUGIHWARAS [keterangan] => secara khusus mengatur pelaksanaan jeni-jenis kegiatan ekstrakurikuler PAI di sekolah. [nama_stat] => di proses [nama_layanan] => Izin Kegiatan Keagamaan [nama_direktorat] => URAIS & BINSYAR [nama_file] => uiosas_as.pdf [provinsi] => SUMATERA BARAT [kabupaten] => KOTA PADANG PANJANG [kecamatan] => Padang Panjang Barat [kelurahan] => Pasar Usang ) )
+        $exec['value'] = $exec;
+        $this->load->library('email');
+        $config = [
+            'protocol' => 'smtp',
+            'smtp_host' => 'smtp.gmail.com',
+            'smtp_user' => 'layanan.bimasislam@gmail.com',
+            'smtp_pass' => 'R4h4514N394R4',
+            '_smtp_auth' => true,
+            'smtp_crypto' => 'tls',
+            'charset' => 'utf-8',
+            'wordwrap' => true,
+            'mailtype' => 'html',
+            'smtp_port' => 587
+        ];
+        $this->email->initialize($config)
+                ->set_newline("\r\n")
+                ->from('layanan.bimasislam@gmail.com', 'Direktorat Jenderal Bimas Islam')
+//                ->to(['fia.meliaa@gmail.com', 'maspriyambodo@gmail.com']) if multi sending email
+                ->to(['baguspermadi736@gmail.com', 'maspriyambodo@gmail.com'])// jangan lupa di ganti saat production
+                ->subject('Status Permohonan: ' . $exec[0]->nm_keg)
+                ->message($this->load->view("layanan1/v_email", $exec, true))
+                ->send();
+    }
+
     public function index() {
         $this->template->setPageId("DITERIMA_IKK");
         $data = [];
@@ -105,6 +131,8 @@ class Layanan_1 extends MX_Controller {
     }
 
     public function Update($id_layanan) {
+        $mail = $this->M_layanan1->Detail($id_layanan);
+        $this->Mail($mail);
         $data = [
             '`dt_layanan`.`id_stat`' => 2 + false,
             '`dt_layanan`.`sysupdateuser`' => $this->session->userdata('DX_user_id') + false,
@@ -170,6 +198,8 @@ class Layanan_1 extends MX_Controller {
     }
 
     public function Proses_verif() {
+        $mail = $this->M_layanan1->Detail($this->input->post('id_layanan'));
+        $this->Mail($mail);
         if (empty($this->input->post('alasan'))) {
             $alasan = "NULL";
         } else {
