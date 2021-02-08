@@ -137,14 +137,14 @@ class Layanan_1 extends MX_Controller {
     }
 
     public function Update($id_layanan) {
-        $mail = $this->M_layanan1->Detail($id_layanan);
-        $this->Mail($mail);
         $data = [
             '`dt_layanan`.`id_stat`' => 2 + false,
             '`dt_layanan`.`sysupdateuser`' => $this->session->userdata('DX_user_id') + false,
             'dt_layanan.sysupdatedate' => date("Y-m-d H:i:s")
         ];
         $exec = $this->M_layanan1->Update($id_layanan, $data);
+        $mail = $this->M_layanan1->Detail($id_layanan);
+        $this->Mail($mail);
         if ($exec == true) {
             $direct = redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
         } else {
@@ -204,8 +204,6 @@ class Layanan_1 extends MX_Controller {
     }
 
     public function Proses_verif() {
-        $mail = $this->M_layanan1->Detail($this->input->post('id_layanan'));
-        $this->Mail($mail);
         if (empty($this->input->post('alasan'))) {
             $alasan = "NULL";
         } else {
@@ -213,6 +211,8 @@ class Layanan_1 extends MX_Controller {
         }
         $data = ['a' => $this->input->post('hasil'), 'b' => $alasan, 'c' => $this->session->userdata('DX_user_id'), 'd' => date("Y-m-d H:i:s"), 'e' => $this->input->post('id_layanan')];
         $this->M_layanan1->Proses_verif($data);
+        $mail = $this->M_layanan1->Detail($this->input->post('id_layanan'));
+        $this->Mail($mail);
         redirect(base_url('Urais/Layanan_1/Proses/'), 'refresh');
     }
 
