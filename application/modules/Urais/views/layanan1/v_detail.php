@@ -141,7 +141,7 @@
     </div>
     <div class="card-footer">
         <div class="text-right">
-            <button type="button" class="btn btn-success" onclick="Page.Terima(1);"><i class="fas fa-check"></i> Terima</button>
+            <button type="button" class="btn btn-success" onclick="Page.Terima(<?php echo $detil[0]->id_layanan; ?>);"><i class="fas fa-check"></i> Terima</button>
             <a href="<?php echo base_url('Urais/Layanan_1/Reject/' . $detil[0]->id_layanan); ?>" class="btn btn-danger"><i class="fas fa-times"></i> Tolak</a>
         </div>
     </div>
@@ -168,7 +168,7 @@
                 var url = '<?php echo base_url('Urais/Layanan_1/Update/'); ?>';
                 ajaxPost(url, data, function (data) {
                     App.IsLoading(false);
-                    if (data.data === "Error") {
+                    if (data.success === false) {
                         swal({
                             title: '<strong>Error</strong>',
                             type: 'error',
@@ -187,17 +187,14 @@
                             showCloseButton: false,
                             showCancelButton: false,
                             focusConfirm: false,
-                            confirmButtonText: '' + ('<i class="fa fa-thumbs-up" onclick="Page.Direct();"> OK</i>'),
+                            confirmButtonText: 'OK',
                             allowOutsideClick: false
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                Page.Direct();
+                            }
                         });
                     }
-                }, function (data) {
-                    // do nothing for unsuccess transaction
-                    swal(
-                            'Error',
-                            'Surat Permohonan gagal diproses',
-                            'error'
-                            );
                 });
             }
         }
