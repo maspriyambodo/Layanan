@@ -49,7 +49,6 @@ class Layanan_1 extends MX_Controller {
                 ->subject('Status Permohonan: ' . $exec[0]->nm_keg)
                 ->message($this->load->view("layanan1/v_email", $exec, true))
                 ->send();
-        print_r($this->email->print_debugger(array('headers')));die;
     }
 
     public function Contoh($param) {
