@@ -105,51 +105,70 @@ class Layanan_1 extends MX_Controller {
         $this->template->setPageId("DITERIMA_IKK");
         $data = [];
         $data['detil'] = $this->M_layanan1->Detail($id);
-        $sitetitle = "IZIN KEGIATAN KEAGAMAAN";
-        $pagetitle = "Izin Kegiatan Keagamaan";
-        $view = "layanan1/v_detail";
-        $breadcrumbs = [
-            [
-                "title" => "Izin Kegiatan Keagamaan",
-                "link" => base_url('Urais/Layanan_1/index/'),
-                "is_actived" => false
-            ],
-            [
-                "title" => "Detail",
-                "link" => "",
-                "is_actived" => true
-            ]
-        ];
-        $sql = "";
-        $mejo = new Mejo();
-        $mejo->setQuery($sql);
-        $tampilan = $mejo->metungul();
-        $metune = $tampilan->metune;
-        $js_lib_files = $tampilan->js_lib_files;
-        $css_lib_files = $tampilan->css_lib_files;
-        $js_inlines = $tampilan->js_inlines;
-        $this->template->setCssFiles($css_lib_files);
-        $this->template->setJsFiles($js_lib_files);
-        $data["js_inlines"] = $js_inlines;
-        $this->template->setSiteTitle($sitetitle);
-        $this->template->setPageTitle($pagetitle);
-        $this->template->setBreadcrumbs($breadcrumbs);
-        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+        if (empty($data['detil'])) {
+            redirect(base_url(''), 'refresh');
+        } else {
+            $sitetitle = "IZIN KEGIATAN KEAGAMAAN";
+            $pagetitle = "Izin Kegiatan Keagamaan";
+            $view = "layanan1/v_detail";
+            $breadcrumbs = [
+                [
+                    "title" => "Izin Kegiatan Keagamaan",
+                    "link" => base_url('Urais/Layanan_1/index/'),
+                    "is_actived" => false
+                ],
+                [
+                    "title" => "Detail",
+                    "link" => "",
+                    "is_actived" => true
+                ]
+            ];
+            $sql = "";
+            $mejo = new Mejo();
+            $mejo->setQuery($sql);
+            $tampilan = $mejo->metungul();
+            $metune = $tampilan->metune;
+            $js_lib_files = $tampilan->js_lib_files;
+            $css_lib_files = $tampilan->css_lib_files;
+            $js_inlines = $tampilan->js_inlines;
+            $this->template->setCssFiles($css_lib_files);
+            $this->template->setJsFiles($js_lib_files);
+            $data["js_inlines"] = $js_inlines;
+            $this->template->setSiteTitle($sitetitle);
+            $this->template->setPageTitle($pagetitle);
+            $this->template->setBreadcrumbs($breadcrumbs);
+            $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+        }
     }
 
-    public function Update($id_layanan) {
+//    public function Update($id_layanan) {
+//        $data = [
+//            '`dt_layanan`.`id_stat`' => 2 + false,
+//            '`dt_layanan`.`sysupdateuser`' => $this->session->userdata('DX_user_id') + false,
+//            'dt_layanan.sysupdatedate' => date("Y-m-d H:i:s")
+//        ];
+//        $exec = $this->M_layanan1->Update($id_layanan, $data);
+//        //$mail = $this->M_layanan1->Detail($id_layanan);
+//        //$this->Mail($mail);
+//        if ($exec == true) {
+//            $direct = redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
+//        } else {
+//            $direct = redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
+//        }
+//        return $direct;
+//    }
+
+    public function Update() {
         $data = [
-            '`dt_layanan`.`id_stat`' => 2 + false,
-            '`dt_layanan`.`sysupdateuser`' => $this->session->userdata('DX_user_id') + false,
-            'dt_layanan.sysupdatedate' => date("Y-m-d H:i:s")
+            'id_layanan' => $this->input->post('id'),
+            'user_id' => $this->session->userdata('DX_user_id'),
+            'status_id' => 2
         ];
-        $exec = $this->M_layanan1->Update($id_layanan, $data);
-        //$mail = $this->M_layanan1->Detail($id_layanan);
-        //$this->Mail($mail);
-        if ($exec == true) {
-            $direct = redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
+        $exec = $this->M_layanan1->Update($data);
+        if (empty($exec) or $exec == 0) {
+            $direct = toJSON(resultError("Error", 0));
         } else {
-            $direct = redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
+            $direct = toJSON(resultSuccess("OK", 1));
         }
         return $direct;
     }

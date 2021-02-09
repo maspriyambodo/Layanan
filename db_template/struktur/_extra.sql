@@ -28,7 +28,7 @@ ALTER TABLE `dt_layanan_dokumen`
   ADD PRIMARY KEY (`id`) USING BTREE,
   ADD KEY `id` (`id`) USING BTREE,
   ADD KEY `id_layanan` (`id_layanan`) USING BTREE;
-
+ALTER TABLE `dt_layanan_dokumen` CHANGE `ktp` `ktp_keg` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL;
 --
 -- Indexes for table `dt_penceramah`
 --
@@ -303,6 +303,7 @@ ALTER TABLE `dt_layanan_dokumen`
 ALTER TABLE `dt_penceramah`
   ADD CONSTRAINT `dt_penceramah_ibfk_1` FOREIGN KEY (`id_layanan`) REFERENCES `dt_layanan` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE `dt_layanan` CHANGE `alasan_tolak` `alasan_tolak` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL;
 --
 -- Constraints for table `dt_pendidikan`
 --
