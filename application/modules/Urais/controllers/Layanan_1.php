@@ -104,7 +104,11 @@ class Layanan_1 extends MX_Controller {
     public function Detail($id) {
         $this->template->setPageId("DITERIMA_IKK");
         $data = [];
-        $data['detil'] = $this->M_layanan1->Detail($id);
+        $detil_param = [
+            'id_layanan' => $id,
+            'stat_id' => 1
+        ];
+        $data['detil'] = $this->M_layanan1->Detail($detil_param);
         if (empty($data['detil'])) {
             redirect(base_url(''), 'refresh');
         } else {
@@ -172,7 +176,7 @@ class Layanan_1 extends MX_Controller {
         }
         return $direct;
     }
-    
+
     public function Reject() {
         $data = [
             'id_layanan' => $this->input->post('id'),
@@ -215,27 +219,35 @@ class Layanan_1 extends MX_Controller {
     public function Detail_Proses($id) {
         $this->template->setPageId("DIPROSES_IKK");
         $data = [];
-        $data['detil'] = $this->M_layanan1->Detail($id);
-        $data['stat'] = $this->M_layanan1->Stat($id);
-        $sitetitle = "Detil Permohonan | " . $data['detil'][0]->nm_keg;
-        $pagetitle = "Detil Data Permohonan";
-        $view = "layanan1/v_prosesdetail";
-        $breadcrumbs = [["title" => "Proses Permohonan", "link" => base_url('Urais/Layanan_1/Proses/'), "is_actived" => false,], ["title" => "Detail", "link" => "", "is_actived" => true,]];
-        $sql = "";
-        $mejo = new Mejo();
-        $mejo->setQuery($sql);
-        $tampilan = $mejo->metungul();
-        $metune = $tampilan->metune;
-        $js_lib_files = $tampilan->js_lib_files;
-        $css_lib_files = $tampilan->css_lib_files;
-        $js_inlines = $tampilan->js_inlines;
-        $this->template->setCssFiles($css_lib_files);
-        $this->template->setJsFiles($js_lib_files);
-        $data["js_inlines"] = $js_inlines;
-        $this->template->setSiteTitle($sitetitle);
-        $this->template->setPageTitle($pagetitle);
-        $this->template->setBreadcrumbs($breadcrumbs);
-        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+        $detil_param = [
+            'id_layanan' => $id,
+            'stat_id' => 2
+        ];
+        $data['detil'] = $this->M_layanan1->Detail($detil_param);
+        if (empty($data['detil'])) {
+            redirect(base_url(''), 'refresh');
+        } else {
+            $data['stat'] = $this->M_layanan1->Stat($id);
+            $sitetitle = "Detil Permohonan | " . $data['detil'][0]->nm_keg;
+            $pagetitle = "Detil Data Permohonan";
+            $view = "layanan1/v_prosesdetail";
+            $breadcrumbs = [["title" => "Proses Permohonan", "link" => base_url('Urais/Layanan_1/Proses/'), "is_actived" => false,], ["title" => "Detail", "link" => "", "is_actived" => true,]];
+            $sql = "";
+            $mejo = new Mejo();
+            $mejo->setQuery($sql);
+            $tampilan = $mejo->metungul();
+            $metune = $tampilan->metune;
+            $js_lib_files = $tampilan->js_lib_files;
+            $css_lib_files = $tampilan->css_lib_files;
+            $js_inlines = $tampilan->js_inlines;
+            $this->template->setCssFiles($css_lib_files);
+            $this->template->setJsFiles($js_lib_files);
+            $data["js_inlines"] = $js_inlines;
+            $this->template->setSiteTitle($sitetitle);
+            $this->template->setPageTitle($pagetitle);
+            $this->template->setBreadcrumbs($breadcrumbs);
+            $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+        }
     }
 
     public function Proses_verif() {
