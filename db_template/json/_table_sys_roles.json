@@ -1,0 +1,31 @@
+,{
+    "type": "table",
+    "name": "sys_roles",
+    "database": "db_adminskelethon",
+    "data": 
+[
+{
+    "id": "1",
+    "parent_id": "0",
+    "name": "Super Admin",
+    "description": "Group Super Admin",
+    "is_actived": "1",
+    "created_by": null,
+    "created_on": null,
+    "modified_by": null,
+    "modified_on": null
+},
+{
+    "id": "6",
+    "parent_id": "0",
+    "name": "Umum",
+    "description": "Masyarakat UMUM",
+    "is_actived": "1",
+    "created_by": "sysadmin",
+    "created_on": "2021-02-02 15:30:32",
+    "modified_by": "sysadmin",
+    "modified_on": "2021-02-02 15:30:32"
+}
+]
+
+}

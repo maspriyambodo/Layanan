@@ -1,0 +1,69 @@
+,{
+    "type": "table",
+    "name": "mt_direktorat",
+    "database": "db_adminskelethon",
+    "data": 
+[
+{
+    "id": "1",
+    "nama": "Sekretariat",
+    "keterangan": "- bagian perencanaan\r\n\r\n- bagian keluarga dan pendapatan negara bukan pajak\r\n\r\n- bagian organisasi, kepegawaian, dan hukum\r\n\r\n- bagian data, sistem informasi, dan hubungan masyarakat\r\n\r\n- bagian umum,  barang milik negara.",
+    "stat": "1",
+    "syscreateuser": "1",
+    "syscreatedate": "2021-01-26 13:43:48",
+    "sysupdateuser": "1",
+    "sysupdatedate": "2021-01-27 13:33:20",
+    "sysdeleteuser": "1",
+    "sysdeletedate": "2021-01-27 13:43:37"
+},
+{
+    "id": "2",
+    "nama": "URAIS & BINSYAR",
+    "keterangan": "- Hisab Rukyat\r\n\r\n- Kemasjidan\r\n\r\n- Bina Paham Keagamaan Islam dan penanganan konflik\r\n\r\n- kepustakaan islam",
+    "stat": "1",
+    "syscreateuser": "1",
+    "syscreatedate": "2021-01-26 13:52:43",
+    "sysupdateuser": "1",
+    "sysupdatedate": "2021-01-27 13:34:26",
+    "sysdeleteuser": null,
+    "sysdeletedate": null
+},
+{
+    "id": "3",
+    "nama": "PENAIS",
+    "keterangan": "- Penyuluh Agama Islam\r\n\r\n- Dakwah dan HBI\r\n\r\n- Lembaga Tilawah dan Musabaqah Al'Quran\r\n\r\n- Kemitraan Umat Islam\r\n\r\n- Seni, Budaya, dan Siaran Keagamaan",
+    "stat": "1",
+    "syscreateuser": "1",
+    "syscreatedate": "2021-01-26 13:54:39",
+    "sysupdateuser": "1",
+    "sysupdatedate": "2021-01-27 13:34:43",
+    "sysdeleteuser": null,
+    "sysdeletedate": null
+},
+{
+    "id": "4",
+    "nama": "Zakat & Wakaf",
+    "keterangan": "- Kelembagaan dan informasi zakat dan wakaf\r\n\r\n- Edukasi, Inovasi, dan kerjasama zakat dan wakaf\r\n\r\n- Akreditasi dan Audit lembaga Zakat\r\n\r\n- Pengamanan Aset Wakaf",
+    "stat": "1",
+    "syscreateuser": "1",
+    "syscreatedate": "2021-01-26 13:57:16",
+    "sysupdateuser": "1",
+    "sysupdatedate": "2021-01-27 13:35:20",
+    "sysdeleteuser": null,
+    "sysdeletedate": null
+},
+{
+    "id": "5",
+    "nama": "Bina KUA & Keluarga Sakinah",
+    "keterangan": "- Bina Kepenghuluan\r\n- Bina Kelembagaan KUA\r\n- Mutu, Sarana Prasarana, dan Sistem Informasi KUA\r\n- Bina Keluarga Sakinah",
+    "stat": "1",
+    "syscreateuser": "1",
+    "syscreatedate": "2021-01-26 13:59:16",
+    "sysupdateuser": null,
+    "sysupdatedate": null,
+    "sysdeleteuser": null,
+    "sysdeletedate": null
+}
+]
+
+}
