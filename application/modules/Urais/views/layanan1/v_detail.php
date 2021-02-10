@@ -1,3 +1,4 @@
+<h4>No. Form: <?php echo 0 . $detil[0]->no_direktorat . '.0' . $detil[0]->no_layanan . '.' . $detil[0]->tgl_input . '.000' . $detil[0]->id_layanan; ?></h4>
 <div class="card card-custom" style="margin-top:1.32857em;">
     <div class="card-header">
         <div class="card-title">
@@ -142,7 +143,7 @@
     <div class="card-footer">
         <div class="text-right">
             <button type="button" class="btn btn-success" onclick="Page.Terima(<?php echo $detil[0]->id_layanan; ?>);"><i class="fas fa-check"></i> Terima</button>
-            <a href="<?php echo base_url('Urais/Layanan_1/Reject/' . $detil[0]->id_layanan); ?>" class="btn btn-danger"><i class="fas fa-times"></i> Tolak</a>
+            <button type="button" class="btn btn-danger" onclick="Page.Tolak(<?php echo $detil[0]->id_layanan; ?>);"><i class="fas fa-times"></i> Tolak</button>
         </div>
     </div>
 </div>
@@ -166,6 +167,59 @@
                     id: id
                 };
                 var url = '<?php echo base_url('Urais/Layanan_1/Update/'); ?>';
+                ajaxPost(url, data, function (data) {
+                    App.IsLoading(false);
+                    if (data.success === false) {
+                        swal({
+                            title: '<strong>Error</strong>',
+                            type: 'error',
+                            text: "Surat Permohonan gagal diproses",
+                            showCloseButton: false,
+                            showCancelButton: false,
+                            focusConfirm: false,
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false
+                        });
+                    } else {
+                        swal({
+                            title: '<strong>Success</strong>',
+                            type: 'success',
+                            text: "Surat Permohonan berhasil diproses",
+                            showCloseButton: false,
+                            showCancelButton: false,
+                            focusConfirm: false,
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                Page.Direct();
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        , function (dismiss) {
+            // do nothing for dismiss modal
+        });
+    };
+    Page.Tolak = function (id) {
+        swal({
+            title: 'Are you sure?',
+            text: "",
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirm',
+            allowOutsideClick: false
+        }).then(function (result) {
+            if (result) {
+                App.IsLoading(true);
+                var data = {
+                    id: id
+                };
+                var url = '<?php echo base_url('Urais/Layanan_1/Reject/'); ?>';
                 ajaxPost(url, data, function (data) {
                     App.IsLoading(false);
                     if (data.success === false) {
