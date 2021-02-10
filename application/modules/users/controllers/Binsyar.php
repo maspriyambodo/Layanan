@@ -6,6 +6,7 @@ class Binsyar extends MX_Controller {
       $this->load->model('Binsyar_m','bm');
     }
 
+    // Bagus
     public function datapermohonan() {
         $this->template->setPageId("DATA_BINSYAR");
         $data = array();
@@ -40,10 +41,6 @@ class Binsyar extends MX_Controller {
         $this->template->setJsFiles($js_lib_files);
         $data["js_inlines"] = $js_inlines;
 
-        // $get_dtBinsyar = $this->db->get("dt_layanan");
-        // $get_dtBinsyar = $this->bm->get_allDataJoin();
-        // $data["binsyar"] = $get_prov->result();
-
         $this->template->setSiteTitle($sitetitle);
         $this->template->setPageTitle($pagetitle);
         $this->template->setBreadcrumbs($breadcrumbs);
@@ -51,13 +48,18 @@ class Binsyar extends MX_Controller {
         $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
     }
 
-    public function ambil_dt_join(){
-        // $this->db->order_by("id");
-        $this->db->select("a.*, b.fullname, c.menu");
-        $this->db->from("dt_layanan a");
-        $this->db->join("sys_users b","a.id_user = b.id");
-        $this->db->join("sys_menu c","a.id_stat = c.id");
-        // $this->db->order_by("prov.id_provinsi, kab.id_kabupaten, kab.nama");
+    // Bagus
+    public function ambil_dt_join()
+    {
+        $this->db->distinct();
+        $this->db->select("b.id, a.fullname, c.nm_keg, c.esti_keg, c.lemb_keg, c.tgl_awal_keg, e.nama_layanan");
+        $this->db->from("sys_users a");
+        $this->db->join("dt_layanan b", "a.id = b.id_user");
+        $this->db->join("dt_kegiatan c","b.id = c.id_layanan");
+        $this->db->join("mt_layanan e","b.jenis_layanan = e.id");
+        $this->db->where("a.id", $this->session->userdata("DX_user_id"));
+        $this->db->where("b.stat", 1);
+        // $this->db->group_by("b.id");
         $get = $this->db->get();
 
         $data = $get->result();
@@ -68,16 +70,144 @@ class Binsyar extends MX_Controller {
           toJson($result);
     }
 
-    public function edit($id = "") {
+    // Bagus
+    public function kegiatan()
+    {
+        $this->template->setPageId("SUB_BINSYAR_KEGIATAN");
+        $data["title"] = $this->bm->get_title();
+        $data = array();
+
+        $sitetitle = "Form Binsyar";
+        $pagetitle = "Form Permohonan Kegiatan Keagamaan";
+        $view = "/users/binsyar/v_tambahsatu";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+        
+        // $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data['id_session'] = $this->bm->get_identitas();
+        $data['ambil_provinsi'] = $this->bm->get_provinsi();
+        $data['jenis_layanan'] = $this->bm->get_layanan_binsyar();
+        $data['id_dtlayanan'] = $this->bm->get_id_dtlayanan();
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout());
+    }
+
+    // Bagus untuk kirim ke model -> database
+    public function simpan_forma()
+    {
+        // Data kegiatan
+        $this->form_validation->set_rules('narsum[]', 'penceramah', 'trim|required');
+        $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
+        $this->form_validation->set_rules('esti_keg', 'estimasi jumlah jamaah', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('lemb_keg', 'lembaga penyelenggara', 'trim|required');
+        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
+        $this->form_validation->set_rules('alamat_keg', 'alamat kegiatan', 'trim|required');
+        $this->form_validation->set_rules('id_provinsi', 'provinsi kegiatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kabupaten', 'kabupaten kegiatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kecamatan', 'kecamatan kegiatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kelurahan', 'kelurahan kegiatan', 'trim|required|is_numeric');
+
+        // Data Lampiran
+        // $this->form_validation->set_rules('ktp', 'dokumen KTP', 'required');
+        // $this->form_validation->set_rules('proposal_keg', 'proposal kegiatan', 'required');
+        // $this->form_validation->set_rules('surat_permohonan_keg', 'surat permohonan', 'required');
+
+        if ($this->form_validation->run() == TRUE) {
+            // Data lebih dari satu
+            $id_dt_layanan['id'] = $this->bm->get_id_dtlayanan();
+
+            var_dump(json_encode($dokumen));
+            die();
+            // // Data single
+            $layanan = array(
+                "id_user" => $this->input->post("id_user", TRUE),
+                "id_stat" => $this->input->post("id_stat", TRUE),
+                "id_provinsi" => $this->input->post("id_provinsi", TRUE),
+                "id_kabupaten" => $this->input->post("id_kabupaten", TRUE),
+                "id_kecamatan" => $this->input->post("id_kecamatan", TRUE),
+                "id_kelurahan" => $this->input->post("id_kelurahan", TRUE),
+                "jenis_layanan" => $this->input->post("jenis_layanan", TRUE),
+                "stat" => 1,
+                "syscreateuser" => $this->input->post("id_user", TRUE),
+                "syscreatedate" => $this->input->post("syscreatedate", TRUE)
+            );
+            $this->bm->kirim_dataLayanan($layanan);
+
+            $kegiatan = array(
+                "id_layanan" => $id_dt_layanan['id']->id + 1,
+                "nm_keg" => $this->input->post('nm_keg'),
+                "esti_keg" => $this->input->post('esti_keg'),
+                "lemb_keg" => $this->input->post('lemb_keg'),
+                "tgl_awal_keg" => $this->input->post('tgl_awal_keg'),
+                "tgl_akhir_keg" => $this->input->post('tgl_akhir_keg'),
+                "alamat_keg" => $this->input->post('alamat_keg')
+            );
+            $this->bm->kirim_dataKegiatan($kegiatan);
+
+            $narsum = $_POST['narsum'];
+            $narsum_single = array(
+                "id_layanan" => $id_dt_layanan['id']->id + 1,
+            );
+            $data = array();
+            $index = 0;
+
+            foreach($narsum as $nm)
+            {
+                array_push($data, array(
+                    'id_layanan'=>$narsum_single['id_layanan'],
+                    'narsum'=>$nm,
+                ));
+                $index++;
+            }
+            $this->bm->kirim_dataPenceramah($data);
+
+            $dokumen = array(
+                "id_layanan" => $this->input->post('id_layanan'),
+                "ktp" => $this->do_upload_1(),
+                "proposal_keg" => $this->do_upload_2(),
+                "surat_permohonan_keg" => $this->do_upload_3()
+            );
+            $this->bm->kirim_dataDokumen($dokumen);
+            
+            echo "<script>alert('Data berhasil disimpan');window.location = '".site_url('users/binsyar/kegiatan/')."';</script>";
+        } else {
+            return $this->kegiatan();
+        }
+    }
+
+    // Bagus
+    public function edit($id) {
         $this->template->setPageId("DATA_BINSYAR");
         $data = array();
 
         $sitetitle = "Edit Data Binsyar";
         $pagetitle = "Edit Data Binsyar";
-        $view = "/users/v_editdatabinsyar";
+        $view = "/users/binsyar/v_editdata_binsyar";
         $breadcrumbs = array(
                 array(
-                    "title" => "Setting Binsyar",
+                    "title" => "Edit Binsyar",
                     "link" => "",
                     "is_actived" => false,
                 ),
@@ -100,489 +230,430 @@ class Binsyar extends MX_Controller {
 
         $this->template->setCssFiles($css_lib_files);
         $this->template->setJsFiles($js_lib_files);
+        $data["dt_provinsi"] = $this->bm->get_provinsi();
+        $data["dt_kabupaten"] = $this->bm->get_kabupaten();
+        $data["dt_kecamatan"] = $this->bm->get_kecamatan();
+        $data["dt_kelurahan"] = $this->bm->get_kelurahan();
+        $data["dataku"] = $this->bm->get_ids($id);
+        // var_dump(json_encode($data['dataku'][3]->proposal_keg));
+        // die();
         $data["js_inlines"] = $js_inlines;
 
         $this->template->setSiteTitle($sitetitle);
         $this->template->setPageTitle($pagetitle);
         $this->template->setBreadcrumbs($breadcrumbs);
-
-        $data["formMode"] = "new";
-        if ($id != "") {
-            $data["formMode"] = "edit";
-            $this->db->where("id",$id);
-            // $getData = $this->db->get("dt_layanan");
-            $getData = $this->db->get("dt_layanan");
-            $dataProvinsi = $getData->row();
-            $data["dataProvinsi"] = json_encode($dataProvinsi);
-        }
-
-        $get_rekomendasi = $this->db->query("select id from dt_layanan")->row();
-        $kode = $get_rekomendasi->kode;
-        $rekomendasi_kode = (int)$kode + 1;
-        if($rekomendasi_kode < 10) {
-            $rekomendasi_kode = "0". (string)$rekomendasi_kode;
-        }
-        $data["rekomendasi_kode"] = $rekomendasi_kode;
             
         $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
     }
 
-    public function save_provinsi(){
-        $mode = $this->input->post("formMode");
-        $formData = $this->input->post("formData");
-        $dataProvinsi = json_decode($formData,true);
-        $id_provinsi = $dataProvinsi["id_provinsi"];
+    // Edit kiriman ke DB
+    public function simpanedit_kegiatan()
+    {
+        $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
+        $this->form_validation->set_rules('esti_keg', 'estimasi jamaah kegiatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('lemb_keg', 'lembaga kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
+        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('alamat_keg', 'alamat kegiatan', 'trim|required');
 
-        if ($mode == "new") {
-            // --- error will be 1 if success
-            $error = $this->db->insert('mt_wil_provinsi', $dataProvinsi);
-            if ($error != 1) {
-                echo toJSON(resultError("","Error save to table provinsi!"));
-                return;
-            }
+        if ($this->form_validation->run() == TRUE) {
+            $id = $this->input->post("id", TRUE);
 
-            // echo $this->db->last_query();
-            // $masjid_id = $this->db->insert_id();
+            $data_kegiatan = array(
+                "id_layanan" => $this->input->post("id_layanan", TRUE),
+                "nm_keg" => $this->input->post("nm_keg", TRUE),
+                "esti_keg" => $this->input->post("esti_keg", TRUE),
+                "lemb_keg" => $this->input->post("lemb_keg", TRUE),
+                "tgl_awal_keg" => $this->input->post("tgl_awal_keg", TRUE),
+                "tgl_akhir_keg" => $this->input->post("tgl_akhir_keg", TRUE),
+                "alamat_keg" => $this->input->post("alamat_keg", TRUE)
+            );
+            $this->bm->save_tbl_kegiatan($data_kegiatan, $id);
+
+            $id_layanan = $this->input->post("id_layanan", TRUE);
+            $data_layanan = array(
+                "id_provinsi" => $this->input->post("id_provinsi", TRUE),
+                "id_kabupaten" => $this->input->post("id_kabupaten", TRUE),
+                "id_kecamatan" => $this->input->post("id_kecamatan", TRUE),
+                "id_kelurahan" => $this->input->post("id_kelurahan", TRUE),
+                "sysupdateuser" => $this->input->post("sysupdateuser", TRUE),
+                "sysupdatedate" => $this->input->post("sysupdatedate", TRUE)
+            );
+            $this->bm->save_tbl_layananprop($data_layanan, $id_layanan);
+            
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+            // redirect(site_url('pendakwahlokal/update/'.$this->input->post('f_idpendakwah')));
         } else {
-            $this->db->where("id_provinsi",$id_provinsi);
-            $error = $this->db->update('mt_wil_provinsi', $dataProvinsi);
-            if ($error != 1) {
-                echo toJSON(resultError("","Error save to address provinsi!"));
-                return;
-            }
+            return $this->edit($id);
         }
-        
-        echo toJSON(resultSuccess($id_provinsi,1));
-    }
+    }    
 
-    public function delete_provinsi(){
-        $id = $this->input->post("id");
-        $this->db->where('id_provinsi',$id) ;
-        $this->db->delete('mt_wil_provinsi');
+    public function simpanedit_penceramah()
+    {
+        $this->form_validation->set_rules('narsum[]', 'nama penceramah', 'trim|required');
 
-        echo toJSON(resultSuccess("OK",1));
-    }
+        if ($this->form_validation->run() == TRUE) {
+            $narsum = $_POST['narsum'];
+            $id = $_POST['id'];
+            $id_layanan = $_POST['id_layanan'];
 
-    public function kabupaten() {
-        $this->template->setPageId("SETTING_KAB");
-        $data = array();
-
-        $sitetitle = "Setting Kabupaten";
-        $pagetitle = "Setting Kabupaten";
-        $view = "kabupaten";
-        $breadcrumbs = array(
-                array(
-                    "title" => "Setting Wilayah",
-                    "link" => "",
-                    "is_actived" => false,
-                ),
-                array(
-                    "title" => "Kabupaten",
-                    "link" => "",
-                    "is_actived" => true,
-                ),
+            $single = array(
+                "id_layanan" => $this->input->post('id_layanan'),
+                "id" => $this->input->post('id')
             );
 
-        $sql = "";
-        $mejo = new Mejo();
-        $mejo->setQuery($sql);
-        $tampilan = $mejo->metungul();
-        
-        $metune = $tampilan->metune;
-        $js_lib_files = $tampilan->js_lib_files;
-        $css_lib_files = $tampilan->css_lib_files;
-        $js_inlines = $tampilan->js_inlines;
+            $data = array();
+            $index = 0;
 
-        $this->template->setCssFiles($css_lib_files);
-        $this->template->setJsFiles($js_lib_files);
-        $data["js_inlines"] = $js_inlines;
-
-        $this->template->setSiteTitle($sitetitle);
-        $this->template->setPageTitle($pagetitle);
-        $this->template->setBreadcrumbs($breadcrumbs);
-            
-        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
-    }
-
-    public function form_kabupaten($id = "") {
-        $this->template->setPageId("SETTING_KAB");
-        $data = array();
-
-        $sitetitle = "Form Kabupaten";
-        $pagetitle = "Form Kabupaten";
-        $view = "form_kabupaten";
-        $breadcrumbs = array(
-                array(
-                    "title" => "Setting Wilayah",
-                    "link" => "",
-                    "is_actived" => false,
-                ),
-                array(
-                    "title" => "Kabupaten",
-                    "link" => "",
-                    "is_actived" => true,
-                ),
-            );
-
-        $sql = "";
-        $mejo = new Mejo();
-        $mejo->setQuery($sql);
-        $tampilan = $mejo->metungul();
-        
-        $metune = $tampilan->metune;
-        $js_lib_files = $tampilan->js_lib_files;
-        $css_lib_files = $tampilan->css_lib_files;
-        $js_inlines = $tampilan->js_inlines;
-
-        $this->template->setCssFiles($css_lib_files);
-        $this->template->setJsFiles($js_lib_files);
-        $data["js_inlines"] = $js_inlines;
-
-        $this->template->setSiteTitle($sitetitle);
-        $this->template->setPageTitle($pagetitle);
-        $this->template->setBreadcrumbs($breadcrumbs);
-
-        $data["formMode"] = "new";
-        if ($id != "") {
-            $data["formMode"] = "edit";
-            $this->db->where("id_kabupaten",$id);
-            $getData = $this->db->get("mt_wil_kabupaten");
-            $dataKabupaten = $getData->row();
-            $data["dataKabupaten"] = json_encode($dataKabupaten);
-        }
-            
-        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
-    }
-
-    public function save_kabupaten(){
-        $mode = $this->input->post("formMode");
-        $formData = $this->input->post("formData");
-        $dataKabupaten = json_decode($formData,true);
-        $id_kabupaten = $dataKabupaten["id_kabupaten"];
-
-        if ($mode == "new") {
-            // --- error will be 1 if success
-            $error = $this->db->insert('mt_wil_kabupaten', $dataKabupaten);
-            if ($error != 1) {
-
-                // echo $this->db->last_query();
-                echo toJSON(resultError("","Error save to table kabupaten!"));
-                return;
+            foreach($narsum as $nm)
+            {
+                array_push($data, array(
+                    'id'=>$id[$index],
+                    'id_layanan'=>$id_layanan[$index],
+                    'narsum'=>$nm
+                ));
+                $index++;
             }
-
-            // echo $this->db->last_query();
-            // $masjid_id = $this->db->insert_id();
+            $this->db->update_batch('dt_penceramah', $data, 'id');
+            // var_dump($data);
+            // die();
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
         } else {
-            $this->db->where("id_kabupaten",$id_kabupaten);
-            $error = $this->db->update('mt_wil_kabupaten', $dataKabupaten);
-            if ($error != 1) {
-                echo toJSON(resultError("","Error save to address kabupaten!"));
-                return;
-            }
+            return $this->edit($id);
         }
-        
-        echo toJSON(resultSuccess($id_kabupaten,1));
     }
 
-    public function delete_kabupaten(){
-        $id = $this->input->post("id");
-        $this->db->where('id_kabupaten',$id) ;
-        $this->db->delete('mt_wil_kabupaten');
+    public function simpanedit_lampiran()
+    {
+        $this->form_validation->set_rules('id_layanan', 'layanan', 'trim|required|is_numeric');
+        // $this->form_validation->set_rules('ktp', 'ktp', 'trim|required');
+        // $this->form_validation->set_rules('proposal_keg', 'proposal kegiatan', 'trim|required');
+        // $this->form_validation->set_rules('surat_permohonan_keg', 'surat permohonan kegiatan', 'trim|required');
 
-        echo toJSON(resultSuccess("OK",1));
-    }
-
-    public function kecamatan() {
-        $this->template->setPageId("SETTING_KEC");
-        $data = array();
-
-        $sitetitle = "Setting Kecamatan";
-        $pagetitle = "Setting Kecamatan";
-        $view = "kecamatan";
-        $breadcrumbs = array(
-                array(
-                    "title" => "Setting Wilayah",
-                    "link" => "",
-                    "is_actived" => false,
-                ),
-                array(
-                    "title" => "Kecamatan",
-                    "link" => "",
-                    "is_actived" => true,
-                ),
+        if ($this->form_validation->run() == TRUE) {
+            $id = $this->input->post('id');
+            $data = array(
+                "id_layanan" => $this->input->post('id_layanan'),
+                "ktp" => $this->do_upload_1(),
+                "proposal_keg" => $this->do_upload_2(),
+                "surat_permohonan_keg" => $this->do_upload_3()
             );
-
-        $sql = "";
-        $mejo = new Mejo();
-        $mejo->setQuery($sql);
-        $tampilan = $mejo->metungul();
-        
-        $metune = $tampilan->metune;
-        $js_lib_files = $tampilan->js_lib_files;
-        $css_lib_files = $tampilan->css_lib_files;
-        $js_inlines = $tampilan->js_inlines;
-
-        $this->template->setCssFiles($css_lib_files);
-        $this->template->setJsFiles($js_lib_files);
-        $data["js_inlines"] = $js_inlines;
-
-        $this->template->setSiteTitle($sitetitle);
-        $this->template->setPageTitle($pagetitle);
-        $this->template->setBreadcrumbs($breadcrumbs);
             
-        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
-    }
-
-    public function form_kecamatan($id = "") {
-        $this->template->setPageId("SETTING_KEC");
-        $data = array();
-
-        $sitetitle = "Form Kecamatan";
-        $pagetitle = "Form Kecamatan";
-        $view = "form_kecamatan";
-        $breadcrumbs = array(
-                array(
-                    "title" => "Setting Wilayah",
-                    "link" => "",
-                    "is_actived" => false,
-                ),
-                array(
-                    "title" => "Kabupaten",
-                    "link" => "",
-                    "is_actived" => true,
-                ),
-            );
-
-        $sql = "";
-        $mejo = new Mejo();
-        $mejo->setQuery($sql);
-        $tampilan = $mejo->metungul();
-        
-        $metune = $tampilan->metune;
-        $js_lib_files = $tampilan->js_lib_files;
-        $css_lib_files = $tampilan->css_lib_files;
-        $js_inlines = $tampilan->js_inlines;
-
-        $this->template->setCssFiles($css_lib_files);
-        $this->template->setJsFiles($js_lib_files);
-        $data["js_inlines"] = $js_inlines;
-
-        $this->template->setSiteTitle($sitetitle);
-        $this->template->setPageTitle($pagetitle);
-        $this->template->setBreadcrumbs($breadcrumbs);
-
-        $data["formMode"] = "new";
-        if ($id != "") {
-            $data["formMode"] = "edit";
-            $this->db->select("kec.*, prov.id_provinsi");
-            $this->db->from("mt_wil_kecamatan kec");
-            $this->db->join("mt_wil_kabupaten kab","kec.id_kabupaten = kab.id_kabupaten");
-            $this->db->join("mt_wil_provinsi prov","kab.id_provinsi = prov.id_provinsi");
-            $this->db->where("kec.id_kecamatan",$id);
-            $getData = $this->db->get();
-            $dataKec = $getData->row();
-            $data["dataKecamatan"] = json_encode($dataKec);
-        }
-            
-        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
-    }
-
-    public function save_kecamatan(){
-        $mode = $this->input->post("formMode");
-        $formData = $this->input->post("formData");
-        $dataKecamatan = json_decode($formData,true);
-        $id_kecamatan = $dataKecamatan["id_kecamatan"];
-
-        unset($dataKecamatan["id_provinsi"]);
-
-        if ($mode == "new") {
-            // --- error will be 1 if success
-            $error = $this->db->insert('mt_wil_kecamatan', $dataKecamatan);
-            if ($error != 1) {
-
-                // echo $this->db->last_query();
-                echo toJSON(resultError("","Error save to table kecamatan!"));
-                return;
-            }
-
-            // echo $this->db->last_query();
-            // $masjid_id = $this->db->insert_id();
+            $this->bm->save_tbl_lampiran($data, $id);
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
         } else {
-            $this->db->where("id_kecamatan",$id_kecamatan);
-            $error = $this->db->update('mt_wil_kecamatan', $dataKecamatan);
-            if ($error != 1) {
-                echo toJSON(resultError("","Error save to address kecamatan!"));
-                return;
-            }
+            return $this->edit($id);
         }
-        
-        echo toJSON(resultSuccess($id_kecamatan,1));
     }
 
-    public function delete_kecamatan(){
-        $id = $this->input->post("id");
-        $this->db->where('id_kecamatan',$id) ;
-        $this->db->delete('mt_wil_kecamatan');
+    // Bagus halaman page
+    public function ekspor()
+    {
+        $this->template->setPageId("SUB_BINSYAR_EKSPOR");
+        $data["title"] = $this->bm->get_title();
+        $data = array();
 
-        echo toJSON(resultSuccess("OK",1));
+        $sitetitle = "Form Binsyar";
+        $pagetitle = "Form Permohonan Penceramah KeLuar Negeri";
+        $view = "/users/binsyar/v_tambahdua";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        // $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data['id_session'] = $this->bm->get_identitas();
+        $data['ambil_provinsi'] = $this->bm->get_provinsi();
+        $data['jenis_layanan'] = $this->bm->get_layanan_binsyar();
+        $data['id_dtlayanan'] = $this->bm->get_id_dtlayanan();
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout());
     }
 
-    public function populateKabupatenAllAttributes(){
-        $this->db->select("kab.*, prov.nama as nama as provinsi_name");
-        $this->db->from("mt_wil_kabupaten kab");
-        $this->db->join("mt_wil_provinsi prov","kab.id_provinsi = prov.id_provinsi");
-        $this->db->order_by("prov.id_provinsi, kab.id_kabupaten, kab.nama");
-        $get = $this->db->get();
+    // Bagus untuk kirim ke model -> database
+    public function simpan_formb()
+    {
+        // Data Penceramah
+        $this->form_validation->set_rules('narsum[]', 'penceramah', 'trim|required');
+        $this->form_validation->set_rules('jen_kel', 'jenis kelamin', 'trim|required');
+        $this->form_validation->set_rules('tmp_lhr', 'tempat lahir', 'trim|required');
+        $this->form_validation->set_rules('tgl_lhr', 'tanggal lahir', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('no_pass', 'nomor passport', 'trim|required');
+        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('alamat', 'alamat lengkap', 'trim|required');
 
-        $data = $get->result();
-        $result = array(
-            "data" => $data,
-            "success" => true,
-          );
-          toJson($result);
+        // Data Kegiatan
+        $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
+        $this->form_validation->set_rules('neg_keg', 'negara pilihan', 'trim|required');
+        $this->form_validation->set_rules('lok_keg', 'lokasi kegiatan', 'trim|required');
+        $this->form_validation->set_rules('esti_keg', 'estimasi jumlah jamaah', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('lemb_keg', 'lembaga penyelenggara', 'trim|required');
+
+        if ($this->form_validation->run() == TRUE) {
+            # code...
+        } else {
+            return $this->ekspor();
+        }
     }
 
-    public function populateKecamatanAllAttributes(){
-        $this->db->select("kec.*, kab.nama as kabupaten_name, prov.nama as nama as provinsi_name");
-        $this->db->from("mt_wil_kecamatan kec");
-        $this->db->join("mt_wil_kabupaten kab","kec.id_kabupaten = kab.id_kabupaten");
-        $this->db->join("mt_wil_provinsi prov","kab.id_provinsi = prov.id_provinsi");
-        $this->db->order_by("prov.id_provinsi, kab.id_kabupaten, kec.id_kecamatan, kec.nama");
-        $get = $this->db->get();
+    // Bagus halaman page
+    public function import()
+    {
+        $this->template->setPageId("SUB_BINSYAR_IMPORT");
+        $data["title"] = $this->bm->get_title();
+        $data = array();
 
-        $data = $get->result();
-        $result = array(
-            "data" => $data,
-            "success" => true,
-          );
-          toJson($result);
+        $sitetitle = "Form Binsyar";
+        $pagetitle = "Form Permohonan Penceramah Dari Luar Negeri";
+        $view = "/users/binsyar/v_tambahtiga";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        // $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data['id_session'] = $this->bm->get_identitas();
+        $data['ambil_provinsi'] = $this->bm->get_provinsi();
+        $data['jenis_layanan'] = $this->bm->get_layanan_binsyar();
+        $data['id_dtlayanan'] = $this->bm->get_id_dtlayanan();
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout());
     }
 
-    public function populateProvinces(){
-        $this->db->order_by("id_provinsi");
-        $get = $this->db->get('mt_wil_provinsi');
+    // Bagus untuk kirim ke model -> database
+    public function simpan_formc()
+    {
+        // Data Penceramah
+        $this->form_validation->set_rules('narsum[]', 'penceramah', 'trim|required');
+        $this->form_validation->set_rules('jen_kel', 'jenis kelamin', 'trim|required');
+        $this->form_validation->set_rules('no_pass', 'nomor passport', 'trim|required');
+        $this->form_validation->set_rules('tmp_lhr', 'tempat lahir', 'trim|required');
+        $this->form_validation->set_rules('tgl_lhr', 'tanggal lahir', 'trim|required');
+        $this->form_validation->set_rules('neg_keg', 'negara asal', 'trim|required');
 
-        $data = [];
-        foreach($get->result() as $d) {
-            array_push($data, (object)[
-                    'id' => $d->id_provinsi,
-                    'text' => $d->nama,
-            ]);
+        // Data Kegiatan
+        $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
+        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required');
+        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required');
+        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required');
+        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required');
+        $this->form_validation->set_rules('esti_keg', 'estimasi kegiatan', 'trim|required');
+        $this->form_validation->set_rules('lemb_keg', 'nama lembaga', 'trim|required');
+
+        if ($this->form_validation->run() == TRUE) {
+            # code...
+        } else {
+            return $this->import();
         }
-        $result = array(
-            "data" => $data,
-            "success" => true,
-          );
-          toJson($result);
     }
 
-    public function populateCities($idprov = ""){
-        if($idprov != ""){
-            $this->db->where("kab.id_provinsi",$idprov);
-        }
-        $this->db->join("mt_wil_provinsi prov","kab.id_provinsi = prov.id_provinsi");
-        $this->db->order_by("kab.id_kabupaten");
-        $this->db->select("kab.*, prov.nama as nama as provinsi_name", FALSE);
-        $get = $this->db->get('mt_wil_kabupaten kab');
-        $data = [];
-        foreach($get->result() as $d) {
-            array_push($data, (object)[
-                    'id' => $d->id_kabupaten,
-                    'text' => $d->kabupaten_name,
-                    'lat' => $d->latitude,
-                    'long' => $d->longitude,
-                    'prov' => $d->provinsi_name,
-            ]);
-        }
-        $result = array(
-            "data" => $data,
-            "success" => true,
-          );
-          toJson($result);
+    // Bagus halaman page
+    public function safari()
+    {
+        $this->template->setPageId("SUB_BINSYAR_SAFARI");
+        $data["title"] = $this->bm->get_title();
+        $data = array();
+
+        $sitetitle = "Form Binsyar";
+        $pagetitle = "Form Permohonan Safari Dakwah Dalam Negeri";
+        $view = "/users/binsyar/v_tambahempat";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        // $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data['id_session'] = $this->bm->get_identitas();
+        $data['ambil_provinsi'] = $this->bm->get_provinsi();
+        $data['jenis_layanan'] = $this->bm->get_layanan_binsyar();
+        $data['id_dtlayanan'] = $this->bm->get_id_dtlayanan();
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout());
     }
 
-    public function populateDistricts($idcity = ""){
-        if($idcity != ""){
-            $this->db->where("kec.id_kabupaten",$idcity);
+    public function simpan_formd()
+    {
+        // Data Penceramah
+        $this->form_validation->set_rules('narsum[]', 'penceramah', 'trim|required');
+        $this->form_validation->set_rules('jen_kel', 'jenis kelamin', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('tmp_lhr', 'tempat lahir', 'trim|required');
+        $this->form_validation->set_rules('tgl_lhr', 'tanggal lahir', 'trim|required');
+        $this->form_validation->set_rules('pddk[]', 'pendidikan formal', 'trim|required');
+        $this->form_validation->set_rules('pddk_non[]', 'pendidikan non formal', 'trim|required');
+
+        // Data Kegiatan
+        $this->form_validation->set_rules('nm_keg', 'nama program', 'trim|required');
+        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal pelaksanaan', 'trim|required');
+        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir pelaksanaan', 'trim|required');
+        $this->form_validation->set_rules('esti_keg', 'estimasi jamaah', 'trim|required');
+        $this->form_validation->set_rules('lemb_keg', 'nama lembaga', 'trim|required');
+        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
+
+        if ($this->form_validation->run() == TRUE) {
+            # code...
+        } else {
+            return $this->safari();
         }
-        $this->db->join("mt_wil_kabupaten kab","kec.id_kabupaten = kab.id_kabupaten");
-        $this->db->join("mt_wil_provinsi prov","kab.id_provinsi = prov.id_provinsi");
-        $this->db->order_by("kec.id_kecamatan");
-        $this->db->select("kec.*, kab.nama as kabupaten_name, prov.nama as nama as provinsi_name", FALSE);
-        $get = $this->db->get('mt_wil_kecamatan kec');
-        $data = [];
-        foreach($get->result() as $d) {
-            array_push($data, (object)[
-                    'id' => $d->id_kecamatan,
-                    'text' => $d->kecamatan_name,
-                    'address' => trim(strtoupper("KECAMATAN " . $d->kecamatan_name . ", " . $d->kabupaten_name . ", " . $d->provinsi_name)),
-            ]);
-        }
-        $result = array(
-            "data" => $data,
-            "success" => true,
-          );
-          toJson($result);
     }
 
-    public function populateAllProvinceData() {
-        $this->db->order_by("id_provinsi");
-        $get = $this->db->get('mt_wil_provinsi');
+    // Uploadan ijin kegiatan keagamaan
+    private function do_upload_1()
+    {   $user['tampil'] = $this->bm->get_identitas();
+        $type = explode('.', $_FILES["ktp"]["name"]);
+        $type = $type[count($type)-1];
 
-        $data = [];
-        foreach($get->result() as $d) {
-            array_push($data, (object)[
-                    'id' => $d->id_provinsi,
-                    'text' => $d->provinsi_name,
-                    'lat' => $d->latitude,
-                    'long' => $d->longitude,
-            ]);
-        }
-        $result = array(
-            "data" => $data,
-            "success" => true,
-          );
-          toJson($result);
+        $file_name = $_FILES["ktp"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y')."_".$user['tampil']->fullname."_".$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["ktp"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["ktp"]["tmp_name"], $url))
+                    return $url;
+        return "";
     }
 
-    public function getRekomendasiKodeKabupaten($idprov) {
-        $query = $this->db->query("select max(id_kabupaten) as kode from mt_wil_kabupaten where id_provinsi = '".$idprov."'")->row();
-        $maxkode = $query->kode;
-        $split = explode(".",$maxkode);
-        $nextkode = 0;
-        if(count($split) >= 1){
-            $reckode = (int)$split[1] + 1;
-            if($reckode < 10) {
-                $reckode = "0". (string)$reckode;
-            }
-            $nextkode = $split[0].".".$reckode;
-        }
+    private function do_upload_2()
+    {   
+        $user['tampil'] = $this->bm->get_identitas();
+        $type = explode('.', $_FILES["proposal_keg"]["name"]);
+        $type = $type[count($type)-1];
 
-        $result = array(
-            "data" => $nextkode,
-            "success" => true,
-          );
-          toJson($result);
+        $file_name = $_FILES["proposal_keg"]["name"];
+        $url = "./assets/uploads/binsyar/".date('dy')."_".$user['tampil']->fullname."_"."_".$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["proposal_keg"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["proposal_keg"]["tmp_name"], $url))
+                    return $url;
+        return "";
     }
 
-    public function getRekomendasiKodeKecamatan($idkab) {
-        $query = $this->db->query("select max(id_kecamatan) as kode from mt_wil_kecamatan where id_kabupaten = '".$idkab."'")->row();
-        $maxkode = $query->kode;
-        $split = explode(".",$maxkode);
-        $nextkode = 0;
-        if(count($split) >= 2){
-            $reckode = (int)$split[2] + 1;
-            if($reckode < 10) {
-                $reckode = "0". (string)$reckode;
-            }
-            $nextkode = $split[0].".".$split[1].".".$reckode;
-        }
+    private function do_upload_3()
+    {   
+        $user['tampil'] = $this->bm->get_identitas();
+        $type = explode('.', $_FILES["surat_permohonan_keg"]["name"]);
+        $type = $type[count($type)-1];
 
-        $result = array(
-            "data" => $nextkode,
-            "success" => true,
-          );
-          toJson($result);
+        $file_name = $_FILES["surat_permohonan_keg"]["name"];
+        $url = "./assets/uploads/binsyar/".date('dy')."_".$user['tampil']->fullname."_"."_".$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["surat_permohonan_keg"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["surat_permohonan_keg"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    // Data Wilayah
+    public function add_ajax_kab($id_prov)
+    {
+        $query = $this->db->get_where('mt_wil_kabupaten',array('id_provinsi'=>$id_prov));
+        $data = "<option value=''>- Pilih Kabupaten -</option>";
+        foreach ($query->result() as $value) {
+            $data .= "<option value='".$value->id_kabupaten."'>".$value->nama."</option>";
+        }
+        echo $data;
+    }
+
+    public function add_ajax_kec($id_kab)
+    {
+        $query = $this->db->get_where('mt_wil_kecamatan',array('id_kabupaten'=>$id_kab));
+        $data = "<option value=''> - Pilih Kecamatan - </option>";
+        foreach ($query->result() as $value) {
+            $data .= "<option value='".$value->id_kecamatan."'>".$value->nama."</option>";
+        }
+        echo $data;
+    }
+
+    public function add_ajax_kel($id_kel)
+    {
+        $query = $this->db->get_where('mt_wil_kelurahan',array('id_kecamatan'=>$id_kel));
+        $data = "<option value=''> - Pilih Kelurahan - </option>";
+        foreach ($query->result() as $value) {
+            $data .= "<option value='".$value->id_kelurahan."'>".$value->nama."</option>";
+        }
+        echo $data;
+    }
+
+    public function add_ajax_des($id_kec)
+    {
+        $query = $this->db->get_where('mt_wil_kelurahan',array('id_kecamatan'=>$id_kec));
+        $data = "<option value=''> - Pilih Kelurahan - </option>";
+        foreach ($query->result() as $value) {
+            $data .= "<option value='".$value->id_kelurahan."'>".$value->nama."</option>";
+        }
+        echo $data;
     }
 
 }

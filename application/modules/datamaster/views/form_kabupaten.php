@@ -27,7 +27,7 @@
                             <label for="usr">Nama Kabupaten</label>
                         </div>
                         <div class="col-md-9">
-                            <input data-bind="value:nama" id="nama" type="text" class="form-control" required data-vindicate="required">
+                            <input data-bind="dataKab:nama" id="nama" type="text" class="form-control" required data-vindicate="required">
                         </div>
                     </div>
 

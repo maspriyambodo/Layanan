@@ -108,7 +108,7 @@ echo $js_inlines;
                     width: 150,
                     // locked: true,
                 },{
-                    index: 'menu',
+                    index: 'nama_layanan',
                     title: 'Jenis Layanan',
                     width: 150,
                     // locked: true,
@@ -137,27 +137,27 @@ echo $js_inlines;
                     // width: 95,
                     // rightLocked: true,
                     render: function(o) {
-                        o.value = ''
-                        <?php if ($this->izin->delete) : ?>
-                                +
-                                ('<a class="text-danger" href="javascript:;" onclick="Page.Remove(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Delete"><i class="fa fa-remove"></i></a>')
-                        <?php endif; ?>
-                        <?php if ($this->izin->edit) : ?>
-                                +
-                                ('&nbsp;&nbsp;<a class="text-warning" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit"><i class="fa fa-pencil"></i></a>') <?php endif; ?>
-                            <?php if ($this->izin->gapunya) : ?>
-                                    +
-                                    ''
-                            <?php endif; ?>
-                            ;
-
-                            return o;
+                    o.style['text-align'] = 'center';
+                    o.value = ''
+<?php if ($this->izin->delete) : ?>
+                        +
+                                ('<div class="btn-group" role="group" aria-label="Control button"><a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Delete(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Delete"><i class="far fa-trash-alt text-danger"></i></a>')
+<?php endif; ?>
+<?php if ($this->izin->edit) : ?>
+                        +
+                                ('<a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit"><i class="fas fa-pencil-alt text-warning"></i></a></div>') <?php endif; ?>
+<?php if ($this->izin->gapunya) : ?>
+                        +
+                                ''
+<?php endif; ?>
+                    ;
+                    return o;
                     },
                 }
             ],
         });
     };
-    Page.Remove = function(id) {
+    Page.Delete = function(id) {
         // swal("Delete function is still under development!")
         swal({
             title: 'Are you sure?',
@@ -173,7 +173,7 @@ echo $js_inlines;
                 var data = {
                     id: id,
                 };
-                var url = '<?php echo base_url(); ?>datamaster/address/delete_provinsi';
+                var url = '<?php echo base_url(); ?>users/binsyar/delete';
                 ajaxPost(url, data, function(data) {
                     App.IsLoading(false);
                     swal(
@@ -196,41 +196,6 @@ echo $js_inlines;
         if (id != '') {
             window.location.href = '<?php echo base_url(); ?>users/binsyar/edit/' + id;
         }
-    };
-    Page.Remove = function(id) {
-        // swal("Delete function is still under development!")
-        swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then(function(result) {
-            if (result) {
-                App.IsLoading(true);
-                var data = {
-                    id: id,
-                };
-                var url = '<?php echo base_url(); ?>datamaster/address/delete_provinsi';
-                ajaxPost(url, data, function(data) {
-                    App.IsLoading(false);
-                    swal(
-                        'Deleted!',
-                        'Your data has been deleted.',
-                        'success'
-                    ).then(function(result) {
-                        Page.InitGrid();
-                    });
-                }, function(data) {
-                    // do nothing for unsuccess transaction
-                    App.IsLoading(false);
-                });
-            }
-        }, function(dismiss) {
-            // do nothing for dismiss modal
-        });
     };
     $(function() {
         Page.InitGrid();

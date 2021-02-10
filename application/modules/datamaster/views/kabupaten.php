@@ -122,21 +122,21 @@ echo $js_inlines;
                     // width: 95,
                     // rightLocked: true,
                     render: function(o) {
-                        o.value = ''
-                        <?php if ($this->izin->delete) : ?>
-                                +
-                                ('<a class="text-danger" href="javascript:;" onclick="Page.Remove(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Delete"><i class="fa fa-remove"></i></a>')
-                        <?php endif; ?>
-                        <?php if ($this->izin->edit) : ?>
-                                +
-                                ('&nbsp;&nbsp;<a class="text-warning" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit"><i class="fa fa-pencil"></i></a>') <?php endif; ?>
-                            <?php if ($this->izin->gapunya) : ?>
-                                    +
-                                    ''
-                            <?php endif; ?>
-                            ;
-
-                            return o;
+                    o.style['text-align'] = 'center';
+                    o.value = ''
+<?php if ($this->izin->delete) : ?>
+                        +
+                                ('<div class="btn-group" role="group" aria-label="Control button"><a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Delete(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Delete"><i class="far fa-trash-alt text-danger"></i></a>')
+<?php endif; ?>
+<?php if ($this->izin->edit) : ?>
+                        +
+                                ('<a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit"><i class="fas fa-pencil-alt text-warning"></i></a></div>') <?php endif; ?>
+<?php if ($this->izin->gapunya) : ?>
+                        +
+                                ''
+<?php endif; ?>
+                    ;
+                    return o;
                     },
                 }
             ],
