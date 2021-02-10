@@ -36,11 +36,11 @@ class M_layanan1 extends CI_Model {
 //        return $exec;
 //    }
 
-    public function Detail($id) {
+    public function Detail($param) {
         $exec = $this->db->select()
                 ->from('detail_izin_kegiatan_keagamaan')
-                ->where('`detail_izin_kegiatan_keagamaan`.`id_layanan`', $id, false)
-                ->where('`detail_izin_kegiatan_keagamaan`.`stat_id`', 1, false)
+                ->where('`detail_izin_kegiatan_keagamaan`.`id_layanan`', $param['id_layanan'], false)
+                ->where('`detail_izin_kegiatan_keagamaan`.`stat_id`', $param['stat_id'], false)
                 ->get()
                 ->result();
         return $exec;
