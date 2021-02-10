@@ -1,3 +1,4 @@
+<h4>No. Form: <?php echo 0 . $detil[0]->no_direktorat . '.0' . $detil[0]->no_layanan . '.' . $detil[0]->tgl_input . '.000' . $detil[0]->id_layanan; ?></h4>
 <div class="card card-custom" style="margin-top:1.32857em;">
     <div class="card-header">
         <div class="card-title">
@@ -74,17 +75,8 @@
                         <td><b>Narasumber</b></td>
                         <td>
                             <?php
-                            $narsum_unique = [];
-                            $array2 = [];
                             foreach ($detil as $narsum) {
-                                if (!in_array($narsum->narsum, $narsum_unique)) {
-                                    $narsum_unique[] = $narsum->narsum;
-                                } else {
-                                    $array2[] = $narsum->narsum;
-                                }
-                            }
-                            foreach ($narsum_unique as $narsum2) {
-                                echo '- ' . $narsum2 . '<br>';
+                                echo '- ' . $narsum->narsum . '<br>';
                             }
                             ?>
                         </td>
@@ -92,6 +84,10 @@
                     <tr>
                         <td><b>Alamat</b></td>
                         <td colspan="3">: <?php echo 'Provinsi ' . $detil[0]->provinsi . ', ' . $detil[0]->kabupaten . '<br>&nbsp;&nbsp;Kec. ' . $detil[0]->kecamatan . ', Kel. ' . $detil[0]->kelurahan; ?></td>
+                    </tr>
+                    <tr>
+                        <td><b>Keterangan</b></td>
+                        <td colspan="3">: <?php echo $detil[0]->keterangan; ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -106,32 +102,46 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <?php
-            $dok_unique = [];
-            $array3 = [];
-            foreach ($detil as $dokumen) {
-                if (!in_array($dokumen->nama_file, $dok_unique)) {
-                    $dok_unique[] = $dokumen->nama_file;
-                } else {
-                    $array3[] = $dokumen->nama_file;
-                }
-            }
-            foreach ($dok_unique as $dokumen2) {
-                ?>
-                <div class="col-md" style="margin: 10px 0px;">
-                    <a href="<?php echo base_url('assets/images/' . $dokumen2); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
-                        <div class="card-body">
-                            <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
-                                <i class="fas fa-sitemap" style="font-size: 48px; color: white;"></i>
-                            </span>
-                            <div class="font-weight-bold text-inverse-danger" style="margin: 5px 0px; font-size: 20px;"><?php echo $dokumen2; ?></div>
+            <div class="col-md" style="margin: 10px 0px;">
+                <a href="<?php echo base_url('assets/images/' . $detil[0]->ktp_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                    <div class="card-body">
+                        <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+                            <i class="fas fa-id-card" style="font-size: 48px;"></i>
+                        </span>
+                        <div class="font-weight-bold text-inverse-danger" style="margin: 5px 0px; font-size: 20px;">
+                            KTP Pemohon
                         </div>
-                    </a>
-                </div>
-            <?php } ?>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md" style="margin: 10px 0px;">
+                <a href="<?php echo base_url('assets/images/' . $detil[0]->surat_permohonan_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                    <div class="card-body">
+                        <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+                            <i class="fas fa-file-alt" style="font-size: 48px;"></i>
+                        </span>
+                        <div class="font-weight-bold text-inverse-danger" style="margin: 5px 0px; font-size: 20px;">
+                            Surat Permohonan Kegiatan
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md" style="margin: 10px 0px;">
+                <a href="<?php echo base_url('assets/images/' . $detil[0]->proposal_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                    <div class="card-body">
+                        <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+                            <i class="fas fa-file" style="font-size: 48px;"></i>
+                        </span>
+                        <div class="font-weight-bold text-inverse-danger" style="margin: 5px 0px; font-size: 20px;">
+                            Proposal Kegiatan
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 </div>
+
 <div class="card card-custom" style="margin-top:1.32857em;">
     <div class="card-header">
         <div class="card-title">
