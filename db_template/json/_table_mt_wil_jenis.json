@@ -1,0 +1,25 @@
+,{
+    "type": "table",
+    "name": "mt_wil_jenis",
+    "database": "db_adminskelethon",
+    "data": 
+[
+{
+    "id_jenis": "1",
+    "nama": "kabupaten"
+},
+{
+    "id_jenis": "2",
+    "nama": "kota"
+},
+{
+    "id_jenis": "3",
+    "nama": "kelurahan"
+},
+{
+    "id_jenis": "4",
+    "nama": "desa"
+}
+]
+
+}

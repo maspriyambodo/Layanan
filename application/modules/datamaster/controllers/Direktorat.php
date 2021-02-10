@@ -11,23 +11,23 @@ class Direktorat extends MX_Controller {
 
     public function index() {
         $this->template->setPageId("SETTING_DIREKTORAT");
-        $data = array();
+        $data = [];
 
         $sitetitle = "Daftar Nama Direktorat";
         $pagetitle = "Daftar Nama Direktorat";
         $view = "direktorat/direktorat";
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 "title" => "Data Direktorat",
                 "link" => "",
-                "is_actived" => false,
-            ),
-            array(
+                "is_actived" => false
+            ],
+            [
                 "title" => "Daftar Nama Direktorat",
                 "link" => "",
-                "is_actived" => true,
-            ),
-        );
+                "is_actived" => true
+            ]
+        ];
 
         $sql = "";
         $mejo = new Mejo();
@@ -52,11 +52,13 @@ class Direktorat extends MX_Controller {
 
     public function Get_all() {
         $data = $this->M_Direktorat->index();
-        $result = array(
-            "data" => $data,
-            "success" => true,
-        );
-        toJson($result);
+        $result = ["data" => $data, "success" => true];
+        $this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json', 'utf-8')
+                ->set_output(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+                ->_display();
+        exit;
     }
 
     public function Add() {
@@ -146,7 +148,7 @@ class Direktorat extends MX_Controller {
             'mt_direktorat.nama' => $this->input->post('nama', true),
             'mt_direktorat.keterangan' => $this->input->post('ket', true),
             '`mt_direktorat`.`stat`' => 1 + false,
-            '`mt_direktorat`.`syscreateuser`' => $this->session->userdata('id') + false,
+            '`mt_direktorat`.`syscreateuser`' => $this->session->userdata('DX_user_id') + false,
             'mt_direktorat.syscreatedate' => date('Y-m-d H:i:s')
         ];
         $exec = $this->M_Direktorat->Add($data);
@@ -163,7 +165,7 @@ class Direktorat extends MX_Controller {
         $data = [
             'mt_direktorat.nama' => $this->input->post('e_direk', true),
             'mt_direktorat.keterangan' => $this->input->post('e_ket', true),
-            '`mt_direktorat`.`sysupdateuser`' => $this->session->userdata('id') + false,
+            '`mt_direktorat`.`sysupdateuser`' => $this->session->userdata('DX_user_id') + false,
             'mt_direktorat.sysupdatedate' => date("Y-m-d H:i:s")
         ];
         $exec = $this->M_Direktorat->Update($id, $data);

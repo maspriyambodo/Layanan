@@ -61,6 +61,12 @@ echo $js_inlines;
                         window.location.href = '<?php echo site_url("datamaster/Direktorat/Add/"); ?>';
                         },
                 }, <?php endif; ?>
+<?php if ($this->izin->publish): ?>{
+                type: 'button',
+                        text: '<i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Export Data',
+                        cls: 'mejo-btn mejo-btn-green',
+                        width: 120
+                }<?php endif; ?>
             ],
             paging: true,
             defaults: {
@@ -84,7 +90,7 @@ echo $js_inlines;
             },
             {
             index: 'id',
-                    title: 'Control',
+                    title: 'CONTROL',
                     // width: 95,
                     // rightLocked: true,
                     render: function(o) {
@@ -92,11 +98,11 @@ echo $js_inlines;
                     o.value = ''
 <?php if ($this->izin->delete) : ?>
                         +
-                                ('<div class="btn-group" role="group" aria-label="Control button"><a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Delete(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Delete"><i class="far fa-trash-alt text-danger"></i></a>')
+                                ('<a class="text-danger" href="javascript:;" onclick="Page.Delete(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Delete" style="margin-right:10px;"><i class="far fa-trash-alt"></i></a>')
 <?php endif; ?>
 <?php if ($this->izin->edit) : ?>
                         +
-                                ('<a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit"><i class="fas fa-pencil-alt text-warning"></i></a></div>') <?php endif; ?>
+                                ('<a class="text-warning" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit"><i class="fas fa-pencil-alt"></i></a>') <?php endif; ?>
 <?php if ($this->izin->gapunya) : ?>
                         +
                                 ''

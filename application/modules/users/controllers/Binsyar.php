@@ -342,7 +342,7 @@ class Binsyar extends MX_Controller {
                 "proposal_keg" => $this->do_upload_2(),
                 "surat_permohonan_keg" => $this->do_upload_3()
             );
-            
+
             $this->bm->save_tbl_lampiran($data, $id);
             echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
         } else {

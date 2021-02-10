@@ -12,10 +12,8 @@
                     <textarea class="form-control" name="e_ket" required="" rows="4"><?php echo $direktorat[0]->keterangan; ?></textarea>
                 </div>
                 <div class="clearfix" style="margin: 20px 0px;"></div>
-                <div class="btn-group" role="group" aria-label="Form Action">
-                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
-                    <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</button>
-                </div>
+                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
+                    <a href="<?php echo base_url('datamaster/Direktorat/index/'); ?>" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a>
             </form>
         </div>
     </div>
