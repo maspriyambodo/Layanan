@@ -95,8 +95,13 @@ echo $js_inlines;
                     width: 500
             },
             {
-            index: 'tgl_awal_keg',
-                    title: 'PELAKSANAAN',
+            index: 'keterangan',
+                    title: 'KETERANGAN',
+                    width: 200
+            },
+            {
+            index: 'tgl_daftar',
+                    title: 'TMT PENGAJUAN',
                     width: 200,
                     render: function (o) {
                     o.style['text-align'] = 'center';
@@ -104,9 +109,13 @@ echo $js_inlines;
                     }
             },
             {
-            index: 'keterangan',
-                    title: 'KETERANGAN',
-                    width: 200
+            index: 'tgl_awal_keg',
+                    title: 'TMT PELAKSANAAN',
+                    width: 200,
+                    render: function (o) {
+                    o.style['text-align'] = 'center';
+                    return o;
+                    }
             },
             {
             index: 'id_layanan',

@@ -92,8 +92,35 @@ echo $js_inlines;
                     width: 400
             },
             {
+            index: 'tgl_daftar',
+                    title: 'TMT PENGAJUAN',
+                    width: 150,
+                    render: function (o) {
+                    o.style['text-align'] = 'center';
+                    return o;
+                    }
+            },
+            {
             index: 'tgl_awal_keg',
-                    title: 'PELAKSANAAN',
+                    title: 'TMT PELAKSANAAN',
+                    width: 150,
+                    render: function (o) {
+                    o.style['text-align'] = 'center';
+                    return o;
+                    }
+            },
+            {
+            index: 'tgl_proses',
+                    title: 'TMT VERIFIKASI',
+                    width: 150,
+                    render: function (o) {
+                    o.style['text-align'] = 'center';
+                    return o;
+                    }
+            },
+            {
+            index: 'lama',
+                    title: 'WAKTU PROSES / hari',
                     width: 150,
                     render: function (o) {
                     o.style['text-align'] = 'center';

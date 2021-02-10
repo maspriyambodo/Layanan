@@ -70,7 +70,7 @@ echo $js_inlines;
             columns: [
             {
             index: 'id_layanan',
-                    title: 'NO FORM',
+                    title: 'NOMOR FORM',
                     width: 150,
                     render: function(o) {
                     o.style['text-align'] = 'center';
@@ -93,8 +93,35 @@ echo $js_inlines;
                     width: 400
             },
             {
+            index: 'tgl_daftar',
+                    title: 'TMT PENGAJUAN',
+                    width: 150,
+                    render: function (o) {
+                    o.style['text-align'] = 'center';
+                    return o;
+                    }
+            },
+            {
             index: 'tgl_awal_keg',
-                    title: 'PELAKSANAAN',
+                    title: 'TMT PELAKSANAAN',
+                    width: 150,
+                    render: function (o) {
+                    o.style['text-align'] = 'center';
+                    return o;
+                    }
+            },
+            {
+            index: 'tgl_proses',
+                    title: 'TMT VERIFIKASI',
+                    width: 150,
+                    render: function (o) {
+                    o.style['text-align'] = 'center';
+                    return o;
+                    }
+            },
+            {
+            index: 'lama',
+                    title: 'WAKTU PROSES / hari',
                     width: 150,
                     render: function (o) {
                     o.style['text-align'] = 'center';
@@ -135,7 +162,7 @@ echo $js_inlines;
     });
     };
     Page.Detail = function (id) {
-    window.location.href = '<?php echo base_url('Urais/Layanan_1/Detail_Proses/'); ?>' + id;
+    window.location.href = '<?php echo base_url('Urais/L1_Setuju/Detail/'); ?>' + id;
     };
     $(function () {
     Page.InitGrid();
