@@ -1,4 +1,4 @@
-<h4>No. Form: <?php echo 0 . $detil[0]->no_direktorat . '.0' . $detil[0]->no_layanan . '.' . $detil[0]->tgl_input . '.000' . $detil[0]->id_layanan; ?></h4>
+<h4>No. Form: <?php echo $detil[0]->no_direktorat . '.' . $detil[0]->no_layanan . '.' . $detil[0]->tgl_input . '.' . $detil[0]->no_urut; ?></h4>
 <div class="card card-custom" style="margin-top:1.32857em;">
     <div class="card-header">
         <div class="card-title">

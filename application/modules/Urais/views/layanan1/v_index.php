@@ -85,7 +85,7 @@ echo $js_inlines;
                     a = o.data.no_direktorat;
                     b = o.data.no_layanan;
                     c = o.data.tgl_input;
-                    o.value = '0' + a + '.0' + b + '.' + c + '.000' + o.data.id_layanan;
+                    o.value = a + '.' + b + '.' + c + '.' + o.data.no_urut;
                     return o;
                     }
             },
