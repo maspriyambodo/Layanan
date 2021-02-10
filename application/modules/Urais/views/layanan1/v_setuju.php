@@ -69,6 +69,20 @@ echo $js_inlines;
             },
             columns: [
             {
+            index: 'id_layanan',
+                    title: 'NO FORM',
+                    width: 150,
+                    render: function(o) {
+                    o.style['text-align'] = 'center';
+                    var a, b, c;
+                    a = o.data.no_direktorat;
+                    b = o.data.no_layanan;
+                    c = o.data.tgl_input;
+                    o.value = '0' + a + '.0' + b + '.' + c + '.000' + o.data.id_layanan;
+                    return o;
+                    }
+            },
+            {
             index: 'nm_keg',
                     title: 'JUDUL',
                     width: 350
