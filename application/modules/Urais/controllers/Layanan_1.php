@@ -172,6 +172,21 @@ class Layanan_1 extends MX_Controller {
         }
         return $direct;
     }
+    
+    public function Reject() {
+        $data = [
+            'id_layanan' => $this->input->post('id'),
+            'user_id' => $this->session->userdata('DX_user_id'),
+            'status_id' => 4
+        ];
+        $exec = $this->M_layanan1->Update($data);
+        if (empty($exec) or $exec == 0) {
+            $direct = toJSON(resultError("Error", 0));
+        } else {
+            $direct = toJSON(resultSuccess("OK", 1));
+        }
+        return $direct;
+    }
 
     public function Proses() {//permohonan status proses
         $this->template->setPageId("DIPROSES_IKK");
