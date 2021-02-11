@@ -126,7 +126,8 @@
     <script src="<?php echo base_url(); ?>assets/app/js/plugins/popper.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/plugins/bootstrap-util.js"></script>
-    <script src="<?php echo base_url(); ?>assets/app/js/libs/knockout-3.4.2.js"></script>
+    <!-- <script src="<?php //echo base_url(); ?>assets/app/js/libs/knockout-3.4.2.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/libs/jquery.perfect-scrollbar/0.7.0/js/perfect-scrollbar.jquery.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/plugins/metisMenu.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/plugins/swal/sweetalert2.min.js"></script>
