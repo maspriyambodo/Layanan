@@ -55,7 +55,7 @@
             }
         }
     ?>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ==" crossorigin="anonymous" />
     <!-- Head Libs -->
     <script src="<?php echo base_url(); ?>assets/app/js/plugins/modernizr.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -219,7 +219,7 @@
 
     <!-- Date picker bagus -->
     <script src="<?php echo base_url(); ?>assets/app/js/daterangepicker.js"></script>
-
+    
     <!-- Onchange provinsi bagus -->
     <script>
             $("#provinsi").change(function () {
@@ -365,7 +365,7 @@
     <?php 
     echo $js;
     ?>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             var textSwitchYes = $('<span class="js-switch-text">&nbsp;Yes</span>');

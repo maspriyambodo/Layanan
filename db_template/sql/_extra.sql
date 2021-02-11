@@ -35,7 +35,8 @@ ALTER TABLE `dt_layanan_dokumen`
 --
 ALTER TABLE `dt_penceramah`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `dt_penceramah_ibfk_1` (`id_layanan`);
+  ADD KEY `dt_penceramah_ibfk_1` (`id_layanan`),
+  ADD KEY `negara_asl` (`negara_asl`);
 
 --
 -- Indexes for table `dt_pendidikan`
@@ -318,7 +319,7 @@ ALTER TABLE `dt_layanan_dokumen`
 --
 ALTER TABLE `dt_penceramah`
   ADD CONSTRAINT `dt_penceramah_ibfk_1` FOREIGN KEY (`id_layanan`) REFERENCES `dt_layanan` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
+  ADD CONSTRAINT `dt_penceramah_ibfk_2` FOREIGN KEY (`negara_asl`) REFERENCES `mt_country` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 --
 -- Constraints for table `dt_pendidikan`
 --

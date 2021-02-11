@@ -599,17 +599,17 @@ class Binsyar extends MX_Controller {
         // $this->form_validation->set_rules('ktp_dalam', 'paspor pengundang', 'trim|required');
         // $this->form_validation->set_rules('pas_foto_crmh_dalam', 'pas foto penceramah', 'trim|required');
 
-        if($this->form_validation->run() == TRUE)
-        {
+        // if($this->form_validation->run() == TRUE)
+        // {
             // Data Penceramah
             $narsum = $_POST['narsum'];
             $single = array(
-                "id_layanan" => ,
+                "id_layanan" => $this->input->post("", TRUE),
                 "jns_kelamin" => $this->input->post("jns_kelamin", TRUE),
                 "tmp_lhr" => $this->input->post("tmp_lhr", TRUE),
                 "tgl_lhr" => $this->input->post("tgl_lhr", TRUE),
                 "no_paspor" => $this->input->post("no_paspor", TRUE),
-                "negara_asl" => $this->input->post("negara_asl", TRUE),
+                "negara_asl" => $this->input->post("negara_asl", TRUE)
             );
 
             $data = array();
@@ -632,9 +632,9 @@ class Binsyar extends MX_Controller {
             die();
             $this->bm->kirim_dataPenceramah_impor($data);
 
-        } else {
-            return $this->import();
-        }
+        // } else {
+        //     return $this->import();
+        // }
     }
 
     //------------------------------ Kumpulan Data Proses Edit Ke DB
