@@ -30,13 +30,17 @@
                 <fieldset>
                     <!-- <legend>Data Pemohon :</legend> -->
                     <div class="form-row">
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-4">
                         <label>NIK</label>
                         <input type="text" class="form-control" name="nik" value="<?php echo $dataku[0]->nik;?>" readonly>
                       </div>
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-4">
                         <label>Nama Lengkap</label>
                         <input type="text" class="form-control" name="fullname" value="<?php echo $dataku[0]->fullname;?>" readonly>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label>Jenis Layanan</label>
+                        <input type="text" class="form-control" name="fullname" value="<?php echo $dataku[0]->jenis_layanan;?>" readonly>
                       </div>
                     </div>
 
@@ -67,7 +71,7 @@
                     <div class="form-row">
                       <div class="form-group col-md-3">
                         <label>Nama Kegiatan</label>
-                        <input type="text" class="form-control" name="nm_keg" value="<?php echo $dataku[0]->nm_keg;?>">
+                        <input type="text" class="form-control" name="nm_keg" value="<?php echo $dataku[1]->nm_keg;?>">
                         <input type="hidden" class="form-control" name="id" value="<?php echo $dataku[0]->id;?>">
                         <input type="hidden" class="form-control" name="id_layanan" value="<?php echo $dataku[0]->id_layanan;?>">
                         <input type="hidden" class="form-control" name="sysupdateuser" value="<?php echo $dataku[0]->id_user;?>">
@@ -75,66 +79,39 @@
                       </div>
                       <div class="form-group col-md-3">
                         <label>Tanggal Awal Kegiatan</label>
-                        <input type="text" class="form-control" name="tgl_awal_keg" placeholder="dd-mm-yyyy" onclick="this.type='date'" onmouseout="timeFunctionLong(this)" value="<?php echo $dataku[0]->tgl_awal_keg;?>">
+                        <input type="text" class="form-control" name="tgl_awal_keg" placeholder="dd-mm-yyyy" onclick="this.type='date'" onmouseout="timeFunctionLong(this)" value="<?php echo $dataku[1]->tgl_awal_keg;?>">
                         <?php echo form_error('tgl_awal_keg');?>
                       </div>
                       <div class="form-group col-md-3">
                         <label>Tanggal Akhir Kegiatan</label>
-                        <input type="text" class="form-control" name="tgl_akhir_keg" placeholder="dd-mm-yyyy" onclick="this.type='date'" onmouseout="timeFunctionLong(this)" value="<?php echo $dataku[0]->tgl_akhir_keg;?>">
+                        <input type="text" class="form-control" name="tgl_akhir_keg" placeholder="dd-mm-yyyy" onclick="this.type='date'" onmouseout="timeFunctionLong(this)" value="<?php echo $dataku[1]->tgl_akhir_keg;?>">
                         <?php echo form_error('tgl_akhir_keg');?>
                       </div>
                       <div class="form-group col-md-3">
                         <label>Estimasi Jumlah Jamaah</label>
-                        <input type="number" class="form-control" name="esti_keg" value="<?php echo $dataku[0]->esti_keg;?>">
+                        <input type="number" class="form-control" name="esti_keg" value="<?php echo $dataku[1]->esti_keg;?>">
                         <?php echo form_error('esti_keg');?>
                       </div>
                     </div>
 
                     <div class="form-row">
-                      <div class="form-group col-md-3">
-                        <label>Provinsi</label>
-                        <select class="form-control" name="id_provinsi" id="provinsi">
+                      <div class="form-group col-md-4">
+                        <label>Negara Tujuan</label>
+                        <select class="form-control" name="code_negara">
                           <option>Pilih . .</option>
-                          <?php foreach($dt_provinsi as $provinsi){?>
-                          <option <?php if($dataku[0]->id_provinsi === $provinsi->id_provinsi){echo "selected"; } ?> value="<?php echo $provinsi->id_provinsi;?>"><?php echo $provinsi->nama;?></option>
+                          <?php foreach($dt_negara as $negara){?>
+                          <option <?php if($dataku[1]->code_negara === $negara->id){echo "selected"; } ?> value="<?php echo $negara->id;?>"><?php echo $negara->country;?></option>
                           <?php }?>
                         </select>
                       </div>
-                      <div class="form-group col-md-3">
-                        <label>Kabupaten</label>
-                        <select class="form-control" name="id_kabupaten" id="kabupaten">
-                          <?php foreach($dt_kabupaten as $kabupaten){?>
-                          <option <?php if($dataku[0]->id_kabupaten === $kabupaten->id_kabupaten){echo "selected"; } ?> value="<?php echo $kabupaten->id_kabupaten;?>"><?php echo $kabupaten->nama;?></option>
-                          <?php }?>
-                        </select>
-                      </div>
-                      <div class="form-group col-md-3">
-                        <label for="inputEmail4">Kecamatan</label>
-                        <select class="form-control" name="id_kecamatan" id="kecamatan">
-                          <?php foreach($dt_kecamatan as $kecamatan){?>
-                          <option <?php if($dataku[0]->id_kecamatan === $kecamatan->id_kecamatan){echo "selected"; } ?> value="<?php echo $kecamatan->id_kecamatan;?>"><?php echo $kecamatan->nama;?></option>
-                          <?php }?>
-                        </select>
-                      </div>
-                      <div class="form-group col-md-3">
-                        <label for="inputPassword4">Kelurahan</label>
-                        <select class="form-control" name="id_kelurahan" id="kelurahan">
-                          <?php foreach($dt_kelurahan as $kelurahan){?>
-                          <option <?php if($dataku[0]->id_kelurahan === $kelurahan->id_kelurahan){echo "selected"; } ?> value="<?php echo $kelurahan->id_kelurahan;?>"><?php echo $kelurahan->nama;?></option>
-                          <?php }?>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="form-row">
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-4">
                         <label>Lokasi Kegiatan</label>
-                        <input type="text" class="form-control" name="alamat_keg" value="<?php echo $dataku[0]->alamat_keg;?>">
+                        <input type="text" class="form-control" name="alamat_keg" value="<?php echo $dataku[1]->alamat_keg;?>">
                         <?php echo form_error('alamat_keg');?>
                       </div>
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-4">
                         <label for="inputEmail4">Lembaga Penyelenggara</label>
-                        <input type="text" class="form-control" name="lemb_keg" value="<?php echo $dataku[0]->lemb_keg;?>">
+                        <input type="text" class="form-control" name="lemb_keg" value="<?php echo $dataku[1]->lemb_keg;?>">
                         <?php echo form_error('lemb_keg');?>
                       </div>
                     </div>
@@ -200,9 +177,77 @@
                         ?>
                       </div>
                     </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-3">
+                        <label>Jenis Kelamin</label>
+                        <select class="form-control" name="jns_kelamin">
+                          <option <?php if($dataku[4]->jns_kelamin == 1){echo "selected"; } ?> value="1">Laki-laki</option>
+                          <option <?php if($dataku[4]->jns_kelamin == 2){echo "selected"; } ?> value="2">Wanita</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label>Nomor Passport</label>
+                        <input type="text" class="form-control" name="no_paspor" value="<?php echo $dataku[1]->no_paspor;?>">
+                        <?php echo form_error('no_paspor');?>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="inputEmail4">Tempat Lahir</label>
+                        <input type="text" class="form-control" name="tmp_lhr" value="<?php echo $dataku[1]->tmp_lhr;?>">
+                        <?php echo form_error('tmp_lhr');?>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label>Tanggal Lahir</label>
+                        <input type="text" class="form-control" name="tgl_lhr" value="<?php echo $dataku[1]->tgl_lhr;?>">
+                        <?php echo form_error('tgl_lhr');?>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-3">
+                        <label>Provinsi</label>
+                        <select class="form-control" name="id_provinsi" id="provinsi">
+                          <option>Pilih . .</option>
+                          <?php foreach($dt_provinsi as $provinsi){?>
+                          <option <?php if($dataku[0]->id_provinsi === $provinsi->id_provinsi){echo "selected"; } ?> value="<?php echo $provinsi->id_provinsi;?>"><?php echo $provinsi->nama;?></option>
+                          <?php }?>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label>Kabupaten</label>
+                        <select class="form-control" name="id_kabupaten" id="kabupaten">
+                          <?php foreach($dt_kabupaten as $kabupaten){?>
+                          <option <?php if($dataku[0]->id_kabupaten === $kabupaten->id_kabupaten){echo "selected"; } ?> value="<?php echo $kabupaten->id_kabupaten;?>"><?php echo $kabupaten->nama;?></option>
+                          <?php }?>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="inputEmail4">Kecamatan</label>
+                        <select class="form-control" name="id_kecamatan" id="kecamatan">
+                          <?php foreach($dt_kecamatan as $kecamatan){?>
+                          <option <?php if($dataku[0]->id_kecamatan === $kecamatan->id_kecamatan){echo "selected"; } ?> value="<?php echo $kecamatan->id_kecamatan;?>"><?php echo $kecamatan->nama;?></option>
+                          <?php }?>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="inputPassword4">Kelurahan</label>
+                        <select class="form-control" name="id_kelurahan" id="kelurahan">
+                          <?php foreach($dt_kelurahan as $kelurahan){?>
+                          <option <?php if($dataku[0]->id_kelurahan === $kelurahan->id_kelurahan){echo "selected"; } ?> value="<?php echo $kelurahan->id_kelurahan;?>"><?php echo $kelurahan->nama;?></option>
+                          <?php }?>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-12">
+                        <label>Alamat Penceramah</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                      </div>
+                    </div>
                 </fieldset><br>
                 <button type="submit" class="btn btn-primary btn-md"><i class="material-icons">save</i>PERBAHARUI DATA</button>
-                <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/datapermohonan') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
+                <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/dataekspor') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
               </form>
             </div>
             <!--Data Lampiran-->

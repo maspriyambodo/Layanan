@@ -53,7 +53,7 @@ echo $js_inlines;
                 remoteFilter: false,
                 remoteSort: false,
                 proxy: {
-                    url: '<?php echo base_url(); ?>users/binsyar/ambil_dt_join',
+                    url: '<?php echo base_url(); ?>users/binsyar/joinan_ekspor',
                     params: {}
                 },
             },
@@ -99,7 +99,7 @@ echo $js_inlines;
                     }
                 },{
                     index: 'fullname',
-                    title: 'Nama Lengkap',
+                    title: 'Nama Pemohon',
                     width: 150,
                     // locked: true,
                 },{
@@ -108,26 +108,26 @@ echo $js_inlines;
                     width: 150,
                     // locked: true,
                 },{
-                    index: 'nama_layanan',
-                    title: 'Jenis Layanan',
-                    width: 150,
-                    // locked: true,
-                },
-                {
-                    index: 'esti_keg',
-                    title: 'Jumlah Jamaah',
-                    width: 150,
-                    // locked: true,
-                },
-                {
-                    index: 'lemb_keg',
-                    title: 'Lembaga Penyelenggara',
-                    width: 150,
-                    // locked: true,
-                },
-                {
                     index: 'tgl_awal_keg',
-                    title: 'Tanggal Awal Kegiatan',
+                    title: 'Tanggal Kegiatan',
+                    width: 150,
+                    // locked: true,
+                },
+                {
+                    index: 'country',
+                    title: 'Negara Tujuan',
+                    width: 150,
+                    // locked: true,
+                },
+                {
+                    index: 'alamat_keg',
+                    title: 'Alamat Kegiatan',
+                    width: 150,
+                    // locked: true,
+                },
+                {
+                    index: 'jumlah',
+                    title: 'Jumlah Penceramah',
                     width: 150,
                     // locked: true,
                 }, {
@@ -173,7 +173,7 @@ echo $js_inlines;
                 var data = {
                     id: id,
                 };
-                var url = '<?php echo base_url(); ?>users/binsyar/delete';
+                var url = '<?php echo base_url(); ?>users/binsyar/hapus_dt_ekspor';
                 ajaxPost(url, data, function(data) {
                     App.IsLoading(false);
                     swal(
@@ -194,7 +194,7 @@ echo $js_inlines;
     };
     Page.Edit = function(id) {
         if (id != '') {
-            window.location.href = '<?php echo base_url(); ?>users/binsyar/edit/' + id;
+            window.location.href = '<?php echo base_url(); ?>users/binsyar/editekspor/' + id;
         }
     };
     $(function() {

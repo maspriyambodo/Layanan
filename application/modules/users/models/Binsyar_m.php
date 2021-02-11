@@ -19,7 +19,8 @@ class Binsyar_m extends CI_Model {
 		return $this->db->get();
 	}
 
-	function get_ids($id)
+	// Kumpulan Edit data Layanan Masing Masing Form
+	function get_dt_kegiatan($id)
 	{
 		// cara merge
 		$session_user = $this->session->userdata('DX_user_id');
@@ -58,6 +59,77 @@ class Binsyar_m extends CI_Model {
         $result3 = $query3->result();
 
         return array_merge($result1, $result2, $result3);
+	}
+
+	function get_dt_ekspor($id)
+	{
+		$kondisi_a = array(
+			"a.id" => $this->session->userdata("DX_user_id"),
+			"b.id" => $id,
+			"b.id_user" => $this->session->userdata("DX_user_id")
+		);
+		$this->db->select("a.fullname, a.nik, a.telp, a.email, a.tgl_lhr, b.id_user, if(b.jenis_layanan = 2, 'ijin pengiriman dari keluar negeri', 'null') as jenis_layanan")
+				 ->from("sys_users a")
+				 ->join("dt_layanan b", "a.id = b.id_user")
+				 ->where($kondisi_a);
+		$query_a = $this->db->get();
+
+		// $kondisi_b = array(
+		// 	"b.id" => $id,
+		// 	"b.id_user" => $this->session->userdata("DX_user_id")
+		// );
+		// $this->db->select("b.id_user, if(b.jenis_layanan = 2, 'ijin pengiriman dari keluar negeri', 'null') as jenis_layanan")
+		// 		 ->from("dt_layanan b")
+		// 		 ->where($kondisi_b);
+		// $query_b = $this->db->get();
+
+		$kondisi_c = array(
+			"c.id_layanan" => $id
+		);
+		$this->db->select("c.nm_keg, c.lemb_keg, c.esti_keg, c.tgl_awal_keg, c.tgl_akhir_keg, c.alamat_keg, c.code_negara")
+				 ->from("dt_kegiatan c")
+				 ->where($kondisi_c);
+		$query_c = $this->db->get();
+
+		$kondisi_d = array(
+			"d.id_layanan" => $id
+		);
+		$this->db->select("d.narsum, d.tmp_lhr, d.tgl_lhr, d.jns_kelamin, d.no_paspor, d.id_provinsi, d.id_kabupaten, d.id_kecamatan, d.id_kelurahan, d.almt_penceramah, d.negara_asl")
+				 ->from("dt_penceramah d")
+				 ->where($kondisi_d)
+				 ->group_by("d.id");
+		$query_d = $this->db->get();
+
+		$kondisi_e = array(
+			"e.id_layanan" => $id
+		);
+		$this->db->select("e.surat_permohonan_luar, e.proposal_luar, e.cv_crmh_luar, e.pasp_crmh_luar, e.pasp_pengundang_luar, e.pas_foto_crmh_luar")
+				 ->from("dt_layanan_dokumen e")
+				 ->where($kondisi_e);
+		$query_e = $this->db->get();
+
+		$results = array();
+		if($query_a->num_rows()){
+			$results = array_merge($results, $query_a->result());
+		}
+
+		// if($query_b->num_rows()){
+		// 	$results = array_merge($results, $query_b->result());
+		// }
+
+		if($query_c->num_rows()){
+			$results = array_merge($results, $query_c->result());
+		}
+
+		if($query_d->num_rows()){
+			$results = array_merge($results, $query_d->result());
+		}
+
+		if($query_e->num_rows()){
+			$results = array_merge($results, $query_e->result());
+		}
+
+		return $results;
 	}
 
 	function get_identitas()
@@ -141,6 +213,14 @@ class Binsyar_m extends CI_Model {
 		return $query;
 	}
 
+	function get_negara()
+	{
+		$query = $this->db->select("a.id, a.code, a.country")
+			->from("mt_country a")
+			->get()->result();
+		return $query;
+	}
+
 	function get_layanan_binsyar()
 	{
 		$kondisi = array(
@@ -150,6 +230,20 @@ class Binsyar_m extends CI_Model {
 
 		$query = $this->db->select("a.id, a.nama_layanan, a.jenis_layanan")
 			->from("mt_layanan a")
+			->where($kondisi)->get()->result();
+		return $query;
+	}
+
+	function datauplod_binsyar()
+	{
+		$kondisi = array(
+			"a.stat" => 1,
+			"a.jenis_layanan" => 2
+		);
+
+		$query = $this->db->select("a.id, a.jenis_layanan, b.id")
+			->from("mt_layanan a")
+			->join("mt_direktorat b", "a.jenis_layanan = b.id")
 			->where($kondisi)->get()->result();
 		return $query;
 	}
@@ -166,7 +260,16 @@ class Binsyar_m extends CI_Model {
 		return $query;
 	}
 
-	// Proses Insert ke DB
+	function get_dtnegara()
+	{
+		$query = $this->db->select("a.id, a.code, a.country")
+				->from("mt_country a")
+				->get()
+				->result();
+		return $query;
+	}
+
+	// Proses Insert Kegiatan ke DB
 	function kirim_dataLayanan($layanan)
 	{
 		$this->db->insert('dt_layanan', $layanan);
@@ -205,7 +308,27 @@ class Binsyar_m extends CI_Model {
 		$this->db->where('id', $id);
 		$this->db->update('dt_layanan_dokumen', $data);
 	}
-	
+
+	// Proses Insert Penceramah Keluar Negeri ke DB
+	function kirim_dataLayanan_ekspor($layanan)
+	{
+		$this->db->insert('dt_layanan', $layanan);
+	}
+
+	function kirim_dataPenceramah_ekspor($data)
+	{
+		$this->db->insert_batch('dt_penceramah', $data);
+	}
+
+	function kirim_dataKegiatan_ekspor($kegiatan)
+	{
+		$this->db->insert('dt_kegiatan', $kegiatan);
+	}
+
+	function kirim_dataLampiran_ekspor($lampiran)
+	{
+		$this->db->insert('dt_layanan_dokumen', $lampiran);
+	}
 }
 
 /* End of file Binsyar_m.php */

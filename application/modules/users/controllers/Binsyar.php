@@ -1,27 +1,29 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Binsyar extends MX_Controller {
-    function __construct() {
+    function __construct()
+    {
       parent::__construct();
       $this->load->model('Binsyar_m','bm');
+      $this->setGroup = $this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
     }
 
-    // Bagus
-    public function datapermohonan() {
-        $this->template->setPageId("DATA_BINSYAR");
+    //------------------------------ Tampilan Data Hasil Inputan Masing Masing Layanan
+    public function datakegiatan() {
+        $this->template->setPageId("DATA_BINSYAR_KEGIATAN");
         $data = array();
 
-        $sitetitle = "Data Permohonan Binsyar & Urais";
-        $pagetitle = "Data Permohonan Binsyar & Urais";
-        $view = "/users/v_databinsyar";
+        $sitetitle = "Data Ijin Kegiatan Keagamaan";
+        $pagetitle = "Data Ijin Kegiatan Keagamaan";
+        $view = "/users/binsyar/v_datakegiatan";
         $breadcrumbs = array(
                 array(
-                    "title" => "Setting Wilayah",
+                    "title" => "",
                     "link" => "",
                     "is_actived" => false,
                 ),
                 array(
-                    "title" => "Provinsi",
+                    "title" => "Binsyar",
                     "link" => "",
                     "is_actived" => true,
                 ),
@@ -48,18 +50,23 @@ class Binsyar extends MX_Controller {
         $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
     }
 
-    // Bagus
-    public function ambil_dt_join()
+    public function joinan_kegiatan()
     {
-        $this->db->distinct();
-        $this->db->select("b.id, a.fullname, c.nm_keg, c.esti_keg, c.lemb_keg, c.tgl_awal_keg, e.nama_layanan");
-        $this->db->from("sys_users a");
-        $this->db->join("dt_layanan b", "a.id = b.id_user");
+        $kondisi = array(
+            "b.jenis_layanan" => 1,
+            "b.stat" => 1,
+            "b.id_user" => $this->session->userdata("DX_user_id")
+        );
+
+        $this->setGroup;
+        $this->db->select("b.id, e.fullname, c.nm_keg, c.tgl_awal_keg, c.esti_keg, lemb_keg,
+        count(a.id) as jumlah_penceramah");
+        $this->db->from("dt_penceramah a");
+        $this->db->join("dt_layanan b", "a.id_layanan = b.id");
         $this->db->join("dt_kegiatan c","b.id = c.id_layanan");
-        $this->db->join("mt_layanan e","b.jenis_layanan = e.id");
-        $this->db->where("a.id", $this->session->userdata("DX_user_id"));
-        $this->db->where("b.stat", 1);
-        // $this->db->group_by("b.id");
+        $this->db->join("sys_users e", "b.id_user = e.id");
+        $this->db->where($kondisi);
+        $this->db->group_by("b.id");
         $get = $this->db->get();
 
         $data = $get->result();
@@ -70,7 +77,112 @@ class Binsyar extends MX_Controller {
           toJson($result);
     }
 
-    // Bagus
+    public function dataekspor() {
+        $this->template->setPageId("DATA_BINSYAR_KELUARNEGERI");
+        $data = array();
+
+        $sitetitle = "Data Penceramah Keluar Negeri";
+        $pagetitle = "Data Penceramah Keluar Negeri";
+        $view = "/users/binsyar/v_dataekspor";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+        
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
+    public function joinan_ekspor()
+    {
+        $kondisi = array(
+            "b.jenis_layanan" => 2,
+            "b.stat" => 1,
+            "b.id_user" => $this->session->userdata("DX_user_id")
+        );
+
+        $this->setGroup;
+        $this->db->select("b.id, e.fullname, c.nm_keg, c.tgl_awal_keg, f.country, c.alamat_keg,
+        count(a.id) as jumlah");
+        $this->db->from("dt_penceramah a");
+        $this->db->join("dt_layanan b", "a.id_layanan = b.id");
+        $this->db->join("dt_kegiatan c","b.id = c.id_layanan");
+        $this->db->join("dt_layanan_dokumen d","b.id = d.id_layanan");
+        $this->db->join("sys_users e", "b.id_user = e.id");
+        $this->db->join("mt_country f", "c.code_negara = f.id");
+        $this->db->where($kondisi);
+        $this->db->group_by("b.id");
+        $get = $this->db->get();
+
+        $data = $get->result();
+        $result = array(
+            "data" => $data,
+            "success" => true,
+          );
+          toJson($result);
+    }
+
+    //------------------------------ Kumpulan Fungsi Hapusan Masing Masing Form Layanan
+    public function hapus_dt_kegiatan()
+    {
+        $id = $this->input->post("id");
+
+        $kondisi = array(
+            'stat' => 3,
+            'sysdeleteuser' => $this->session->userdata('DX_user_id'),
+            'sysdeletedate' => date('Y-m-d h:i:s')
+        );
+
+        $this->db->set($kondisi);
+        $this->db->where('id', $id);
+        $this->db->update('dt_layanan');
+
+        echo toJSON(resultSuccess("OK",1));
+    }
+
+    public function hapus_dt_ekspor()
+    {
+        $id = $this->input->post("id");
+
+        $kondisi = array(
+            'stat' => 3,
+            'sysdeleteuser' => $this->session->userdata('DX_user_id'),
+            'sysdeletedate' => date('Y-m-d h:i:s')
+        );
+
+        $this->db->set($kondisi);
+        $this->db->where('id', $id);
+        $this->db->update('dt_layanan');
+
+        echo toJSON(resultSuccess("OK",1));
+    }
+
+    //------------------------------ Form Inputan Dari Masing Masing Menu Layanan Binsyar
     public function kegiatan()
     {
         $this->template->setPageId("SUB_BINSYAR_KEGIATAN");
@@ -113,7 +225,148 @@ class Binsyar extends MX_Controller {
         $this->template->load($view, $data, $this->template->getDefaultLayout());
     }
 
-    // Bagus untuk kirim ke model -> database
+    public function ekspor()
+    {
+        $this->template->setPageId("SUB_BINSYAR_EKSPOR");
+        $data["title"] = $this->bm->get_title();
+        $data = array();
+
+        $sitetitle = "Form Binsyar";
+        $pagetitle = "Form Permohonan Penceramah KeLuar Negeri";
+        $view = "/users/binsyar/v_tambahdua";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        // $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data['id_session'] = $this->bm->get_identitas();
+        $data['ambil_provinsi'] = $this->bm->get_provinsi();
+        $data['jenis_layanan'] = $this->bm->get_layanan_binsyar();
+        $data['id_dtlayanan'] = $this->bm->get_id_dtlayanan();
+        $data['dt_negara'] = $this->bm->get_dtnegara();
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout());
+    }
+
+    //------------------------------ Kumpulan Data Edit Masing Masing Form Layanan
+    public function editkegiatan($id) {
+        $this->template->setPageId("DATA_BINSYAR_KEGIATAN");
+        $data = array();
+
+        $sitetitle = "Edit Data Ijin Kegiatan Keagamaan";
+        $pagetitle = "Edit Data Ijin Kegiatan Keagamaan";
+        $view = "/users/binsyar/v_editdata_kegiatan";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Edit Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+        
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data["dt_provinsi"] = $this->bm->get_provinsi();
+        $data["dt_kabupaten"] = $this->bm->get_kabupaten();
+        $data["dt_kecamatan"] = $this->bm->get_kecamatan();
+        $data["dt_kelurahan"] = $this->bm->get_kelurahan();
+        $data["dataku"] = $this->bm->get_dt_kegiatan($id);
+        // var_dump(json_encode($data['dataku'][3]->proposal_keg));
+        // die();
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
+    public function editekspor($id) {
+        $this->template->setPageId("DATA_BINSYAR_KELUARNEGERI");
+        $data = array();
+
+        $sitetitle = "Edit Data Penceramah Keluar Negeri";
+        $pagetitle = "Edit Data Penceramah Keluar Negeri";
+        $view = "/users/binsyar/v_editdata_ekspor";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Edit Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+        
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        // $data["dt_provinsi"] = $this->bm->get_provinsi();
+        // $data["dt_kabupaten"] = $this->bm->get_kabupaten();
+        // $data["dt_kecamatan"] = $this->bm->get_kecamatan();
+        // $data["dt_kelurahan"] = $this->bm->get_kelurahan();
+        $data["dt_negara"] = $this->bm->get_negara();
+        $data["dataku"] = $this->bm->get_dt_ekspor($id);
+        // var_dump(json_encode($data['dataku']));
+        // die();
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
+    //------------------------------ Kumpulan Data Proses Simpan Masing Masing Form
     public function simpan_forma()
     {
         // Data kegiatan
@@ -135,12 +388,10 @@ class Binsyar extends MX_Controller {
         // $this->form_validation->set_rules('surat_permohonan_keg', 'surat permohonan', 'required');
 
         if ($this->form_validation->run() == TRUE) {
-            // Data lebih dari satu
+            // Mengambil id layanan terakhir
             $id_dt_layanan['id'] = $this->bm->get_id_dtlayanan();
 
-            var_dump(json_encode($dokumen));
-            die();
-            // // Data single
+            // Data single
             $layanan = array(
                 "id_user" => $this->input->post("id_user", TRUE),
                 "id_stat" => $this->input->post("id_stat", TRUE),
@@ -195,55 +446,6 @@ class Binsyar extends MX_Controller {
         } else {
             return $this->kegiatan();
         }
-    }
-
-    // Bagus
-    public function edit($id) {
-        $this->template->setPageId("DATA_BINSYAR");
-        $data = array();
-
-        $sitetitle = "Edit Data Binsyar";
-        $pagetitle = "Edit Data Binsyar";
-        $view = "/users/binsyar/v_editdata_binsyar";
-        $breadcrumbs = array(
-                array(
-                    "title" => "Edit Binsyar",
-                    "link" => "",
-                    "is_actived" => false,
-                ),
-                array(
-                    "title" => "Binsyar",
-                    "link" => "",
-                    "is_actived" => true,
-                ),
-            );
-
-        $sql = "";
-        $mejo = new Mejo();
-        $mejo->setQuery($sql);
-        $tampilan = $mejo->metungul();
-        
-        $metune = $tampilan->metune;
-        $js_lib_files = $tampilan->js_lib_files;
-        $css_lib_files = $tampilan->css_lib_files;
-        $js_inlines = $tampilan->js_inlines;
-
-        $this->template->setCssFiles($css_lib_files);
-        $this->template->setJsFiles($js_lib_files);
-        $data["dt_provinsi"] = $this->bm->get_provinsi();
-        $data["dt_kabupaten"] = $this->bm->get_kabupaten();
-        $data["dt_kecamatan"] = $this->bm->get_kecamatan();
-        $data["dt_kelurahan"] = $this->bm->get_kelurahan();
-        $data["dataku"] = $this->bm->get_ids($id);
-        // var_dump(json_encode($data['dataku'][3]->proposal_keg));
-        // die();
-        $data["js_inlines"] = $js_inlines;
-
-        $this->template->setSiteTitle($sitetitle);
-        $this->template->setPageTitle($pagetitle);
-        $this->template->setBreadcrumbs($breadcrumbs);
-            
-        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
     }
 
     // Edit kiriman ke DB
@@ -350,75 +552,124 @@ class Binsyar extends MX_Controller {
         }
     }
 
-    // Bagus halaman page
-    public function ekspor()
-    {
-        $this->template->setPageId("SUB_BINSYAR_EKSPOR");
-        $data["title"] = $this->bm->get_title();
-        $data = array();
-
-        $sitetitle = "Form Binsyar";
-        $pagetitle = "Form Permohonan Penceramah KeLuar Negeri";
-        $view = "/users/binsyar/v_tambahdua";
-        $breadcrumbs = array(
-                array(
-                    "title" => "",
-                    "link" => "",
-                    "is_actived" => false,
-                ),
-                array(
-                    "title" => "Binsyar",
-                    "link" => "",
-                    "is_actived" => true,
-                ),
-            );
-
-        // $metune = $tampilan->metune;
-        $js_lib_files = $tampilan->js_lib_files;
-        $css_lib_files = $tampilan->css_lib_files;
-        $js_inlines = $tampilan->js_inlines;
-
-        $this->template->setCssFiles($css_lib_files);
-        $this->template->setJsFiles($js_lib_files);
-        $data['id_session'] = $this->bm->get_identitas();
-        $data['ambil_provinsi'] = $this->bm->get_provinsi();
-        $data['jenis_layanan'] = $this->bm->get_layanan_binsyar();
-        $data['id_dtlayanan'] = $this->bm->get_id_dtlayanan();
-        $data["js_inlines"] = $js_inlines;
-
-        $this->template->setSiteTitle($sitetitle);
-        $this->template->setPageTitle($pagetitle);
-        $this->template->setBreadcrumbs($breadcrumbs);
-            
-        $this->template->load($view, $data, $this->template->getDefaultLayout());
-    }
-
     // Bagus untuk kirim ke model -> database
     public function simpan_formb()
     {
         // Data Penceramah
         $this->form_validation->set_rules('narsum[]', 'penceramah', 'trim|required');
-        $this->form_validation->set_rules('jen_kel', 'jenis kelamin', 'trim|required');
+        $this->form_validation->set_rules('jns_kelamin', 'jenis kelamin', 'trim|required');
         $this->form_validation->set_rules('tmp_lhr', 'tempat lahir', 'trim|required');
-        $this->form_validation->set_rules('tgl_lhr', 'tanggal lahir', 'trim|required|is_numeric');
-        $this->form_validation->set_rules('no_pass', 'nomor passport', 'trim|required');
+        $this->form_validation->set_rules('tgl_lhr', 'tanggal lahir', 'trim|required');
+        $this->form_validation->set_rules('no_paspor', 'nomor passport', 'trim|required');
         $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required|is_numeric');
         $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required|is_numeric');
         $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required|is_numeric');
         $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
-        $this->form_validation->set_rules('alamat', 'alamat lengkap', 'trim|required');
+        $this->form_validation->set_rules('almt_penceramah', 'alamat lengkap', 'trim|required');
 
         // Data Kegiatan
         $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
         $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
         $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
-        $this->form_validation->set_rules('neg_keg', 'negara pilihan', 'trim|required');
-        $this->form_validation->set_rules('lok_keg', 'lokasi kegiatan', 'trim|required');
+        $this->form_validation->set_rules('code_negara', 'negara tujuan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('alamat_keg', 'lokasi kegiatan', 'trim|required');
         $this->form_validation->set_rules('esti_keg', 'estimasi jumlah jamaah', 'trim|required|is_numeric');
         $this->form_validation->set_rules('lemb_keg', 'lembaga penyelenggara', 'trim|required');
 
+        // Data Lampiran
+        // $this->form_validation->set_rules('surat_permohonan_luar', 'surat permohonan', 'trim|required');
+        // $this->form_validation->set_rules('proposal_luar', 'proposal', 'trim|required');
+        // $this->form_validation->set_rules('cv_crmh_luar', 'cv penceramah', 'trim|required');
+        // $this->form_validation->set_rules('pasp_crmh_luar', 'paspor penceramah', 'trim|required');
+        // $this->form_validation->set_rules('pasp_pengundang_luar', 'paspor pengundang', 'trim|required');
+        // $this->form_validation->set_rules('pas_foto_crmh_luar', 'pas foto penceramah', 'trim|required');
+
         if ($this->form_validation->run() == TRUE) {
-            # code...
+            // Mengambil id layanan terakhir
+            $id_dt_layanan['id'] = $this->bm->get_id_dtlayanan();
+
+            // Data layanan
+            $layanan = array(
+                "id_user" => $this->input->post("id_user", TRUE),
+                "id_stat" => $this->input->post("id_stat", TRUE),
+                "jenis_layanan" => $this->input->post("jenis_layanan", TRUE),
+                "stat" => 1,
+                "syscreateuser" => $this->input->post("id_user", TRUE),
+                "syscreatedate" => $this->input->post("syscreatedate", TRUE)
+            );
+            // var_dump($layanan);
+            // die();
+            $this->bm->kirim_dataLayanan_ekspor($layanan);
+
+            // Data Penceramah
+            $narsum = $_POST['narsum'];
+            $narsum_single = array(
+                "id_layanan" => $id_dt_layanan['id']->id + 1,
+                "jns_kelamin" => $this->input->post("jns_kelamin", TRUE),
+                "tmp_lhr" => $this->input->post("tmp_lhr", TRUE),
+                "tgl_lhr" => $this->input->post("tgl_lhr", TRUE),
+                "no_paspor" => $this->input->post("no_paspor", TRUE),
+                "id_provinsi" => $this->input->post("id_provinsi", TRUE),
+                "id_kabupaten" => $this->input->post("id_kabupaten", TRUE),
+                "id_kecamatan" => $this->input->post("id_kecamatan", TRUE),
+                "id_kelurahan" => $this->input->post("id_kelurahan", TRUE),
+                "almt_penceramah" => $this->input->post("almt_penceramah", TRUE)
+            );
+
+            $data = array();
+            $index = 0;
+
+            foreach($narsum as $nm)
+            {
+                array_push($data, array(
+                    'id_layanan'=>$narsum_single['id_layanan'],
+                    'jns_kelamin' => $narsum_single['jns_kelamin'],
+                    'tmp_lhr' => $narsum_single['tmp_lhr'],
+                    'tgl_lhr' => $narsum_single['tgl_lhr'],
+                    'no_paspor' => $narsum_single['no_paspor'],
+                    'id_provinsi' => $narsum_single['id_provinsi'],
+                    'id_kabupaten' => $narsum_single['id_kabupaten'],
+                    'id_kecamatan' => $narsum_single['id_kecamatan'],
+                    'id_kelurahan' => $narsum_single['id_kelurahan'],
+                    'almt_penceramah' => $narsum_single['almt_penceramah'],
+                    'narsum'=>$nm
+                ));
+                $index++;
+            }
+
+            // var_dump($data);
+            // die();
+            $this->bm->kirim_dataPenceramah_ekspor($data);
+
+            // Data Kegiatan
+            $kegiatan = array(
+                "id_layanan" => $id_dt_layanan['id']->id + 1,
+                "nm_keg" => $this->input->post("nm_keg", TRUE),
+                "tgl_awal_keg" => $this->input->post("tgl_awal_keg", TRUE),
+                "tgl_akhir_keg" => $this->input->post("tgl_akhir_keg", TRUE),
+                "code_negara" => $this->input->post("code_negara", TRUE),
+                "alamat_keg" => $this->input->post("alamat_keg", TRUE),
+                "esti_keg" => $this->input->post("esti_keg", TRUE),
+                "lemb_keg" => $this->input->post("lemb_keg", TRUE)
+            );
+            // var_dump($kegiatan);
+            // die();
+            $this->bm->kirim_dataKegiatan_ekspor($kegiatan);
+
+            // Data Lampiran
+            $lampiran = array(
+                "id_layanan" => $id_dt_layanan['id']->id + 1,
+                "surat_permohonan_luar" => $this->uplodan->doupload_sp_luar(),
+                "proposal_luar" => $this->uplodan->doupload_proposal_luar(),
+                "cv_crmh_luar" => $this->uplodan->doupload_cv_luar(),
+                "pasp_crmh_luar" => $this->uplodan->doupload_paspor_luar(),
+                "pasp_pengundang_luar" => $this->uplodan->doupload_pengundang_luar(),
+                "pas_foto_crmh_luar" => $this->uplodan->doupload_foto_luar()
+            );
+            // var_dump($lampiran);
+            // die();
+            $this->bm->kirim_dataLampiran_ekspor($lampiran);
+            echo "<script>alert('Data berhasil disimpan');window.location = '".site_url('users/binsyar/ekspor/')."';</script>";
         } else {
             return $this->ekspor();
         }

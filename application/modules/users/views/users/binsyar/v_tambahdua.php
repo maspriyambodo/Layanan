@@ -1,7 +1,7 @@
 <form method="post" action="<?php echo site_url('users/binsyar/simpan_formb');?>" enctype="multipart/form-data">
 <!-- Kumpulan inputan di hidden -->
 <input type="hidden" name="id_stat" value="1" />
-<input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[0]->id;?>" />
+<input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[1]->id;?>" />
 <input type="hidden" name="id" value="<?php echo $id_dtlayanan->id;?>" />
 <input type="hidden" name="id_user" value="<?php echo $id_session->id;?>" />
 <input type="hidden" name="syscreatedate" value="<?php echo date('Y-m-d h:i:s');?>">
@@ -70,12 +70,12 @@
               <div class="form-row">
                 <div class="form-group col-md-3">
                   <label>Jenis Kelamin</label>
-                  <select class="form-control" id="exampleFormControlSelect1" name="jen_kel">
+                  <select class="form-control" id="exampleFormControlSelect1" name="jns_kelamin">
                     <option>Pilih . .</option>
                     <option value="1">Laki-Laki</option>
                     <option value="2">Wanita</option>
                   </select>
-                  <?php echo form_error('jen_kel',"<div style='color:red'>","</div>");?>
+                  <?php echo form_error('jns_kelamin',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-3">
                   <label>Tempat Lahir</label>
@@ -89,8 +89,8 @@
                 </div>
                 <div class="form-group col-md-3">
                   <label>No. Passport</label>
-                  <input type="number" class="form-control" name="no_pass">
-                  <?php echo form_error('no_pass',"<div style='color:red'>","</div>");?>
+                  <input type="number" class="form-control" name="no_paspor">
+                  <?php echo form_error('no_paspor',"<div style='color:red'>","</div>");?>
                 </div>
               </div>
 
@@ -131,8 +131,8 @@
               <div class="form-row">
                 <div class="form-group col-md-12">
                   <label>Alamat Lengkap</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="alamat"></textarea>
-                  <?php echo form_error('alamat',"<div style='color:red'>","</div>");?>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="almt_penceramah"></textarea>
+                  <?php echo form_error('almt_penceramah',"<div style='color:red'>","</div>");?>
                 </div>
               </div>
           </fieldset><br>
@@ -156,29 +156,22 @@
                   <?php echo form_error('tgl_akhir_keg',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-3">
-                  <label>Negara</label>
-                  <select class="form-control" id="exampleFormControlSelect1" name="neg_keg">
+                  <label>Negara Tujuan</label>
+                  <select class="form-control" id="exampleFormControlSelect1" name="code_negara">
                     <option>Pilih . .</option>
-                    <option value="1">Indonesia</option>
-                    <option value="2">Malaysia</option>
-                    <option value="3">Singapura</option>
-                    <option value="4">Thailand</option>
-                    <option value="5">India</option>
-                    <option value="6">Myanmar</option>
-                    <option value="7">Jepang</option>
-                    <option value="8">Inggris</option>
-                    <option value="9">Amerika Serikat</option>
-                    <option value="10">Rusia</option>
+                    <?php foreach($dt_negara as $negara){?>
+                    <option value="<?php echo $negara->id;?>"><?php echo $negara->country;?></option>
+                    <?php }?>
                   </select>
-                  <?php echo form_error('neg_keg',"<div style='color:red'>","</div>");?>
+                  <?php echo form_error('code_negara',"<div style='color:red'>","</div>");?>
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group col-md-4">
                   <label>Lokasi Pelaksanaan</label>
-                  <input type="text" class="form-control" name="lok_keg">
-                  <?php echo form_error('lok_keg',"<div style='color:red'>","</div>");?>
+                  <input type="text" class="form-control" name="alamat_keg">
+                  <?php echo form_error('alamat_keg',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Estimasi Jumlah Peserta</label>
@@ -196,13 +189,39 @@
           <fieldset>
               <legend>Data Lampiran Dokumen :</legend>
               <div class="form-row">
-                <div class="form-group col-md-8">
-                  <label style="margin-bottom: 10px;">Dokumen Pendukung (Surat Permohonan, Proposal, CV Penceramah, FC Passport Penceramah, FC Passport Pengundang, Pas Foto Penceramah)</label>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">Surat Permohonan</label>
                   <input type="hidden" name="id_layanan" value="<?php echo $id_dtlayanan->id+1;?>" />
-                  <?php for ($i=1; $i <=6 ; $i++) :?>
-                  <input type="file" class="form-control-file" name="files<?php echo $i;?>"><br>
-                  <?php endfor;?>
-                  <?php echo form_error('nama_file',"<div style='color:red'>","</div>");?>
+                  <input type="file" class="form-control-file" name="surat_permohonan_luar"><br>
+                  <?php echo form_error('surat_permohonan_luar',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">Proposal Penceramah</label>
+                  <input type="file" class="form-control-file" name="proposal_luar"><br>
+                  <?php echo form_error('proposal_luar',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">CV Penceramah</label>
+                  <input type="file" class="form-control-file" name="cv_crmh_luar"><br>
+                  <?php echo form_error('cv_crmh_luar',"<div style='color:red'>","</div>");?>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">Passport Penceramah</label>
+                  <input type="file" class="form-control-file" name="pasp_crmh_luar"><br>
+                  <?php echo form_error('pasp_crmh_luar',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">Passport Pengundang</label>
+                  <input type="file" class="form-control-file" name="pasp_pengundang_luar"><br>
+                  <?php echo form_error('pasp_pengundang_luar',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">Pas Foto Penceramah</label>
+                  <input type="file" class="form-control-file" name="pas_foto_crmh_luar"><br>
+                  <?php echo form_error('pas_foto_crmh_luar',"<div style='color:red'>","</div>");?>
                 </div>
               </div>
           </fieldset><br>
@@ -214,135 +233,3 @@
     </div>
 </div>
 </form>
-
-{JS START}
-<script type="text/javascript">
-
-var Page = {};
-Page.FormMode = ko.observable("<?php echo $formMode; ?>")
-Page.Cek = $('#formKabupaten').cek();
-Page.FormData = ko.observable({
-    id_provinsi : ko.observable(""),
-    id_kabupaten : ko.observable(""),
-    nama : ko.observable(""),
-});
-Page.Save = function(e){
-    $('#btnSave').attr('disabled', 'disabled');
-    var isValid = Page.Cek.monggo();
-    if(!isValid) { 
-        swal(
-                'Error',
-                'Mohon lengkapi semua field!',
-                'warning'
-            );
-      $('#btnSave').removeAttr('disabled');
-      return;
-    } else {
-      App.IsLoading(true);
-      e.preventDefault();
-      var url = '<?php echo site_url("datamaster/address/save_kabupaten") ?>';
-      var dataKab = ko.mapping.toJS(Page.FormData());
-      dataKab.id_provinsi = $("#dd_province").val();
-      var formData = new FormData();
-      formData.append("formData", JSON.stringify(dataKab));
-      formData.append("formMode", "<?php echo $formMode; ?>");
-
-      $.ajax({
-        url: url,
-        data: formData,
-        method: 'POST',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-          if(data.success) {
-            $('#btnSave').removeAttr('disabled');
-            swal(
-                'Saved!',
-                'Data sukses disimpan!',
-                'success'
-            ).then(function(result){
-              window.location.href = '<?php echo site_url("datamaster/address/kabupaten"); ?>';
-            });
-          } else {
-            $('#btnSave').removeAttr('disabled');
-            swal(
-                'Error saving data!',
-                data.message,
-                'warning'
-            );
-          }
-          App.IsLoading(false);
-        }
-      });
-      e.stopImmediatePropagation();
-      return false;
-    }
-}
-
-function getRekomendasiKode() {
-    $.ajax({
-        url: "<?php echo site_url("datamaster/address/getRekomendasiKodeKabupaten") ?>"+"/"+$("#dd_province").val(),
-        data: "",
-        method: 'POST',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            Page.FormData().kabupaten_kode(data.data);
-        }
-      });
-}
-
-Page.PopulateMasterProvince = function(urlProv) {
-    // console.log("PopulateMasterProvince")
-    $.ajax({
-        url: urlProv,
-        data: {},
-        method: 'GET',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(data) {
-            if (data.success) {
-                $("#dd_province").select2("destroy")
-                $("#dd_province").select2({
-                    data: data.data,
-                    placeholder: "Pilih Provinsi"
-                });
-                if (Page.FormData().id_provinsi() != 0){
-                    $("#dd_province").val(Page.FormData().id_provinsi());
-                    $("#dd_province").select2().trigger("change");
-                }
-                <?php if($formMode == "edit") : ?>
-                    $("#dd_province"). prop("disabled", true);
-                <?php else: ?>
-                $("#dd_province").select2().on("change", function(){
-                    getRekomendasiKode();
-                });
-                setTimeout(function() {
-                    getRekomendasiKode();
-                }, 500)
-                <?php endif; ?>
-            } else {
-                swal(
-                    'Error getting province master data!',
-                    data.message,
-                    'warning'
-                );
-            }
-        }
-    });
-}
-
-$(function() { 
-    <?php if($formMode == "edit"): ?>
-        var dataKab = <?php echo $dataKabupaten; ?>;
-        Page.FormData(ko.mapping.fromJS(dataKab));
-    <?php endif; ?>
-    Page.Cek.dong();
-    $("#dd_province").select2({});
-    Page.PopulateMasterProvince("<?php echo site_url("datamaster/address/populateProvinces") ?>","<?php echo site_url("datamaster/address/populateCities") ?>","<?php echo site_url("datamaster/address/populateDistricts") ?>");
-});
-</script>
-{JS END}
