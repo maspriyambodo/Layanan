@@ -349,13 +349,13 @@ class Binsyar extends MX_Controller {
 
         $this->template->setCssFiles($css_lib_files);
         $this->template->setJsFiles($js_lib_files);
-        // $data["dt_provinsi"] = $this->bm->get_provinsi();
-        // $data["dt_kabupaten"] = $this->bm->get_kabupaten();
-        // $data["dt_kecamatan"] = $this->bm->get_kecamatan();
-        // $data["dt_kelurahan"] = $this->bm->get_kelurahan();
+        $data["dt_provinsi"] = $this->bm->get_provinsi();
+        $data["dt_kabupaten"] = $this->bm->get_kabupaten();
+        $data["dt_kecamatan"] = $this->bm->get_kecamatan();
+        $data["dt_kelurahan"] = $this->bm->get_kelurahan();
         $data["dt_negara"] = $this->bm->get_negara();
         $data["dataku"] = $this->bm->get_dt_ekspor($id);
-        // var_dump(json_encode($data['dataku']));
+        // var_dump($data['dataku'][2]->id_provinsi);
         // die();
         $data["js_inlines"] = $js_inlines;
 
@@ -436,9 +436,9 @@ class Binsyar extends MX_Controller {
 
             $dokumen = array(
                 "id_layanan" => $this->input->post('id_layanan'),
-                "ktp" => $this->do_upload_1(),
-                "proposal_keg" => $this->do_upload_2(),
-                "surat_permohonan_keg" => $this->do_upload_3()
+                "ktp" => $this->uplodan->doupload_ktp_kegiatan(),
+                "proposal_keg" => $this->uplodan->doupload_proposal_kegiatan(),
+                "surat_permohonan_keg" => $this->uplodan->doupload_permohonan_kegiatan()
             );
             $this->bm->kirim_dataDokumen($dokumen);
             
@@ -448,111 +448,6 @@ class Binsyar extends MX_Controller {
         }
     }
 
-    // Edit kiriman ke DB
-    public function simpanedit_kegiatan()
-    {
-        $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
-        $this->form_validation->set_rules('esti_keg', 'estimasi jamaah kegiatan', 'trim|required|is_numeric');
-        $this->form_validation->set_rules('lemb_keg', 'lembaga kegiatan', 'trim|required');
-        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
-        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
-        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required|is_numeric');
-        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required|is_numeric');
-        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required|is_numeric');
-        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
-        $this->form_validation->set_rules('alamat_keg', 'alamat kegiatan', 'trim|required');
-
-        if ($this->form_validation->run() == TRUE) {
-            $id = $this->input->post("id", TRUE);
-
-            $data_kegiatan = array(
-                "id_layanan" => $this->input->post("id_layanan", TRUE),
-                "nm_keg" => $this->input->post("nm_keg", TRUE),
-                "esti_keg" => $this->input->post("esti_keg", TRUE),
-                "lemb_keg" => $this->input->post("lemb_keg", TRUE),
-                "tgl_awal_keg" => $this->input->post("tgl_awal_keg", TRUE),
-                "tgl_akhir_keg" => $this->input->post("tgl_akhir_keg", TRUE),
-                "alamat_keg" => $this->input->post("alamat_keg", TRUE)
-            );
-            $this->bm->save_tbl_kegiatan($data_kegiatan, $id);
-
-            $id_layanan = $this->input->post("id_layanan", TRUE);
-            $data_layanan = array(
-                "id_provinsi" => $this->input->post("id_provinsi", TRUE),
-                "id_kabupaten" => $this->input->post("id_kabupaten", TRUE),
-                "id_kecamatan" => $this->input->post("id_kecamatan", TRUE),
-                "id_kelurahan" => $this->input->post("id_kelurahan", TRUE),
-                "sysupdateuser" => $this->input->post("sysupdateuser", TRUE),
-                "sysupdatedate" => $this->input->post("sysupdatedate", TRUE)
-            );
-            $this->bm->save_tbl_layananprop($data_layanan, $id_layanan);
-            
-            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
-            // redirect(site_url('pendakwahlokal/update/'.$this->input->post('f_idpendakwah')));
-        } else {
-            return $this->edit($id);
-        }
-    }    
-
-    public function simpanedit_penceramah()
-    {
-        $this->form_validation->set_rules('narsum[]', 'nama penceramah', 'trim|required');
-
-        if ($this->form_validation->run() == TRUE) {
-            $narsum = $_POST['narsum'];
-            $id = $_POST['id'];
-            $id_layanan = $_POST['id_layanan'];
-
-            $single = array(
-                "id_layanan" => $this->input->post('id_layanan'),
-                "id" => $this->input->post('id')
-            );
-
-            $data = array();
-            $index = 0;
-
-            foreach($narsum as $nm)
-            {
-                array_push($data, array(
-                    'id'=>$id[$index],
-                    'id_layanan'=>$id_layanan[$index],
-                    'narsum'=>$nm
-                ));
-                $index++;
-            }
-            $this->db->update_batch('dt_penceramah', $data, 'id');
-            // var_dump($data);
-            // die();
-            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
-        } else {
-            return $this->edit($id);
-        }
-    }
-
-    public function simpanedit_lampiran()
-    {
-        $this->form_validation->set_rules('id_layanan', 'layanan', 'trim|required|is_numeric');
-        // $this->form_validation->set_rules('ktp', 'ktp', 'trim|required');
-        // $this->form_validation->set_rules('proposal_keg', 'proposal kegiatan', 'trim|required');
-        // $this->form_validation->set_rules('surat_permohonan_keg', 'surat permohonan kegiatan', 'trim|required');
-
-        if ($this->form_validation->run() == TRUE) {
-            $id = $this->input->post('id');
-            $data = array(
-                "id_layanan" => $this->input->post('id_layanan'),
-                "ktp" => $this->do_upload_1(),
-                "proposal_keg" => $this->do_upload_2(),
-                "surat_permohonan_keg" => $this->do_upload_3()
-            );
-
-            $this->bm->save_tbl_lampiran($data, $id);
-            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
-        } else {
-            return $this->edit($id);
-        }
-    }
-
-    // Bagus untuk kirim ke model -> database
     public function simpan_formb()
     {
         // Data Penceramah
@@ -675,6 +570,295 @@ class Binsyar extends MX_Controller {
         }
     }
 
+    public function simpan_formc()
+    {
+        // Data Penceramah
+        $this->form_validation->set_rules('narsum[]', 'penceramah', 'trim|required');
+        $this->form_validation->set_rules('jns_kelamin', 'jenis kelamin', 'trim|required');
+        $this->form_validation->set_rules('tmp_lhr', 'tempat lahir', 'trim|required');
+        $this->form_validation->set_rules('tgl_lhr', 'tanggal lahir', 'trim|required');
+        $this->form_validation->set_rules('no_paspor', 'nomor passport', 'trim|required');
+        $this->form_validation->set_rules('negara_asl', 'negara asal', 'trim|required|is_numeric');
+
+        // Data Kegiatan
+        $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
+        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('esti_keg', 'estimasi jumlah jamaah', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('lemb_keg', 'lembaga penyelenggara', 'trim|required');
+
+        // Data Lampiran
+        // $this->form_validation->set_rules('surat_permohonan_dalam', 'surat permohonan', 'trim|required');
+        // $this->form_validation->set_rules('proposal_dalam', 'proposal', 'trim|required');
+        // $this->form_validation->set_rules('cv_crmh_dalam', 'cv penceramah', 'trim|required');
+        // $this->form_validation->set_rules('pasp_crmh_dalam', 'paspor penceramah', 'trim|required');
+        // $this->form_validation->set_rules('ktp_dalam', 'paspor pengundang', 'trim|required');
+        // $this->form_validation->set_rules('pas_foto_crmh_dalam', 'pas foto penceramah', 'trim|required');
+
+        if($this->form_validation->run() == TRUE)
+        {
+            // Data Penceramah
+            $narsum = $_POST['narsum'];
+            $single = array(
+                "id_layanan" => ,
+                "jns_kelamin" => $this->input->post("jns_kelamin", TRUE),
+                "tmp_lhr" => $this->input->post("tmp_lhr", TRUE),
+                "tgl_lhr" => $this->input->post("tgl_lhr", TRUE),
+                "no_paspor" => $this->input->post("no_paspor", TRUE),
+                "negara_asl" => $this->input->post("negara_asl", TRUE),
+            );
+
+            $data = array();
+            $index = 0;
+
+            foreach($narsum as $nm)
+            {
+                array_push($data, array(
+                    'id_layanan' => $single['id_layanan'],
+                    'jns_kelamin' => $single['jns_kelamin'],
+                    'tmp_lhr' => $single['tmp_lhr'],
+                    'tgl_lhr' => $single['tgl_lhr'],
+                    'no_paspor' => $single['no_paspor'],
+                    'negara_asl' => $single['negara_asl'],
+                    'narsum'=>$nm
+                ));
+                $index++;
+            }
+            var_dump($data);
+            die();
+            $this->bm->kirim_dataPenceramah_impor($data);
+
+        } else {
+            return $this->import();
+        }
+    }
+
+    //------------------------------ Kumpulan Data Proses Edit Ke DB
+    public function simpanedit_kegiatan()
+    {
+        $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
+        $this->form_validation->set_rules('esti_keg', 'estimasi jamaah kegiatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('lemb_keg', 'lembaga kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
+        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('alamat_keg', 'alamat kegiatan', 'trim|required');
+
+        if ($this->form_validation->run() == TRUE) {
+            $id = $this->input->post("id", TRUE);
+
+            $data_kegiatan = array(
+                "id_layanan" => $this->input->post("id_layanan", TRUE),
+                "nm_keg" => $this->input->post("nm_keg", TRUE),
+                "esti_keg" => $this->input->post("esti_keg", TRUE),
+                "lemb_keg" => $this->input->post("lemb_keg", TRUE),
+                "tgl_awal_keg" => $this->input->post("tgl_awal_keg", TRUE),
+                "tgl_akhir_keg" => $this->input->post("tgl_akhir_keg", TRUE),
+                "alamat_keg" => $this->input->post("alamat_keg", TRUE)
+            );
+            $this->bm->save_tbl_kegiatan($data_kegiatan, $id);
+
+            $id_layanan = $this->input->post("id_layanan", TRUE);
+            $data_layanan = array(
+                "id_provinsi" => $this->input->post("id_provinsi", TRUE),
+                "id_kabupaten" => $this->input->post("id_kabupaten", TRUE),
+                "id_kecamatan" => $this->input->post("id_kecamatan", TRUE),
+                "id_kelurahan" => $this->input->post("id_kelurahan", TRUE),
+                "sysupdateuser" => $this->input->post("sysupdateuser", TRUE),
+                "sysupdatedate" => $this->input->post("sysupdatedate", TRUE)
+            );
+            $this->bm->save_tbl_layananprop($data_layanan, $id_layanan);
+            
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+            // redirect(site_url('pendakwahlokal/update/'.$this->input->post('f_idpendakwah')));
+        } else {
+            return $this->editkegiatan($id);
+        }
+    }    
+
+    public function simpanedit_penceramah()
+    {
+        $this->form_validation->set_rules('narsum[]', 'nama penceramah', 'trim|required');
+
+        if ($this->form_validation->run() == TRUE) {
+            $narsum = $_POST['narsum'];
+            $id = $_POST['id'];
+            $id_layanan = $_POST['id_layanan'];
+
+            $single = array(
+                "id_layanan" => $this->input->post('id_layanan'),
+                "id" => $this->input->post('id')
+            );
+
+            $data = array();
+            $index = 0;
+
+            foreach($narsum as $nm)
+            {
+                array_push($data, array(
+                    'id'=>$id[$index],
+                    'id_layanan'=>$id_layanan[$index],
+                    'narsum'=>$nm
+                ));
+                $index++;
+            }
+            $this->db->update_batch('dt_penceramah', $data, 'id');
+            // var_dump($data);
+            // die();
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+        } else {
+            return $this->editkegiatan($id);
+        }
+    }
+
+    public function simpanedit_lampiran()
+    {
+        $this->form_validation->set_rules('id_layanan', 'layanan', 'trim|required|is_numeric');
+        // $this->form_validation->set_rules('ktp', 'ktp', 'trim|required');
+        // $this->form_validation->set_rules('proposal_keg', 'proposal kegiatan', 'trim|required');
+        // $this->form_validation->set_rules('surat_permohonan_keg', 'surat permohonan kegiatan', 'trim|required');
+
+        if ($this->form_validation->run() == TRUE) {
+            $id = $this->input->post('id');
+            $data = array(
+                "id_layanan" => $this->input->post('id_layanan'),
+                "ktp" => $this->uplodan->doupload_ktp_kegiatan(),
+                "proposal_keg" => $this->uplodan->doupload_proposal_kegiatan(),
+                "surat_permohonan_keg" => $this->uplodan->doupload_permohonan_kegiatan()
+            );
+
+            $this->bm->save_tbl_lampiran($data, $id);
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+        } else {
+            return $this->editkegiatan($id);
+        }
+    }
+
+    public function simpanedit_ekspor()
+    {
+        $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
+        $this->form_validation->set_rules('esti_keg', 'estimasi jamaah kegiatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('lemb_keg', 'lembaga kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
+        $this->form_validation->set_rules('alamat_keg', 'alamat kegiatan', 'trim|required');
+        $this->form_validation->set_rules('code_negara', 'kode negara', 'trim|required');
+
+        if($this->form_validation->run() == TRUE)
+        {
+            $id = $this->input->post("id", TRUE);
+            $data_kegiatan = array(
+                "id_layanan" => $this->input->post("id_layanan", TRUE),
+                "nm_keg" => $this->input->post("nm_keg", TRUE),
+                "esti_keg" => $this->input->post("esti_keg", TRUE),
+                "lemb_keg" => $this->input->post("lemb_keg", TRUE),
+                "tgl_awal_keg" => $this->input->post("tgl_awal_keg", TRUE),
+                "tgl_akhir_keg" => $this->input->post("tgl_akhir_keg", TRUE),
+                "alamat_keg" => $this->input->post("alamat_keg", TRUE),
+                "code_negara" => $this->input->post("code_negara", TRUE)
+            );
+
+            $this->bm->save_tbl_ekspor($data_kegiatan, $id);
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+        } else {
+            return $this->editekspor($id);
+        }
+    }
+
+    public function simpanedit_ekspor_penceramah()
+    {
+        $this->form_validation->set_rules('narsum[]', 'nama penceramah', 'trim|required');
+        $this->form_validation->set_rules('jns_kelamin', 'jenis kelamin', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('no_paspor', 'nomor pasport', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('tmp_lhr', 'tempat lahir', 'trim|required');
+        $this->form_validation->set_rules('tgl_lhr', 'tanggal lahir', 'trim|required');
+        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('almt_penceramah', 'alamat penceramah', 'trim|required');
+
+        if ($this->form_validation->run() == TRUE)
+        {
+            $id = $_POST['id'];
+            $id_layanan = $_POST['id_layanan'];
+            $narsum = $_POST['narsum'];
+
+            $single = array(
+                "jns_kelamin" => $this->input->post('jns_kelamin', TRUE),
+                "no_paspor" => $this->input->post('no_paspor', TRUE),
+                "tmp_lhr" => $this->input->post('tmp_lhr', TRUE),
+                "tgl_lhr" => $this->input->post('tgl_lhr', TRUE),
+                "id_provinsi" => $this->input->post('id_provinsi', TRUE),
+                "id_kabupaten" => $this->input->post('id_kabupaten', TRUE),
+                "id_kecamatan" => $this->input->post('id_kecamatan', TRUE),
+                "id_kelurahan" => $this->input->post('id_kelurahan', TRUE),
+                "almt_penceramah" => $this->input->post('almt_penceramah', TRUE)
+            );
+
+            $data = array();
+            $index = 0;
+
+            foreach($narsum as $nm)
+            {
+                array_push($data, array(
+                    'id' => $id[$index],
+                    'id_layanan' => $id_layanan[$index],
+                    'jns_kelamin' => $single['jns_kelamin'],
+                    'no_paspor' => $single['no_paspor'],
+                    'tmp_lhr' => $single['tmp_lhr'],
+                    'tgl_lhr' => $single['tgl_lhr'],
+                    'id_provinsi' => $single['id_provinsi'],
+                    'id_kabupaten' => $single['id_kabupaten'],
+                    'id_kecamatan' => $single['id_kecamatan'],
+                    'id_kelurahan' => $single['id_kelurahan'],
+                    'almt_penceramah' => $single['almt_penceramah'],
+                    'narsum' => $nm
+                ));
+                $index++;
+            }
+            $this->db->update_batch('dt_penceramah', $data, 'id');
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+        } else {
+            return $this->editekspor($id);
+        }
+    }
+
+    public function simpanedit_ekspor_lampiran()
+    {
+        $this->form_validation->set_rules('id_layanan', 'layanan', 'trim|required|is_numeric');
+        // $this->form_validation->set_rules('ktp', 'ktp', 'trim|required');
+        // $this->form_validation->set_rules('proposal_keg', 'proposal kegiatan', 'trim|required');
+        // $this->form_validation->set_rules('surat_permohonan_keg', 'surat permohonan kegiatan', 'trim|required');
+
+        if ($this->form_validation->run() == TRUE)
+        {
+            $id = $this->input->post('id');
+            $data = array(
+                "id_layanan" => $this->input->post('id_layanan'),
+                "surat_permohonan_luar" => $this->uplodan->doupload_sp_luar(),
+                "proposal_luar" => $this->uplodan->doupload_proposal_luar(),
+                "cv_crmh_luar" => $this->uplodan->doupload_cv_luar(),
+                "pasp_crmh_luar" => $this->uplodan->doupload_paspor_luar(),
+                "pasp_pengundang_luar" => $this->uplodan->doupload_pengundang_luar(),
+                "pas_foto_crmh_luar" => $this->uplodan->doupload_foto_luar()
+            );
+            // var_dump($data);
+            // die();
+            $this->bm->save_tbl_ekspor_lampiran($data, $id);
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+        } else {
+            return $this->editkegiatan($id);
+        }
+    } 
+
     // Bagus halaman page
     public function import()
     {
@@ -716,35 +900,6 @@ class Binsyar extends MX_Controller {
         $this->template->setBreadcrumbs($breadcrumbs);
             
         $this->template->load($view, $data, $this->template->getDefaultLayout());
-    }
-
-    // Bagus untuk kirim ke model -> database
-    public function simpan_formc()
-    {
-        // Data Penceramah
-        $this->form_validation->set_rules('narsum[]', 'penceramah', 'trim|required');
-        $this->form_validation->set_rules('jen_kel', 'jenis kelamin', 'trim|required');
-        $this->form_validation->set_rules('no_pass', 'nomor passport', 'trim|required');
-        $this->form_validation->set_rules('tmp_lhr', 'tempat lahir', 'trim|required');
-        $this->form_validation->set_rules('tgl_lhr', 'tanggal lahir', 'trim|required');
-        $this->form_validation->set_rules('neg_keg', 'negara asal', 'trim|required');
-
-        // Data Kegiatan
-        $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
-        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
-        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
-        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required');
-        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required');
-        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required');
-        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required');
-        $this->form_validation->set_rules('esti_keg', 'estimasi kegiatan', 'trim|required');
-        $this->form_validation->set_rules('lemb_keg', 'nama lembaga', 'trim|required');
-
-        if ($this->form_validation->run() == TRUE) {
-            # code...
-        } else {
-            return $this->import();
-        }
     }
 
     // Bagus halaman page
@@ -816,54 +971,6 @@ class Binsyar extends MX_Controller {
         } else {
             return $this->safari();
         }
-    }
-
-    // Uploadan ijin kegiatan keagamaan
-    private function do_upload_1()
-    {   $user['tampil'] = $this->bm->get_identitas();
-        $type = explode('.', $_FILES["ktp"]["name"]);
-        $type = $type[count($type)-1];
-
-        $file_name = $_FILES["ktp"]["name"];
-        $url = "./assets/uploads/binsyar/".date('d-m-Y')."_".$user['tampil']->fullname."_".$file_name;
-
-        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
-            if(is_uploaded_file($_FILES["ktp"]["tmp_name"]))
-                if(move_uploaded_file($_FILES["ktp"]["tmp_name"], $url))
-                    return $url;
-        return "";
-    }
-
-    private function do_upload_2()
-    {   
-        $user['tampil'] = $this->bm->get_identitas();
-        $type = explode('.', $_FILES["proposal_keg"]["name"]);
-        $type = $type[count($type)-1];
-
-        $file_name = $_FILES["proposal_keg"]["name"];
-        $url = "./assets/uploads/binsyar/".date('dy')."_".$user['tampil']->fullname."_"."_".$file_name;
-
-        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
-            if(is_uploaded_file($_FILES["proposal_keg"]["tmp_name"]))
-                if(move_uploaded_file($_FILES["proposal_keg"]["tmp_name"], $url))
-                    return $url;
-        return "";
-    }
-
-    private function do_upload_3()
-    {   
-        $user['tampil'] = $this->bm->get_identitas();
-        $type = explode('.', $_FILES["surat_permohonan_keg"]["name"]);
-        $type = $type[count($type)-1];
-
-        $file_name = $_FILES["surat_permohonan_keg"]["name"];
-        $url = "./assets/uploads/binsyar/".date('dy')."_".$user['tampil']->fullname."_"."_".$file_name;
-
-        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
-            if(is_uploaded_file($_FILES["surat_permohonan_keg"]["tmp_name"]))
-                if(move_uploaded_file($_FILES["surat_permohonan_keg"]["tmp_name"], $url))
-                    return $url;
-        return "";
     }
 
     // Data Wilayah

@@ -86,7 +86,7 @@ class Binsyar_m extends CI_Model {
 		$kondisi_c = array(
 			"c.id_layanan" => $id
 		);
-		$this->db->select("c.nm_keg, c.lemb_keg, c.esti_keg, c.tgl_awal_keg, c.tgl_akhir_keg, c.alamat_keg, c.code_negara")
+		$this->db->select("c.id, c.id_layanan, c.nm_keg, c.lemb_keg, c.esti_keg, c.tgl_awal_keg, c.tgl_akhir_keg, c.alamat_keg, c.code_negara")
 				 ->from("dt_kegiatan c")
 				 ->where($kondisi_c);
 		$query_c = $this->db->get();
@@ -94,7 +94,7 @@ class Binsyar_m extends CI_Model {
 		$kondisi_d = array(
 			"d.id_layanan" => $id
 		);
-		$this->db->select("d.narsum, d.tmp_lhr, d.tgl_lhr, d.jns_kelamin, d.no_paspor, d.id_provinsi, d.id_kabupaten, d.id_kecamatan, d.id_kelurahan, d.almt_penceramah, d.negara_asl")
+		$this->db->select("d.id, d.id_layanan, d.narsum, d.tmp_lhr, d.tgl_lhr, d.jns_kelamin, d.no_paspor, d.id_provinsi, d.id_kabupaten, d.id_kecamatan, d.id_kelurahan, d.almt_penceramah, d.negara_asl")
 				 ->from("dt_penceramah d")
 				 ->where($kondisi_d)
 				 ->group_by("d.id");
@@ -103,7 +103,7 @@ class Binsyar_m extends CI_Model {
 		$kondisi_e = array(
 			"e.id_layanan" => $id
 		);
-		$this->db->select("e.surat_permohonan_luar, e.proposal_luar, e.cv_crmh_luar, e.pasp_crmh_luar, e.pasp_pengundang_luar, e.pas_foto_crmh_luar")
+		$this->db->select("e.id, e.id_layanan, e.surat_permohonan_luar, e.proposal_luar, e.cv_crmh_luar, e.pasp_crmh_luar, e.pasp_pengundang_luar, e.pas_foto_crmh_luar")
 				 ->from("dt_layanan_dokumen e")
 				 ->where($kondisi_e);
 		$query_e = $this->db->get();
@@ -328,6 +328,19 @@ class Binsyar_m extends CI_Model {
 	function kirim_dataLampiran_ekspor($lampiran)
 	{
 		$this->db->insert('dt_layanan_dokumen', $lampiran);
+	}
+
+	// Proses Query Update ke DB
+	function save_tbl_ekspor($data_kegiatan, $id)
+	{
+		$this->db->where('id', $id);
+		$this->db->update('dt_kegiatan', $data_kegiatan);
+	}
+
+	function save_tbl_ekspor_lampiran($data, $id)
+	{
+		$this->db->where('id', $id);
+		$this->db->update('dt_layanan_dokumen', $data);
 	}
 }
 
