@@ -330,6 +330,21 @@ class Binsyar_m extends CI_Model {
 		return $query;
 	}
 
+	function get_count_crmh()
+	{
+		$kondisi = array(
+			"a.jenis_layanan" => 13,
+			"a.id_user" => $this->session->userdata("DX_user_id")
+		);
+
+		$query = $this->db->select("count(b.id) as jumlah")
+				->from("dt_layanan a")
+				->join("dt_penceramah b", "a.id = b.id_layanan")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
+
 	// Proses Insert Kegiatan ke DB
 	function kirim_dataLayanan($layanan)
 	{
@@ -439,9 +454,24 @@ class Binsyar_m extends CI_Model {
 	}
 
 	// Proses insert Safari Dakwah
+	function kirim_dataLayanan_safari($layanan)
+	{
+		$this->db->insert('dt_layanan', $layanan);
+	}
+
 	function kirim_dataPenceramah_safari($data)
 	{
 		$this->db->insert_batch('dt_penceramah', $data);
+	}
+
+	function kirim_dataKegiatan_safari($kegiatan)
+	{
+		$this->db->insert('dt_kegiatan', $kegiatan);
+	}
+
+	function kirim_dataLampiran_safari($lampiran)
+	{
+		$this->db->insert('dt_layanan_dokumen', $lampiran);
 	}
 
 	function kirim_dataPendidikan_safari($data)

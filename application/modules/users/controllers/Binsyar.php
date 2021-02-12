@@ -430,8 +430,51 @@ class Binsyar extends MX_Controller {
         $data['ambil_provinsi'] = $this->bm->get_provinsi();
         $data['jenis_layanan'] = $this->bm->get_layanan_binsyar();
         $data['id_dtlayanan'] = $this->bm->get_id_dtlayanan();
+        $data['dt_negara'] = $this->bm->get_dtnegara();
         $data["js_inlines"] = $js_inlines;
         // var_dump($data['jenis_layanan'][5]->id);
+        // die();
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout());
+    }
+
+    public function safaripendidikan()
+    {
+        $this->template->setPageId("SUB_BINSYAR_SAFARI");
+        $data["title"] = $this->bm->get_title();
+        $data = array();
+
+        $sitetitle = "Form Binsyar";
+        $pagetitle = "Form Pendidikan Safari Dakwah Dalam Negeri";
+        $view = "/users/binsyar/v_tambahpendidikan";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        // $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data['id_session'] = $this->bm->get_identitas();
+        $data['hitung'] = $this->bm->get_count_crmh();
+        $data["js_inlines"] = $js_inlines;
+        // var_dump($data['hitung']);
         // die();
 
         $this->template->setSiteTitle($sitetitle);
@@ -894,7 +937,6 @@ class Binsyar extends MX_Controller {
             );
             $this->bm->kirim_dataLampiran_impor($lampiran);
             echo "<script>alert('Data berhasil disimpan');window.location = '".site_url('users/binsyar/import/')."';</script>";
-
         } else {
             return $this->import();
         }
@@ -907,10 +949,6 @@ class Binsyar extends MX_Controller {
         $this->form_validation->set_rules('jns_kelamin', 'jenis kelamin', 'trim|required|is_numeric');
         $this->form_validation->set_rules('tmp_lhr', 'tempat lahir', 'trim|required');
         $this->form_validation->set_rules('tgl_lhr', 'tanggal lahir', 'trim|required');
-        
-        // Data Pendidikan Penceramah
-        $this->form_validation->set_rules('pddk[]', 'pendidikan formal', 'trim|required');
-        $this->form_validation->set_rules('pddk_non[]', 'pendidikan non formal', 'trim|required');
 
         // Data Kegiatan
         $this->form_validation->set_rules('nm_keg', 'nama program', 'trim|required');
@@ -933,8 +971,8 @@ class Binsyar extends MX_Controller {
         // $this->form_validation->set_rules('pas_foto_crmh_safari', 'pas foto penceramah', 'trim|required');
         // $this->form_validation->set_rules('crt_crmh_safari', 'sertifikat penceramah', 'trim|required');
 
-        // if ($this->form_validation->run() == TRUE)
-        // {
+        if ($this->form_validation->run() == TRUE)
+        {
             $id_dt_layanan['id'] = $this->bm->get_id_dtlayanan();
 
             // Data Layanan
@@ -945,8 +983,7 @@ class Binsyar extends MX_Controller {
                 "syscreateuser" => $this->input->post("id_user", TRUE),
                 "syscreatedate" => $this->input->post("syscreatedate", TRUE)
             );
-            // var_dump($layanan);
-            // die();
+            $this->bm->kirim_dataLayanan_safari($layanan);
 
             // Data Penceramah
             $narsum = $_POST['narsum'];
@@ -971,37 +1008,38 @@ class Binsyar extends MX_Controller {
                 ));
                 $index++;
             }
-            // var_dump($data);
-            // die();
             $this->bm->kirim_dataPenceramah_safari($data);
 
-            // Data Pendidikan
-            $id_dt_penceramah['id'] = $this->bm->get_id_dtpenceramah();
-            $pddk = $_POST['pddk'];
-            $pddk_non = $_POST['pddk_non'];
-
-            $single = array(
-                "id_crmh" => $id_dt_penceramah['id']->id
+            // Data Kegiatan
+            $kegiatan = array(
+                "id_layanan" => $id_dt_layanan['id']->id + 1,
+                "nm_keg" => $this->input->post("nm_keg", TRUE),
+                "tgl_awal_keg" => $this->input->post("tgl_awal_keg", TRUE),
+                "tgl_akhir_keg" => $this->input->post("tgl_akhir_keg", TRUE),
+                "esti_keg" => $this->input->post("esti_keg", TRUE),
+                "lemb_keg" => $this->input->post("lemb_keg", TRUE),
+                "id_provinsi" => $this->input->post("id_provinsi", TRUE),
+                "id_kabupaten" => $this->input->post("id_kabupaten", TRUE),
+                "id_kecamatan" => $this->input->post("id_kecamatan", TRUE),
+                "id_kelurahan" => $this->input->post("id_kelurahan", TRUE)
             );
+            $this->bm->kirim_dataKegiatan_safari($kegiatan);
 
-            $data = array();
-            $index = 0;
-
-            foreach($pddk as $nm)
-            {
-                array_push($data, array(
-                    'id_crmh' => $single['id_crmh'],
-                    'pddk' => $nm,
-                    'pddk_non' => $pddk_non[$index]
-                ));
-                $index++;
-            }
-            // var_dump($data);
-            // die();
-            $this->bm->kirim_dataPendidikan_safari($data);
-        // } else {
-        //     return $this->safari();
-        // }
+            $lampiran = array(
+                "id_layanan" => $id_dt_layanan['id']->id + 1,
+                "surat_permohonan_safari" => $this->uplodan->doupload_sp_safari(),
+                "proposal_safari" => $this->uplodan->doupload_proposal_safari(),
+                "cv_crmh_safari" => $this->uplodan->doupload_cv_safari(),
+                "pasp_crmh_safari" => $this->uplodan->doupload_paspor_safari(),
+                "ktp_safari" => $this->uplodan->doupload_ktp_safari(),
+                "pas_foto_crmh_safari" => $this->uplodan->doupload_foto_safari(),
+                "crt_crmh_safari" => $this->uplodan->doupload_crt_safari()
+            );
+            $this->bm->kirim_dataLampiran_safari($lampiran);
+            echo "<script>alert('Data berhasil disimpan, mohon isi data pendidikan');window.location = '".site_url('users/binsyar/safaripendidikan/')."';</script>";
+        } else {
+            return $this->safari();
+        }
     }
 
     //------------------------------ Kumpulan Data Proses Edit Ke DB

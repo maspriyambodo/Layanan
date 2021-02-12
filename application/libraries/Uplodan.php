@@ -239,6 +239,112 @@ class Uplodan
         return "";
     }
 
+    //--------------------------------------------- Punya Safari Dakwah Dalam Negeri
+    public function doupload_sp_safari()
+    {
+        $type = explode('.', $_FILES["surat_permohonan_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["surat_permohonan_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["surat_permohonan_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["surat_permohonan_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_proposal_safari()
+    {
+        $type = explode('.', $_FILES["proposal_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["proposal_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["proposal_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["proposal_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_cv_safari()
+    {
+        $type = explode('.', $_FILES["cv_crmh_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["cv_crmh_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["cv_crmh_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["cv_crmh_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_paspor_safari()
+    {
+        $type = explode('.', $_FILES["pasp_crmh_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["pasp_crmh_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["pasp_crmh_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["pasp_crmh_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_ktp_safari()
+    {
+        $type = explode('.', $_FILES["ktp_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["ktp_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["ktp_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["ktp_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_foto_safari()
+    {
+        $type = explode('.', $_FILES["pas_foto_crmh_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["pas_foto_crmh_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["pas_foto_crmh_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["pas_foto_crmh_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_crt_safari()
+    {
+        $type = explode('.', $_FILES["crt_crmh_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["crt_crmh_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["crt_crmh_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["crt_crmh_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
 }
 
 /* End of file Uplodan.php */

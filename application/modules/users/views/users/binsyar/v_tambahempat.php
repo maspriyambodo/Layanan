@@ -89,7 +89,7 @@
                 </div>
               </div>
 
-              <div class="form-row">
+              <!-- <div class="form-row">
                 <div class="form-group col-md-6">
                   <label>Pendidikan Formal</label>
                   <div class="input-group mb-6">
@@ -131,7 +131,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
           </fieldset><br>
 
           <fieldset>
