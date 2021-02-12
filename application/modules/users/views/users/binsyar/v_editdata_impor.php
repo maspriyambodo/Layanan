@@ -30,17 +30,22 @@
                 <fieldset>
                     <!-- <legend>Data Pemohon :</legend> -->
                     <div class="form-row">
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label>NIK</label>
                         <input type="text" class="form-control" name="nik" value="<?php echo $dataku[0]->nik;?>" readonly>
                       </div>
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label>Nama Lengkap</label>
                         <input type="text" class="form-control" name="fullname" value="<?php echo $dataku[0]->fullname;?>" readonly>
                       </div>
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label>Jenis Layanan</label>
                         <input type="text" class="form-control" name="fullname" value="<?php echo $dataku[0]->jenis_layanan;?>" readonly>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label>Status Permohonan</label>
+                        <input type="text" class="form-control" name="fullname" value="<?php echo $dataku[0]->status_permohonan;?>" readonly>
+                        <small>Selanjutnya, menunggu disetujui atau ditolak</small>
                       </div>
                     </div>
 
@@ -65,28 +70,35 @@
             </div>
             <!--Data Kegiatan-->
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-              <form action="<?php echo site_url('users/binsyar/simpanedit_ekspor');?>" method="post">
+              <form action="<?php echo site_url('users/binsyar/simpanedit_impor');?>" method="post">
                 <fieldset>
                     <!-- <legend>Data Kegiatan :</legend> -->
                     <div class="form-row">
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-6">
                         <label>Nama Kegiatan</label>
                         <input type="text" class="form-control" name="nm_keg" value="<?php echo $dataku[1]->nm_keg;?>">
                         <input type="hidden" class="form-control" name="id" value="<?php echo $dataku[1]->id;?>">
                         <input type="hidden" class="form-control" name="id_layanan" value="<?php echo $dataku[1]->id_layanan;?>">
                         <input type="hidden" class="form-control" name="sysupdatedate" value="<?php echo date('Y-m-d h:i:s');?>">
                       </div>
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-6">
+                        <label>Nama Lembaga</label>
+                        <input type="text" class="form-control" name="lemb_keg" value="<?php echo $dataku[1]->lemb_keg;?>">
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
                         <label>Tanggal Awal Kegiatan</label>
                         <input type="text" class="form-control" name="tgl_awal_keg" placeholder="dd-mm-yyyy" onclick="this.type='date'" onmouseout="timeFunctionLong(this)" value="<?php echo $dataku[1]->tgl_awal_keg;?>">
                         <?php echo form_error('tgl_awal_keg');?>
                       </div>
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-4">
                         <label>Tanggal Akhir Kegiatan</label>
                         <input type="text" class="form-control" name="tgl_akhir_keg" placeholder="dd-mm-yyyy" onclick="this.type='date'" onmouseout="timeFunctionLong(this)" value="<?php echo $dataku[1]->tgl_akhir_keg;?>">
                         <?php echo form_error('tgl_akhir_keg');?>
                       </div>
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-4">
                         <label>Estimasi Jumlah Jamaah</label>
                         <input type="number" class="form-control" name="esti_keg" value="<?php echo $dataku[1]->esti_keg;?>">
                         <?php echo form_error('esti_keg');?>
@@ -94,35 +106,49 @@
                     </div>
 
                     <div class="form-row">
-                      <div class="form-group col-md-4">
-                        <label>Negara Tujuan</label>
-                        <select class="form-control" name="code_negara">
+                      <div class="form-group col-md-3">
+                        <label>Provinsi</label>
+                        <select class="form-control" name="id_provinsi" id="provinsi">
                           <option>Pilih . .</option>
-                          <?php foreach($dt_negara as $negara){?>
-                          <option <?php if($dataku[1]->code_negara === $negara->id){echo "selected"; } ?> value="<?php echo $negara->id;?>"><?php echo $negara->country;?></option>
+                          <?php foreach($dt_provinsi as $provinsi){?>
+                          <option <?php if($dataku[1]->id_provinsi === $provinsi->id_provinsi){echo "selected"; } ?> value="<?php echo $provinsi->id_provinsi;?>"><?php echo $provinsi->nama;?></option>
                           <?php }?>
                         </select>
                       </div>
-                      <div class="form-group col-md-4">
-                        <label>Lokasi Kegiatan</label>
-                        <input type="text" class="form-control" name="alamat_keg" value="<?php echo $dataku[1]->alamat_keg;?>">
-                        <?php echo form_error('alamat_keg');?>
+                      <div class="form-group col-md-3">
+                        <label>Kabupaten</label>
+                        <select class="form-control" name="id_kabupaten" id="kabupaten">
+                          <?php foreach($dt_kabupaten as $kabupaten){?>
+                          <option <?php if($dataku[1]->id_kabupaten === $kabupaten->id_kabupaten){echo "selected"; } ?> value="<?php echo $kabupaten->id_kabupaten;?>"><?php echo $kabupaten->nama;?></option>
+                          <?php }?>
+                        </select>
                       </div>
-                      <div class="form-group col-md-4">
-                        <label for="inputEmail4">Lembaga Penyelenggara</label>
-                        <input type="text" class="form-control" name="lemb_keg" value="<?php echo $dataku[1]->lemb_keg;?>">
-                        <?php echo form_error('lemb_keg');?>
+                      <div class="form-group col-md-3">
+                        <label for="inputEmail4">Kecamatan</label>
+                        <select class="form-control" name="id_kecamatan" id="kecamatan">
+                          <?php foreach($dt_kecamatan as $kecamatan){?>
+                          <option <?php if($dataku[1]->id_kecamatan === $kecamatan->id_kecamatan){echo "selected"; } ?> value="<?php echo $kecamatan->id_kecamatan;?>"><?php echo $kecamatan->nama;?></option>
+                          <?php }?>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="inputPassword4">Kelurahan</label>
+                        <select class="form-control" name="id_kelurahan" id="kelurahan">
+                          <?php foreach($dt_kelurahan as $kelurahan){?>
+                          <option <?php if($dataku[1]->id_kelurahan === $kelurahan->id_kelurahan){echo "selected"; } ?> value="<?php echo $kelurahan->id_kelurahan;?>"><?php echo $kelurahan->nama;?></option>
+                          <?php }?>
+                        </select>
                       </div>
                     </div>
                 </fieldset><br>
                 <button type="submit" class="btn btn-primary btn-md"><i class="material-icons">save</i>PERBAHARUI DATA</button>
-                <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/dataekspor') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
+                <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/dataimpor') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
               </form>
             </div>
 
             <!--Data Penceramah-->
             <div class="tab-pane fade" id="nav-penceramah" role="tabpanel" aria-labelledby="nav-penceramah-tab">
-              <form action="<?php echo site_url('users/binsyar/simpanedit_ekspor_penceramah');?>" method="post">
+              <form action="<?php echo site_url('users/binsyar/simpanedit_impor_penceramah');?>" method="post">
                 <fieldset>
                     <div class="form-row">
                       <div class="form-group col-md-3">
@@ -179,7 +205,7 @@
                     </div>
 
                     <div class="form-row">
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-2">
                         <label>Jenis Kelamin</label>
                         <select class="form-control" name="jns_kelamin">
                           <option <?php if($dataku[2]->jns_kelamin == 1){echo "selected"; } ?> value="1">Laki-laki</option>
@@ -187,12 +213,12 @@
                         </select>
                         <?php echo form_error('jns_kelamin');?>
                       </div>
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-2">
                         <label>Nomor Passport</label>
                         <input type="text" class="form-control" name="no_paspor" value="<?php echo $dataku[2]->no_paspor;?>">
                         <?php echo form_error('no_paspor');?>
                       </div>
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-2">
                         <label for="inputEmail4">Tempat Lahir</label>
                         <input type="text" class="form-control" name="tmp_lhr" value="<?php echo $dataku[2]->tmp_lhr;?>">
                         <?php echo form_error('tmp_lhr');?>
@@ -202,85 +228,50 @@
                         <input type="text" class="form-control" name="tgl_lhr" value="<?php echo $dataku[2]->tgl_lhr;?>">
                         <?php echo form_error('tgl_lhr');?>
                       </div>
-                    </div>
-
-                    <div class="form-row">
                       <div class="form-group col-md-3">
-                        <label>Provinsi</label>
-                        <select class="form-control" name="id_provinsi" id="provinsi">
-                          <option>Pilih . .</option>
-                          <?php foreach($dt_provinsi as $provinsi){?>
-                          <option <?php if($dataku[2]->id_provinsi === $provinsi->id_provinsi){echo "selected"; } ?> value="<?php echo $provinsi->id_provinsi;?>"><?php echo $provinsi->nama;?></option>
+                        <label>Negara Asal</label>
+                        <select class="form-control" name="negara_asl">
+                          <?php foreach($dt_negara as $negara){?>
+                          <option <?php if($dataku[2]->negara_asl === $negara->id){echo "selected"; } ?> value="<?php echo $negara->id;?>"><?php echo $negara->country;?></option>
                           <?php }?>
                         </select>
-                      </div>
-                      <div class="form-group col-md-3">
-                        <label>Kabupaten</label>
-                        <select class="form-control" name="id_kabupaten" id="kabupaten">
-                          <?php foreach($dt_kabupaten as $kabupaten){?>
-                          <option <?php if($dataku[2]->id_kabupaten === $kabupaten->id_kabupaten){echo "selected"; } ?> value="<?php echo $kabupaten->id_kabupaten;?>"><?php echo $kabupaten->nama;?></option>
-                          <?php }?>
-                        </select>
-                      </div>
-                      <div class="form-group col-md-3">
-                        <label for="inputEmail4">Kecamatan</label>
-                        <select class="form-control" name="id_kecamatan" id="kecamatan">
-                          <?php foreach($dt_kecamatan as $kecamatan){?>
-                          <option <?php if($dataku[2]->id_kecamatan === $kecamatan->id_kecamatan){echo "selected"; } ?> value="<?php echo $kecamatan->id_kecamatan;?>"><?php echo $kecamatan->nama;?></option>
-                          <?php }?>
-                        </select>
-                      </div>
-                      <div class="form-group col-md-3">
-                        <label for="inputPassword4">Kelurahan</label>
-                        <select class="form-control" name="id_kelurahan" id="kelurahan">
-                          <?php foreach($dt_kelurahan as $kelurahan){?>
-                          <option <?php if($dataku[2]->id_kelurahan === $kelurahan->id_kelurahan){echo "selected"; } ?> value="<?php echo $kelurahan->id_kelurahan;?>"><?php echo $kelurahan->nama;?></option>
-                          <?php }?>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="form-row">
-                      <div class="form-group col-md-12">
-                        <label>Alamat Penceramah</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="almt_penceramah"><?php echo $dataku[2]->almt_penceramah;?></textarea>
                       </div>
                     </div>
                 </fieldset><br>
                 <button type="submit" class="btn btn-primary btn-md"><i class="material-icons">save</i>PERBAHARUI DATA</button>
-                <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/dataekspor') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
+                <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/dataimpor') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
               </form>
             </div>
 
             <!--Data Lampiran-->
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-              <form method="post" action="<?php echo site_url('users/binsyar/simpanedit_ekspor_lampiran');?>" enctype="multipart/form-data">
+              <form method="post" action="<?php echo site_url('users/binsyar/simpanedit_impor_lampiran');?>" enctype="multipart/form-data">
                 <fieldset>
                     <div class="form-row">
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">Surat Permohonan</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
-                          <img src="<?php echo base_url().$dataku[3]->surat_permohonan_luar;?>">
+                          <img src="<?php echo base_url().$dataku[4]->surat_permohonan_dalam;?>">
                         </div><br>
-                        <input type="file" class="form-control-file" name="surat_permohonan_luar" value="<?php echo $dataku[3]->surat_permohonan_luar;?>">
-                        <input type="hidden" class="form-control-file" name="id" value="<?php echo $dataku[3]->id;?>">
-                        <input type="hidden" class="form-control-file" name="id_layanan" value="<?php echo $dataku[3]->id_layanan;?>">
+                        <input type="file" class="form-control-file" name="surat_permohonan_dalam" value="<?php echo $dataku[4]->surat_permohonan_dalam;?>">
+                        <input type="hidden" class="form-control-file" name="id" value="<?php echo $dataku[4]->id;?>">
+                        <input type="hidden" class="form-control-file" name="id_layanan" value="<?php echo $dataku[4]->id_layanan;?>">
                       </div>
 
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">Proposal</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
-                          <img src="<?php echo base_url().$dataku[3]->proposal_luar;?>">
+                          <img src="<?php echo base_url().$dataku[4]->proposal_dalam;?>">
                         </div><br>
-                        <input type="file" class="form-control-file" name="proposal_luar" value="<?php echo $dataku[3]->proposal_luar;?>">
+                        <input type="file" class="form-control-file" name="proposal_dalam" value="<?php echo $dataku[4]->proposal_dalam;?>">
                       </div>
 
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">CV Penceramah</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
-                          <img src="<?php echo base_url().$dataku[3]->cv_crmh_luar;?>">
+                          <img src="<?php echo base_url().$dataku[4]->cv_crmh_dalam;?>">
                         </div><br>
-                        <input type="file" class="form-control-file" name="cv_crmh_luar" value="<?php echo $dataku[3]->cv_crmh_luar;?>">
+                        <input type="file" class="form-control-file" name="cv_crmh_dalam" value="<?php echo $dataku[4]->cv_crmh_dalam;?>">
                       </div>
                     </div>
 
@@ -288,30 +279,30 @@
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">FC Pasport Penceramah</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
-                          <img src="<?php echo base_url().$dataku[3]->pasp_crmh_luar;?>">
+                          <img src="<?php echo base_url().$dataku[4]->pasp_crmh_dalam;?>">
                         </div><br>
-                        <input type="file" class="form-control-file" name="pasp_crmh_luar" value="<?php echo $dataku[3]->pasp_crmh_luar;?>">
+                        <input type="file" class="form-control-file" name="pasp_crmh_dalam" value="<?php echo $dataku[4]->pasp_crmh_dalam;?>">
                       </div>
 
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">FC Passport Pengundang</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
-                          <img src="<?php echo base_url().$dataku[3]->pasp_pengundang_luar;?>">
+                          <img src="<?php echo base_url().$dataku[4]->ktp_dalam;?>">
                         </div><br>
-                        <input type="file" class="form-control-file" name="pasp_pengundang_luar" value="<?php echo $dataku[3]->pasp_pengundang_luar;?>">
+                        <input type="file" class="form-control-file" name="ktp_dalam" value="<?php echo $dataku[4]->ktp_dalam;?>">
                       </div>
 
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">Pas Foto Penceramah</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
-                          <img src="<?php echo base_url().$dataku[3]->pas_foto_crmh_luar;?>">
+                          <img src="<?php echo base_url().$dataku[4]->pas_foto_crmh_dalam;?>">
                         </div><br>
-                        <input type="file" class="form-control-file" name="pas_foto_crmh_luar" value="<?php echo $dataku[3]->pas_foto_crmh_luar;?>">
+                        <input type="file" class="form-control-file" name="pas_foto_crmh_dalam" value="<?php echo $dataku[4]->pas_foto_crmh_dalam;?>">
                       </div>
                     </div>
                 </fieldset><br>
                 <button type="submit" class="btn btn-primary btn-md"><i class="material-icons">save</i>PERBAHARUI DATA</button>
-                <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/dataekspor') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
+                <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/dataimpor') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
               </form>
             </div>
           </div>

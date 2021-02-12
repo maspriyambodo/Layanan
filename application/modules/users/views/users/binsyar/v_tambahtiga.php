@@ -1,7 +1,7 @@
 <form method="post" action="<?php echo site_url('users/binsyar/simpan_formc');?>" enctype="multipart/form-data">
 <!-- Kumpulan inputan di hidden -->
 <input type="hidden" name="id_stat" value="1" />
-<input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[0]->id;?>" />
+<input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[2]->id;?>" />
 <input type="hidden" name="id" value="<?php echo $id_dtlayanan->id;?>" />
 <input type="hidden" name="id_user" value="<?php echo $id_session->id;?>" />
 <input type="hidden" name="syscreatedate" value="<?php echo date('Y-m-d h:i:s');?>">
@@ -70,12 +70,12 @@
               <div class="form-row">
                 <div class="form-group col-md-4">
                   <label>Jenis Kelamin</label>
-                  <select class="form-control" id="exampleFormControlSelect1" name="jen_kel">
+                  <select class="form-control" id="exampleFormControlSelect1" name="jns_kelamin">
                     <option>Pilih . .</option>
                     <option value="1">Laki-Laki</option>
                     <option value="2">Wanita</option>
                   </select>
-                  <?php echo form_error('jen_kel',"<div style='color:red'>","</div>");?>
+                  <?php echo form_error('jns_kelamin',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Tempat Lahir</label>
@@ -92,25 +92,18 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label>No. Passport</label>
-                  <input type="number" class="form-control" name="no_pass">
-                  <?php echo form_error('no_pass',"<div style='color:red'>","</div>");?>
+                  <input type="number" class="form-control" name="no_paspor">
+                  <?php echo form_error('no_paspor',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-6">
                   <label>Negara Asal</label>
-                  <select class="form-control" id="exampleFormControlSelect1" name="neg_keg">
+                  <select class="form-control" id="exampleFormControlSelect1" name="negara_asl">
                     <option>Pilih . .</option>
-                    <option value="1">Indonesia</option>
-                    <option value="2">Malaysia</option>
-                    <option value="3">Singapura</option>
-                    <option value="4">Thailand</option>
-                    <option value="5">India</option>
-                    <option value="6">Myanmar</option>
-                    <option value="7">Jepang</option>
-                    <option value="8">Inggris</option>
-                    <option value="9">Amerika Serikat</option>
-                    <option value="10">Rusia</option>
+                    <?php foreach($dt_negara as $negara){?>
+                    <option value="<?php echo $negara->id;?>"><?php echo $negara->country;?></option>
+                    <?php }?>
                   </select>
-                  <?php echo form_error('neg_keg',"<div style='color:red'>","</div>");?>
+                  <?php echo form_error('negara_asl',"<div style='color:red'>","</div>");?>
                 </div>
               </div>
           </fieldset><br>
@@ -186,19 +179,45 @@
           <fieldset>
               <legend>Data Lampiran Dokumen :</legend>
               <div class="form-row">
-                <div class="form-group col-md-8">
-                  <label style="margin-bottom: 10px;">Dokumen Pendukung (Surat Permohonan, Proposal, CV Penceramah, FC Passport Penceramah, Scan KTP, Pas Foto Penceramah)</label>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">Surat Permohonan</label>
                   <input type="hidden" name="id_layanan" value="<?php echo $id_dtlayanan->id+1;?>" />
-                  <?php for ($i=1; $i <=6 ; $i++) :?>
-                  <input type="file" class="form-control-file" name="files<?php echo $i;?>" required><br>
-                  <?php endfor;?>
-                  <?php echo form_error('nama_file',"<div style='color:red'>","</div>");?>
+                  <input type="file" class="form-control-file" name="surat_permohonan_dalam"><br>
+                  <?php echo form_error('surat_permohonan_dalam',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">Proposal Penceramah</label>
+                  <input type="file" class="form-control-file" name="proposal_dalam"><br>
+                  <?php echo form_error('proposal_dalam',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">CV Penceramah</label>
+                  <input type="file" class="form-control-file" name="cv_crmh_dalam"><br>
+                  <?php echo form_error('cv_crmh_dalam',"<div style='color:red'>","</div>");?>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">FC Passport Penceramah</label>
+                  <input type="file" class="form-control-file" name="pasp_crmh_dalam"><br>
+                  <?php echo form_error('pasp_crmh_dalam',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">FC KTP</label>
+                  <input type="file" class="form-control-file" name="ktp_dalam"><br>
+                  <?php echo form_error('ktp_dalam',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">Pas Foto Penceramah</label>
+                  <input type="file" class="form-control-file" name="pas_foto_crmh_dalam"><br>
+                  <?php echo form_error('pas_foto_crmh_dalam',"<div style='color:red'>","</div>");?>
                 </div>
               </div>
           </fieldset><br>
 
           <button type="submit" class="btn btn-primary btn-md"><i class="material-icons">save</i>KIRIM DATA</button>
-          <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/datapermohonan') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
+          <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/dataimpor') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
 
         </div>
     </div>
