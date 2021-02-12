@@ -1,7 +1,7 @@
 <form method="post" action="<?php echo site_url('users/binsyar/simpan_formd');?>" enctype="multipart/form-data">
 <!-- Kumpulan inputan di hidden -->
 <input type="hidden" name="id_stat" value="1" />
-<input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[0]->id;?>" />
+<input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[5]->id;?>" />
 <input type="hidden" name="id" value="<?php echo $id_dtlayanan->id;?>" />
 <input type="hidden" name="id_user" value="<?php echo $id_session->id;?>" />
 <input type="hidden" name="syscreatedate" value="<?php echo date('Y-m-d h:i:s');?>">
@@ -70,12 +70,12 @@
               <div class="form-row">
                 <div class="form-group col-md-4">
                   <label>Jenis Kelamin</label>
-                  <select class="form-control" id="exampleFormControlSelect1" name="jen_kel">
+                  <select class="form-control" id="exampleFormControlSelect1" name="jns_kelamin">
                     <option>Pilih . .</option>
                     <option value="1">Laki-Laki</option>
                     <option value="2">Wanita</option>
                   </select>
-                  <?php echo form_error('jen_kel',"<div style='color:red'>","</div>");?>
+                  <?php echo form_error('jns_kelamin',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Tempat Lahir</label>
@@ -205,19 +205,50 @@
           <fieldset>
               <legend>Data Lampiran Dokumen :</legend>
               <div class="form-row">
-                <div class="form-group col-md-8">
-                  <label style="margin-bottom: 10px;">Dokumen Pendukung (Surat Permohonan, Proposal Program, CV Penceramah, FC Passport Penceramah, Scan KTP, Pas Foto Penceramah, Scan Sertifikat)</label>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">Surat Permohonan</label>
                   <input type="hidden" name="id_layanan" value="<?php echo $id_dtlayanan->id+1;?>" />
-                  <?php for ($i=1; $i <=7 ; $i++) :?>
-                  <input type="file" class="form-control-file" name="files<?php echo $i;?>"><br>
-                  <?php endfor;?>
-                  <?php echo form_error('nama_file',"<div style='color:red'>","</div>");?>
+                  <input type="file" class="form-control-file" name="surat_permohonan_safari"><br>
+                  <?php echo form_error('surat_permohonan_safari',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">Proposal Program</label>
+                  <input type="file" class="form-control-file" name="proposal_safari"><br>
+                  <?php echo form_error('proposal_safari',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-4">
+                  <label style="margin-bottom: 10px;">CV Penceramah</label>
+                  <input type="file" class="form-control-file" name="cv_crmh_safari"><br>
+                  <?php echo form_error('cv_crmh_safari',"<div style='color:red'>","</div>");?>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label style="margin-bottom: 10px;">FC Passport Penceramah</label>
+                  <input type="file" class="form-control-file" name="pasp_crmh_safari"><br>
+                  <?php echo form_error('pasp_crmh_safari',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-3">
+                  <label style="margin-bottom: 10px;">FC KTP Penceramah</label>
+                  <input type="file" class="form-control-file" name="ktp_safari"><br>
+                  <?php echo form_error('ktp_safari',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-3">
+                  <label style="margin-bottom: 10px;">Pas Foto Penceramah</label>
+                  <input type="file" class="form-control-file" name="pas_foto_crmh_safari"><br>
+                  <?php echo form_error('pas_foto_crmh_safari',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-3">
+                  <label style="margin-bottom: 10px;">Scan Sertifikat Penceramah</label>
+                  <input type="file" class="form-control-file" name="crt_crmh_safari"><br>
+                  <?php echo form_error('crt_crmh_safari',"<div style='color:red'>","</div>");?>
                 </div>
               </div>
           </fieldset><br>
 
           <button type="submit" class="btn btn-primary btn-md"><i class="material-icons">save</i>KIRIM DATA</button>
-          <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/datapermohonan') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
+          <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/datasafari') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
 
         </div>
     </div>
