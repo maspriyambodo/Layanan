@@ -17,11 +17,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * LAYANAN IZIN KEGIATAN KEAGAMAAN
  * @author centos
  */
-class Layanan_1 extends MX_Controller {
+class Layanan_1 extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('M_layanan1');
+        $this->load->model(['M_layanan1']);
     }
 
     private function Mail($exec) {
@@ -60,12 +60,13 @@ class Layanan_1 extends MX_Controller {
     public function index() {
         $this->template->setPageId("DITERIMA_IKK");
         $data = [];
+        $data['msg'] = ['gagal' => $this->session->flashdata('gagal'), 'sukses' => $this->session->flashdata('sukses')];
         $sitetitle = "IZIN KEGIATAN KEAGAMAAN";
         $pagetitle = "Izin Kegiatan Keagamaan";
         $view = "layanan1/v_index";
         $breadcrumbs = [
             [
-                "title" => "Izin Kegiatan Keagamaan",
+                "title" => "Permohonan Masuk",
                 "link" => "",
                 "is_actived" => true
             ]
@@ -112,12 +113,12 @@ class Layanan_1 extends MX_Controller {
         if (empty($data['detil'])) {
             redirect(base_url(''), 'refresh');
         } else {
-            $sitetitle = "IZIN KEGIATAN KEAGAMAAN";
+            $sitetitle = $data['detil'][0]->nm_keg;
             $pagetitle = "Izin Kegiatan Keagamaan";
             $view = "layanan1/v_detail";
             $breadcrumbs = [
                 [
-                    "title" => "Izin Kegiatan Keagamaan",
+                    "title" => "Permohonan Masuk",
                     "link" => base_url('Urais/Layanan_1/index/'),
                     "is_actived" => false
                 ],
@@ -261,6 +262,148 @@ class Layanan_1 extends MX_Controller {
         //$mail = $this->M_layanan1->Detail($this->input->post('id_layanan'));
         //$this->Mail($mail);
         redirect(base_url('Urais/Layanan_1/Proses/'), 'refresh');
+    }
+
+    public function Tambah() {
+        $this->template->setPageId("DITERIMA_IKK");
+        $data = [];
+        $data['provinsi'] = $this->M_layanan1->Provinsi();
+        $data['msg'] = ['gagal' => $this->session->flashdata('gagal'), 'sukses' => $this->session->flashdata('sukses')];
+        $sitetitle = "Tambah Izin Kegiatan Keagamaan";
+        $pagetitle = "Izin Kegiatan Keagamaan";
+        $view = "layanan1/v_tambahikk";
+        $breadcrumbs = [["title" => "Izin Kegiatan Keagamaan", "link" => base_url('Urais/Layanan_1/index/'), "is_actived" => false,], ["title" => "Tambah", "link" => "", "is_actived" => true,]];
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data["js_inlines"] = $js_inlines;
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
+    public function Getkab() {
+        $id = $this->input->post_get('id_provinsi');
+        $this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json', 'utf-8')
+                ->set_output(json_encode($this->M_layanan1->Getkab($id), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+                ->_display();
+        exit;
+    }
+
+    public function Getkec() {
+        $id = $this->input->post_get('id_kabupaten');
+        $this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json', 'utf-8')
+                ->set_output(json_encode($this->M_layanan1->Getkec($id), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+                ->_display();
+        exit;
+    }
+
+    public function Getkel() {
+        $id = $this->input->post_get('id_kecamatan');
+        $this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json', 'utf-8')
+                ->set_output(json_encode($this->M_layanan1->Getkel($id), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+                ->_display();
+        exit;
+    }
+
+    private function Upload_dokmohon($param) {
+        $config['upload_path'] = FCPATH . 'assets/uploads/binsyar/';
+        $config['file_name'] = date("YmdHis");
+        $config['allowed_types'] = 'gif|jpg|png|jpeg|gif|bmp|doc|docx|xls|xlsx|pdf';
+        $config['max_size'] = 2048;
+        $config['maintain_ratio'] = true;
+        $config['file_ext_tolower'] = true;
+        $config['remove_spaces'] = true;
+        $this->load->library('upload', $config);
+        if ($this->upload->do_upload($param) == true) {
+            $data = $this->upload->data();
+//            $picture = ['id' => '', 'nik' => $this->result[0]->nik, 'nopen' => $this->uri->segment(4), 'tgl_input' => date("Y-m-d h:i:s"), 'path' => "assets/images/lap_marketing/" . $data['file_name']];
+//            $this->M_Interaksi->Insertpict($picture);
+            $result = $data;
+        } else {
+            log_message('error', $this->upload->display_errors('<p>', '</p>'));
+            $result = false;
+        }
+        return $result;
+    }
+
+    public function Simpan() {
+        //$data['sys_user']['no_ktp'];
+        //Array ( [file_name] => kacm.png [file_type] => image/png [file_path] => /var/www/layanan/assets/uploads/binsyar/ [full_path] => /var/www/layanan/assets/uploads/binsyar/kacm.png [raw_name] => kacm [orig_name] => kacm.png [client_name] => QR_code_trade_api.png [file_ext] => .png [file_size] => 2.56 [is_image] => 1 [image_width] => 200 [image_height] => 200 [image_type] => png [image_size_str] => width="200" height="200" ) 
+        $ktp = $this->Upload_dokmohon("ktp_keg");
+        $proposal = $this->Upload_dokmohon("proposal");
+        $sp_keg = $this->Upload_dokmohon("sp_keg");
+        if ($ktp == false) {
+            log_message('error', APPPATH . 'modules/Urais/Layanan_1/Simpan/ ' . ' Gagal ketika unggah KTP Pemohon');
+            unlink(FCPATH . 'assets/uploads/binsyar/' . $proposal['file_name']);
+            unlink(FCPATH . 'assets/uploads/binsyar/' . $sp_keg['file_name']);
+            redirect(base_url('Urais/Layanan_1/Tambah/'), $this->session->set_flashdata('gagal', 'Gagal ketika unggah KTP Pemohon'));
+        } elseif ($proposal == false) {
+            log_message('error', APPPATH . 'modules/Urais/Layanan_1/Simpan/ ' . ' Gagal ketika unggah Proposal Kegiatan');
+            unlink(FCPATH . 'assets/uploads/binsyar/' . $ktp['file_name']);
+            unlink(FCPATH . 'assets/uploads/binsyar/' . $sp_keg['file_name']);
+            redirect(base_url('Urais/Layanan_1/Tambah/'), $this->session->set_flashdata('gagal', 'Gagal ketika unggah Proposal Kegiatan'));
+        } elseif ($sp_keg == false) {
+            log_message('error', APPPATH . 'modules/Urais/Layanan_1/Simpan/ ' . ' Gagal ketika unggah Surat Permohonan Kegiatan');
+            unlink(FCPATH . 'assets/uploads/binsyar/' . $ktp['file_name']);
+            unlink(FCPATH . 'assets/uploads/binsyar/' . $proposal['file_name']);
+            redirect(base_url('Urais/Layanan_1/Tambah/'), $this->session->set_flashdata('gagal', 'Gagal ketika unggah Surat Permohonan Kegiatan'));
+        } else {
+            $data = [
+                'sys_user' => [
+                    'no_ktp' => $this->input->post('ktp'),
+                    'tanggal_lahir' => $this->input->post('tgl_lahir'),
+                    'uname' => $this->input->post('uname'),
+                    'nama_lengkap' => $this->input->post('nama'),
+                    'mail_user' => $this->input->post('mali'),
+                    'telepon' => $this->input->post('telpon')
+                ],
+                'dt_layanan' => [
+                    'provinsi' => $this->input->post('provinsi'),
+                    'kabupaten' => $this->input->post('kabupaten'),
+                    'kecamatan' => $this->input->post('kectxt'),
+                    'kelurahan' => $this->input->post('keltxt'),
+                    'keterangan_kegiatan' => $this->input->post('keterangan_kegiatan'),
+                    'mt_layanan' => 1
+                ],
+                'dt_kegiatan' => [
+                    'nama_kegiatan' => $this->input->post('nm_keg'),
+                    'jumlah_peserta' => $this->input->post('esti_keg'),
+                    'lembaga' => $this->input->post('lemb_keg'),
+                    'tmt_awal' => $this->input->post('tgl_awal_keg'),
+                    'tmt_akhir' => $this->input->post('tgl_akhir_keg'),
+                    'alamat_kegiatan' => $this->input->post('alamat_kegiatan')
+                ],
+                'dt_penceramah' => [
+                    'penceramah' => $this->input->post('narsum')
+                ],
+                'dt_layanan_dokumen' => [
+                    'ktp_kegiatan' => $ktp['file_name'],
+                    'proposal_kegiatan' => $proposal['file_name'],
+                    'sp_keg' => $sp_keg['file_name']
+                ]
+            ];
+            $exec = $this->M_layanan1->Insert_user($data);
+            if ($exec['status'] == true) {
+                redirect(base_url('Urais/Layanan_1/index/'), $this->session->set_flashdata('sukses', 'Berhasil tambah izin kegiatan keagamaan!'));
+            } else {
+                redirect(base_url('Urais/Layanan_1/Tambah/'), $this->session->set_flashdata('gagal', $exec['pesan']));
+            }
+        }
     }
 
 }

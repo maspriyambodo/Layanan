@@ -103,7 +103,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md" style="margin: 10px 0px;">
-                <a href="<?php echo base_url('assets/images/' . $detil[0]->ktp_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                <a href="<?php echo base_url('assets/uploads/binsyar/' . $detil[0]->ktp_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
                     <div class="card-body">
                         <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                             <i class="fas fa-id-card" style="font-size: 48px;"></i>
@@ -115,7 +115,7 @@
                 </a>
             </div>
             <div class="col-md" style="margin: 10px 0px;">
-                <a href="<?php echo base_url('assets/images/' . $detil[0]->surat_permohonan_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                <a href="<?php echo base_url('assets/uploads/binsyar/' . $detil[0]->surat_permohonan_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
                     <div class="card-body">
                         <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                             <i class="fas fa-file-alt" style="font-size: 48px;"></i>
@@ -127,7 +127,7 @@
                 </a>
             </div>
             <div class="col-md" style="margin: 10px 0px;">
-                <a href="<?php echo base_url('assets/images/' . $detil[0]->proposal_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                <a href="<?php echo base_url('assets/uploads/binsyar/' . $detil[0]->proposal_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
                     <div class="card-body">
                         <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                             <i class="fas fa-file" style="font-size: 48px;"></i>
