@@ -158,7 +158,7 @@ echo $js_inlines;
                         + ''
 <?php endif; ?>
 <?php if ($this->izin->edit): ?>
-                        + ('<a class="text-dark" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Detail" style="margin-right:10px;"><i class="far fa-eye"></i></a>');
+                        + ('<a class="text-warning" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit Permohonan" style="margin:0px 10px;"><i class="far fa-edit"></i></a>' + '<a class="text-dark" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Detail Permohonan"><i class="far fa-eye"></i></a>');
 <?php endif; ?>
 <?php if ($this->izin->gapunya): ?>
                         + ''
@@ -171,6 +171,9 @@ echo $js_inlines;
     };
     Page.Detail = function (id) {
     window.location.href = '<?php echo base_url('Urais/Layanan_1/Detail/'); ?>' + id;
+    };
+    Page.Edit = function (id) {
+    window.location.href = '<?php echo base_url('Urais/Layanan_1/Edit/'); ?>' + id;
     };
     $(function () {
     Page.InitGrid();
