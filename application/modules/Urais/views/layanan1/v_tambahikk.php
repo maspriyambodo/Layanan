@@ -1,310 +1,376 @@
-<form method="post" action="<?php echo site_url('users/binsyar/simpan_forma');?>" enctype="multipart/form-data">
-<!-- Kumpulan inputan di hidden -->
-<input type="hidden" name="id_stat" value="1" />
-<input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[0]->id;?>" />
-<input type="hidden" name="id" value="<?php echo $id_dtlayanan->id;?>" />
-<input type="hidden" name="id_user" value="<?php echo $id_session->id;?>" />
-<input type="hidden" name="syscreatedate" value="<?php echo date('Y-m-d h:i:s');?>">
-
-<div class="widget-list">
-    <div class="col-md-12 widget-holder widget-full-height">
-          
-    </div>
-
-    <div class="col-md-12 widget-holder widget-full-height">
-        <div class="widget-bg">
-            <fieldset>
-              <legend>Data Pemohon :</legend>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label>NIK</label>
-                  <input type="text" class="form-control" name="nik" value="<?php echo $id_session->nik;?>" readonly>
-                </div>
-                <div class="form-group col-md-6">
-                  <label>Nama Lengkap</label>
-                  <input type="text" class="form-control" name="fullname" value="<?php echo $id_session->fullname;?>" readonly>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group col-md-4">
-                  <label>Tanggal Lahir</label>
-                  <input type="text" class="form-control" name="tgl_lhr" value="<?php echo $id_session->tgl_lhr;?>" readonly>
-                </div>
-                <div class="form-group col-md-4">
-                  <label>Telepon</label>
-                  <input type="text" class="form-control" name="telp" value="<?php echo $id_session->telp;?>" readonly>
-                </div>
-                <div class="form-group col-md-4">
-                  <label>Email</label>
-                  <input type="text" class="form-control" name="email" value="<?php echo $id_session->email;?>" readonly>
-                </div>
-              </div>
-          </fieldset><br>
-
-          <fieldset>
-              <legend>Data Kegiatan :</legend>
-              <div class="form-row">
-                <div class="form-group col-md-12">
-                  <label>Nama Penceramah</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <button class="btn btn-outline-secondary" type="button" id="btn-reset-form" style="background-color: #000; border: 1px solid #000; color: white;">Hapus</button>
-                      <button class="btn btn-outline-secondary btn-primary" type="button" id="btn-tambah-form">Tambah Penceramah</button>
+<form action="<?php echo base_url('Urais/Layanan_1/Simpan/'); ?>" method="post" enctype="multipart/form-data">
+    <div class="card card-custom" style="margin-top:1.32857em;">
+        <div class="card-header">
+            <div class="card-title">
+                Detail Data Pemohon
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Nomor KTP:</label>
+                        <input type="text" name="ktp" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)"/>
                     </div>
-                    <input type="text" class="form-control" name="narsum[]" placeholder="" aria-label="" aria-describedby="basic-addon1">
-                    <?php echo form_error('narsum',"<div style='color:red'>","</div>");?>
-                  </div>
                 </div>
-
-                <div class="form-group col-md-12">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend" id="insert-form">
-                      <div ></div>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Nama Lengkap:</label>
+                        <input type="text" name="nama" class="form-control" required="" autocomplete="off"/>
                     </div>
-                    <input type="hidden" id="jumlah-form" value="1" class="form-control" aria-describedby="basic-addon1" placeholder="Masukkan Nama Penceramah . .">
-                  </div>
                 </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group col-md-3">
-                  <label>Nama Kegiatan</label>
-                  <!-- <input type="hidden" name="id_layanan" value="<?php echo $id_dtlayanan->id;?>" /> -->
-                  <input type="text" class="form-control" name="nm_keg">
-                  <?php echo form_error('nm_keg',"<div style='color:red'>","</div>");?>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Tanggal Lahir:</label>
+                        <input type="date" name="tgl_lahir" class="form-control" required="" autocomplete="off"/>
+                    </div>
                 </div>
-                <div class="form-group col-md-3">
-                  <label>Tanggal Awal Kegiatan</label>
-                  <input type="text" class="form-control" name="tgl_awal_keg" placeholder="dd-mm-yyyy" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
-                  <?php echo form_error('tgl_awal_keg',"<div style='color:red'>","</div>");?>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="text" name="uname" class="form-control" required="" autocomplete="off"/>
+                    </div>
                 </div>
-                <div class="form-group col-md-3">
-                  <label>Tanggal Akhir Kegiatan</label>
-                  <input type="text" class="form-control" name="tgl_akhir_keg" placeholder="dd-mm-yyyy" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
-                  <?php echo form_error('tgl_akhir_keg',"<div style='color:red'>","</div>");?>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" name="mali" class="form-control" required="" autocomplete="off"/>
+                    </div>
                 </div>
-                <div class="form-group col-md-3">
-                  <label>Estimasi Jumlah Jamaah</label>
-                  <input type="text" class="form-control" name="esti_keg">
-                  <?php echo form_error('esti_keg',"<div style='color:red'>","</div>");?>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Telepon:</label>
+                        <input type="text" name="telpon" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)"/>
+                    </div>
                 </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group col-md-3">
-                  <label>Provinsi</label>
-                  <select class="form-control" name="id_provinsi" id="provinsi">
-                    <option>Pilih . .</option>
-                    <?php foreach($ambil_provinsi as $provinsi){?>
-                    <option value="<?php echo $provinsi->id_provinsi;?>"><?php echo $provinsi->nama;?></option>
-                    <?php }?>
-                  </select>
-                  <?php echo form_error('id_provinsi',"<div style='color:red'>","</div>");?>
-                </div>
-                <div class="form-group col-md-3">
-                  <label>Kabupaten</label>
-                  <select class="form-control" name="id_kabupaten" id="kabupaten">
-                    <option value="">Pilih . .</option>
-                  </select>
-                  <?php echo form_error('id_kabupaten',"<div style='color:red'>","</div>");?>
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="inputEmail4">Kecamatan</label>
-                  <select class="form-control" name="id_kecamatan" id="kecamatan">
-                    <option value="">Pilih . .</option>
-                  </select>
-                  <?php echo form_error('id_kecamatan',"<div style='color:red'>","</div>");?>
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="inputPassword4">Kelurahan</label>
-                  <select class="form-control" name="id_kelurahan" id="kelurahan">
-                    <option value="">Pilih . .</option>
-                  </select>
-                  <?php echo form_error('id_kelurahan',"<div style='color:red'>","</div>");?>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label>Lokasi Kegiatan</label>
-                  <input type="text" class="form-control" name="alamat_keg">
-                  <?php echo form_error('alamat_keg',"<div style='color:red'>","</div>");?>
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="inputEmail4">Lembaga Penyelenggara</label>
-                  <input type="text" class="form-control" name="lemb_keg">
-                  <?php echo form_error('lemb_keg',"<div style='color:red'>","</div>");?>
-                </div>
-              </div>
-          </fieldset><br>
-
-          <fieldset>
-              <legend>Data Lampiran Dokumen :</legend>
-              <div class="form-row">
-                <!-- <div class="form-group col-md-8">
-                  <label style="margin-bottom: 10px;">Dokumen Pendukung (KTP, &nbsp;Proposal Kegiatan, &nbsp;Surat Permohonan Rekomendasi)</label>
-                  <input type="hidden" name="id_layanan" value="<?php //echo $id_dtlayanan->id+1;?>" />
-                  <?php //for ($i=1; $i <=3 ; $i++) :?>
-                  <input type="file" class="form-control-file" name="files<?php //echo $i;?>" required><br>
-                  <?php //endfor;?>
-                  <?php //echo form_error('nama_file',"<div style='color:red'>","</div>");?>
-                </div> -->
-                <div class="form-group col-md-4">
-                  <label>KTP Pemohon</label>
-                  <input type="hidden" name="id_layanan" value="<?php echo $id_dtlayanan->id+1;?>" />
-                  <input type="file" class="form-control" name="ktp">
-                  <?php echo form_error('ktp',"<div style='color:red'>","</div>");?>
-                </div>
-                <div class="form-group col-md-4">
-                  <label>Proposal Kegiatan</label>
-                  <input type="file" class="form-control" name="proposal_keg">
-                  <?php echo form_error('proposal_keg',"<div style='color:red'>","</div>");?>
-                </div>
-                <div class="form-group col-md-4">
-                  <label>Surat Permohonan</label>
-                  <input type="file" class="form-control" name="surat_permohonan_keg">
-                  <?php echo form_error('surat_permohonan_keg',"<div style='color:red'>","</div>");?>
-                </div>
-              </div>
-          </fieldset><br>
-
-          <button type="submit" class="btn btn-primary btn-md"><i class="material-icons">save</i>KIRIM DATA</button>
-          <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/datapermohonan') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
-
+            </div>
         </div>
     </div>
-</div>
+    <div class="card card-custom" style="margin-top:1.32857em;">
+        <div class="card-header">
+            <div class="card-title">
+                Detail Data Kegiatan
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Nama Kegiatan:</label>
+                        <input type="text" name="nm_keg" class="form-control" required="" autocomplete="off"/>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Tanggal Awal Kegiatan:</label>
+                        <input type="date" name="tgl_awal_keg" class="form-control" required="" autocomplete="off" onchange="Awal()"/>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Tanggal Akhir Kegiatan:</label>
+                        <input type="date" name="tgl_akhir_keg" class="form-control" required="" autocomplete="off" onchange="Tgl()"/>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Estimasi Peserta:</label>
+                        <input type="text" name="esti_keg" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Lembaga:</label>
+                        <select name="lembaga" class="form-control custom-select" required="" onchange="return Lembaga(this.value)">
+                            <option value="">Pilih Jenis</option>
+                            <option value="1">Perorangan</option>
+                            <option value="2">Lembaga</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group" id="nm_lemb">
+                        <label>Nama Lembaga:</label>
+                        <input type="text" name="lemb_keg" class="form-control" autocomplete="off" required=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Provinsi:</label>
+                        <select name="provinsi" required="" class="form-control custom-select" onchange="Provinsi(this.value)">
+                            <option value="">Pilih Provinsi</option>
+                            <?php
+                            foreach ($provinsi as $prov) {
+                                echo '<option value="' . $prov->id_provinsi . '">' . $prov->nama . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Kabupaten:</label>
+                        <select name="kabupaten" id="kotkabtxt" class="form-control custom-select" onchange="Kecshow(this.value)"></select>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Kecamatan:</label>
+                        <select name="kectxt" id="kectxt" class="form-control custom-select" onchange="Kelshow(this.value)"></select>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Kelurahan:</label>
+                        <select name="keltxt" id="keltxt" class="form-control custom-select"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Lokasi Kegiatan:</label>
+                        <input type="text" name="alamat_kegiatan" class="form-control" autocomplete="off" required=""/>
+                    </div>
+                    <div class="form-group">
+                        <label>Narasumber / Penceramah:</label>
+                        <input id="narsumtxt" type="text" name="narsum[]" class="form-control" autocomplete="off" required=""/>
+                    </div>
+                    <div id="repeat_narsum"></div>
+                    <input type="hidden" id="jumlah-form" name="jumlah_narsum" value="0">
+                    <div class="form-group">
+                        <button type="button" id="narsumbtn" class="btn btn-info" title="Tambah Penceramah"><i class="fas fa-plus-square"></i> Tambah</button>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group">
+                        <label>Keterangan Kegiatan:</label>
+                        <textarea name="keterangan_kegiatan" class="form-control" required="" rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-custom" style="margin-top:1.32857em;">
+        <div class="card-header">
+            <div class="card-title">
+                Detail Dokumen Permohonan
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md">
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <label for="ktp_keg" class="form-label">KTP Pemohon:</label>
+                            <input class="form-control" type="file" id="ktp_keg" name="ktp_keg" required="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <label for="proposal" class="form-label">Proposal Kegiatan:</label>
+                            <input class="form-control" type="file" id="proposal" name="proposal" required="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <label for="sp_keg" class="form-label">Surat Permohonan Kegiatan:</label>
+                            <input class="form-control" type="file" id="sp_keg" name="sp_keg" required="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="form-group text-right">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_save" onclick="Modal()"><i class="fas fa-save"></i> Simpan</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_save" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Simpan Data</h4>
+                </div>
+                <div class="modal-body">
+                    Anda yakin ingin simpan data?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak!</button>
+                    <button type="submit" class="btn btn-info">Ya!</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
-
-{JS START}
-<script type="text/javascript">
-
-var Page = {};
-Page.FormMode = ko.observable("<?php echo $formMode; ?>")
-Page.Cek = $('#formKabupaten').cek();
-Page.FormData = ko.observable({
-    id_provinsi : ko.observable(""),
-    id_kabupaten : ko.observable(""),
-    nama : ko.observable(""),
-});
-Page.Save = function(e){
-    $('#btnSave').attr('disabled', 'disabled');
-    var isValid = Page.Cek.monggo();
-    if(!isValid) { 
-        swal(
-                'Error',
-                'Mohon lengkapi semua field!',
-                'warning'
-            );
-      $('#btnSave').removeAttr('disabled');
-      return;
-    } else {
-      App.IsLoading(true);
-      e.preventDefault();
-      var url = '<?php echo site_url("datamaster/address/save_kabupaten") ?>';
-      var dataKab = ko.mapping.toJS(Page.FormData());
-      dataKab.id_provinsi = $("#dd_province").val();
-      var formData = new FormData();
-      formData.append("formData", JSON.stringify(dataKab));
-      formData.append("formMode", "<?php echo $formMode; ?>");
-
-      $.ajax({
-        url: url,
-        data: formData,
-        method: 'POST',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-          if(data.success) {
-            $('#btnSave').removeAttr('disabled');
-            swal(
-                'Saved!',
-                'Data sukses disimpan!',
-                'success'
-            ).then(function(result){
-              window.location.href = '<?php echo site_url("datamaster/address/kabupaten"); ?>';
-            });
-          } else {
-            $('#btnSave').removeAttr('disabled');
-            swal(
-                'Error saving data!',
-                data.message,
-                'warning'
-            );
-          }
-          App.IsLoading(false);
+<div style="clear: both;margin:5% 0px;"></div>
+<input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
+<input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
+<script>
+    window.onload = function () {
+        toastr.options = {
+            closeButton: true,
+            debug: false,
+            newestOnTop: false,
+            progressBar: false,
+            positionClass: "toast-top-right",
+            preventDuplicates: false,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "2000",
+            timeOut: "5000",
+            extendedTimeOut: "2000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+        };
+        var a, b;
+        a = $('input[name="err_msg"]').val();
+        b = $('input[name="succ_msg"]').val();
+        if (a !== "") {
+            toastr.error(a);
+        } else if (b !== "") {
+            toastr.success(b);
         }
-      });
-      e.stopImmediatePropagation();
-      return false;
+        $('#nm_lemb').hide('slow');
+        $("#narsumbtn").click(function () {
+            var jumlah = parseInt($("#jumlah-form").val());
+            var nextform = jumlah + 1;
+            $("#repeat_narsum").append('<div class="form-group input-group" id="nextform' + nextform + '">' +
+                    '<input id="narsumtxt" type="text" name="narsum[]" class="form-control" autocomplete="off" required=""/>'
+                    + '<button class="btn" type="button" Title="Hapus" onclick="Del_narsum(' + nextform + ')"><i class="fas fa-minus-square" style="color:red;"></i></button>'
+                    + '</div>');
+            $("#jumlah-form").val(nextform);
+        });
+    };
+    function Del_narsum(id) {
+        var a = "#nextform" + id;
+        var b = $('input[name="jumlah_narsum"]').val();
+        $(a).remove();
+        $("#jumlah-form").val(parseInt(b) - 1);
     }
-}
-
-function getRekomendasiKode() {
-    $.ajax({
-        url: "<?php echo site_url("datamaster/address/getRekomendasiKodeKabupaten") ?>"+"/"+$("#dd_province").val(),
-        data: "",
-        method: 'POST',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            Page.FormData().kabupaten_kode(data.data);
+    function isNumber(b) {
+        b = (b) ? b : window.event;
+        var a = (b.which) ? b.which : b.keyCode;
+        if (a > 31 && (a < 48 || a > 57)) {
+            return false;
         }
-      });
-}
+        return true;
+    }
+    function Lembaga() {
+        var a = $('select[name="lembaga"] option:selected').text();
+        if (a === "Perorangan") {
+            $('#nm_lemb').hide('slow');
+            $('input[name="lemb_keg"]').attr('value', 'Perorangan');
+        } else if (a === "Lembaga") {
+            $('#nm_lemb').show('slow');
+            $('input[name="lemb_keg"]').removeAttr('value');
+        } else {
+            $('#nm_lemb').hide('slow');
+            $('input[name="lemb_keg"]').removeAttr('value');
+        }
+    }
+    function Awal() {
+        const today = moment();
+        const todays = today.format("YYYY-MM-DD");
+        const kegiatan = $('input[name="tgl_awal_keg"]').val();
+        if (kegiatan < todays) {
+            toastr.warning("Masukkan Tanggal Awal Kegiatan dengan benar!");
+            $('input[name="tgl_awal_keg"]').val("");
+        }
+    }
+    function Tgl() {
+        var a, b;
+        a = $('input[name="tgl_awal_keg"]').val();
+        b = $('input[name="tgl_akhir_keg"]').val();
+        if (b < a) {
+            $('input[name="tgl_akhir_keg"]').val("");
+        } else {
+            return true;
+        }
 
-Page.PopulateMasterProvince = function(urlProv) {
-    // console.log("PopulateMasterProvince")
-    $.ajax({
-        url: urlProv,
-        data: {},
-        method: 'GET',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(data) {
-            if (data.success) {
-                $("#dd_province").select2("destroy")
-                $("#dd_province").select2({
-                    data: data.data,
-                    placeholder: "Pilih Provinsi"
-                });
-                if (Page.FormData().id_provinsi() != 0){
-                    $("#dd_province").val(Page.FormData().id_provinsi());
-                    $("#dd_province").select2().trigger("change");
+    }
+    function Provinsi(val) {
+        $('#kectxt').children('option').remove();
+        $('#kotkabtxt').children('option').remove();
+        $('#keltxt').children('option').remove();
+        $.ajax({
+            url: "<?php echo base_url('Urais/Layanan_1/Getkab?id_provinsi='); ?>" + val,
+            type: 'get',
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                var i;
+                for (i = 0; i < data.length; i++) {
+                    var sel = document.getElementById("kotkabtxt");
+                    var opt = document.createElement("option");
+                    opt.value = data[i].id_kabupaten;
+                    opt.text = data[i].kabupaten;
+                    sel.add(opt, sel.options[i]);
                 }
-                <?php if($formMode == "edit") : ?>
-                    $("#dd_province"). prop("disabled", true);
-                <?php else: ?>
-                $("#dd_province").select2().on("change", function(){
-                    getRekomendasiKode();
-                });
-                setTimeout(function() {
-                    getRekomendasiKode();
-                }, 500)
-                <?php endif; ?>
-            } else {
-                swal(
-                    'Error getting province master data!',
-                    data.message,
-                    'warning'
-                );
+            },
+            error: function () {
+                toastr.error("Error ketika mengambil data kabupaten");
             }
-        }
-    });
-}
-
-$(function() { 
-    <?php if($formMode == "edit"): ?>
-        var dataKab = <?php echo $dataKabupaten; ?>;
-        Page.FormData(ko.mapping.fromJS(dataKab));
-    <?php endif; ?>
-    Page.Cek.dong();
-    $("#dd_province").select2({});
-    Page.PopulateMasterProvince("<?php echo site_url("datamaster/address/populateProvinces") ?>","<?php echo site_url("datamaster/address/populateCities") ?>","<?php echo site_url("datamaster/address/populateDistricts") ?>");
-});
+        });
+    }
+    function Kecshow(val) {
+        $('#keltxt').children('option').remove();
+        $.ajax({
+            url: "<?php echo base_url('Urais/Layanan_1/Getkec?id_kabupaten='); ?>" + val,
+            type: 'get',
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                var i;
+                for (i = 0; i < data.length; i++) {
+                    var sel = document.getElementById("kectxt");
+                    var opt = document.createElement("option");
+                    opt.value = data[i].id_kecamatan;
+                    opt.text = data[i].kecamatan;
+                    sel.add(opt, sel.options[i]);
+                }
+            },
+            error: function () {
+                toastr.error("Error ketika mengambil data kecamatan");
+            }
+        });
+    }
+    function Kelshow(val) {
+        $('#keltxt').children('option').remove();
+        $.ajax({
+            url: "<?php echo base_url('Urais/Layanan_1/Getkel?id_kecamatan='); ?>" + val,
+            type: 'get',
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                var i;
+                for (i = 0; i < data.length; i++) {
+                    var sel = document.getElementById("keltxt");
+                    var opt = document.createElement("option");
+                    opt.value = data[i].id_kelurahan;
+                    opt.text = data[i].kelurahan;
+                    sel.add(opt, sel.options[i]);
+                }
+            },
+            error: function () {
+                toastr.error("Error ketika mengambil data kelurahan");
+            }
+        });
+    }
+    function Modal() {
+        $('#modal_save').modal({backdrop: 'static', keyboard: false});
+    }
 </script>
-{JS END}
