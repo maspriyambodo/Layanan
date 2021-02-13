@@ -216,6 +216,74 @@ class Binsyar extends MX_Controller {
           toJson($result);
     }
 
+    public function datasafari() {
+        $this->template->setPageId("DATA_BINSYAR_SAFARI");
+        $data = array();
+
+        $sitetitle = "Data Penceramah Safari Dakwah Dalam Negeri";
+        $pagetitle = "Data Penceramah Safari Dakwah Dalam Negeri";
+        $view = "/users/binsyar/v_datasafari";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+        
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
+    public function joinan_safari()
+    {
+        $kondisi = array(
+            "b.jenis_layanan" => 13,
+            "b.stat" => 1,
+            "b.id_user" => $this->session->userdata("DX_user_id")
+        );
+
+        $this->setGroup;
+        $this->db->select("b.id, a.fullname, c.nm_keg, c.esti_keg, c.tgl_awal_keg, e.nama, count(d.id) as jumlah");
+        $this->db->from("sys_users a");
+        $this->db->join("dt_layanan b", "a.id = b.id_user");
+        $this->db->join("dt_kegiatan c","b.id = c.id_layanan");
+        $this->db->join("dt_penceramah d","b.id = d.id_layanan");
+        $this->db->join("mt_wil_provinsi e","c.id_provinsi = e.id_provinsi");
+        $this->db->where($kondisi);
+        $this->db->group_by("b.id");
+        $get = $this->db->get();
+
+        $data = $get->result();
+        $result = array(
+            "data" => $data,
+            "success" => true,
+          );
+          toJson($result);
+    }
+
     //------------------------------ Kumpulan Fungsi Hapusan Masing Masing Form Layanan
     public function hapus_dt_kegiatan()
     {
@@ -252,6 +320,23 @@ class Binsyar extends MX_Controller {
     }
 
     public function hapus_dt_impor()
+    {
+        $id = $this->input->post("id");
+
+        $kondisi = array(
+            'stat' => 3,
+            'sysdeleteuser' => $this->session->userdata('DX_user_id'),
+            'sysdeletedate' => date('Y-m-d h:i:s')
+        );
+
+        $this->db->set($kondisi);
+        $this->db->where('id', $id);
+        $this->db->update('dt_layanan');
+
+        echo toJSON(resultSuccess("OK",1));
+    }
+
+    public function hapus_dt_safari()
     {
         $id = $this->input->post("id");
 
@@ -473,8 +558,9 @@ class Binsyar extends MX_Controller {
         $this->template->setJsFiles($js_lib_files);
         $data['id_session'] = $this->bm->get_identitas();
         $data['hitung'] = $this->bm->get_count_crmh();
+        $data['dt_last'] = $this->bm->get_last_crmh();
         $data["js_inlines"] = $js_inlines;
-        // var_dump($data['hitung']);
+        // var_dump($data['dt_last'][1]->narsum);
         // die();
 
         $this->template->setSiteTitle($sitetitle);
@@ -981,7 +1067,8 @@ class Binsyar extends MX_Controller {
                 "id_stat" => $this->input->post("id_stat", TRUE),
                 "jenis_layanan" => $this->input->post("jenis_layanan", TRUE),
                 "syscreateuser" => $this->input->post("id_user", TRUE),
-                "syscreatedate" => $this->input->post("syscreatedate", TRUE)
+                "syscreatedate" => $this->input->post("syscreatedate", TRUE),
+                "stat" => 1
             );
             $this->bm->kirim_dataLayanan_safari($layanan);
 
@@ -1040,6 +1127,37 @@ class Binsyar extends MX_Controller {
         } else {
             return $this->safari();
         }
+    }
+
+    public function simpan_formpendidikan()
+    {
+        $id_crmh = $_POST['id_crmh'];
+        $pddk = $_POST['pddk'];
+        $program_pddk = $_POST['program_pddk'];
+        $almt_pddk = $_POST['almt_pddk'];
+        $lulus_pddk = $_POST['lulus_pddk'];
+
+        $single = array(
+            "pddk_non" => $this->input->post("pddk_non", TRUE)
+        );
+
+        $data = array();
+        $index = 0;
+
+        foreach($pddk as $nm)
+            {
+                array_push($data, array(
+                    'id_crmh' => $id_crmh[$index],
+                    'program_pddk' => $program_pddk[$index],
+                    'almt_pddk' => $almt_pddk[$index],
+                    'lulus_pddk' => $lulus_pddk[$index],
+                    'pddk_non' => $single['pddk_non'],
+                    'pddk'=> $nm
+                ));
+                $index++;
+            }
+        var_dump($data);
+        die();
     }
 
     //------------------------------ Kumpulan Data Proses Edit Ke DB

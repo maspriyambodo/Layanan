@@ -345,6 +345,23 @@ class Binsyar_m extends CI_Model {
 		return $query;
 	}
 
+	function get_last_crmh()
+	{
+		$kondisi = array(
+			"a.jenis_layanan" => 13,
+			"a.id_user" => $this->session->userdata("DX_user_id")
+		);
+
+		$query = $this->db->select("b.id, b.narsum")
+				->from("dt_layanan a")
+				->join("dt_penceramah b", "a.id = b.id_layanan")
+				->where($kondisi)
+				->group_by("b.id")
+				->order_by("b.id_layanan", "DESC")
+				->get()->result();
+		return $query;
+	}
+
 	// Proses Insert Kegiatan ke DB
 	function kirim_dataLayanan($layanan)
 	{
