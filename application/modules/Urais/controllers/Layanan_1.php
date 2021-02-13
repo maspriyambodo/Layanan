@@ -146,22 +146,50 @@ class Layanan_1 extends CI_Controller {
         }
     }
 
-//    public function Update($id_layanan) {
-//        $data = [
-//            '`dt_layanan`.`id_stat`' => 2 + false,
-//            '`dt_layanan`.`sysupdateuser`' => $this->session->userdata('DX_user_id') + false,
-//            'dt_layanan.sysupdatedate' => date("Y-m-d H:i:s")
-//        ];
-//        $exec = $this->M_layanan1->Update($id_layanan, $data);
-//        //$mail = $this->M_layanan1->Detail($id_layanan);
-//        //$this->Mail($mail);
-//        if ($exec == true) {
-//            $direct = redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
-//        } else {
-//            $direct = redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
-//        }
-//        return $direct;
-//    }
+    public function Edit($id) {
+        $this->template->setPageId("DITERIMA_IKK");
+        $data = [];
+        $detil_param = [
+            'id_layanan' => $id,
+            'stat_id' => 1
+        ];
+        $data['detil'] = $this->M_layanan1->Detail($detil_param);
+        if (empty($data['detil'])) {
+            redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
+        } else {
+            $data['provinsi'] = $this->M_layanan1->Provinsi();
+            $sitetitle = $data['detil'][0]->nm_keg;
+            $pagetitle = "Izin Kegiatan Keagamaan";
+            $view = "layanan1/v_edit";
+            $breadcrumbs = [
+                [
+                    "title" => "Permohonan Masuk",
+                    "link" => base_url('Urais/Layanan_1/index/'),
+                    "is_actived" => false
+                ],
+                [
+                    "title" => "Edit",
+                    "link" => "",
+                    "is_actived" => true
+                ]
+            ];
+            $sql = "";
+            $mejo = new Mejo();
+            $mejo->setQuery($sql);
+            $tampilan = $mejo->metungul();
+            $metune = $tampilan->metune;
+            $js_lib_files = $tampilan->js_lib_files;
+            $css_lib_files = $tampilan->css_lib_files;
+            $js_inlines = $tampilan->js_inlines;
+            $this->template->setCssFiles($css_lib_files);
+            $this->template->setJsFiles($js_lib_files);
+            $data["js_inlines"] = $js_inlines;
+            $this->template->setSiteTitle($sitetitle);
+            $this->template->setPageTitle($pagetitle);
+            $this->template->setBreadcrumbs($breadcrumbs);
+            $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+        }
+    }
 
     public function Update() {
         $data = [
