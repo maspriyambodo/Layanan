@@ -141,6 +141,7 @@ echo $js_inlines;
             index: 'tgl_awal_keg',
                     title: 'TMT PELAKSANAAN',
                     width: 200,
+                    rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
                     return o;
@@ -149,13 +150,13 @@ echo $js_inlines;
             {
             index: 'id_layanan',
                     title: 'CONTROL',
-                    // width: 95,
-                    // rightLocked: true,
+                    width: 150,
+                    rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
                     o.value = ''
 <?php if ($this->izin->delete): ?>
-                        + ''
+                        + ('<a class="text-danger" href="javascript:;" onclick="Page.Hapus(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Hapus Permohonan" style="margin:0px 10px;"><i class="fas fa-trash"></i></a>')
 <?php endif; ?>
 <?php if ($this->izin->edit): ?>
                         + ('<a class="text-warning" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit Permohonan" style="margin:0px 10px;"><i class="far fa-edit"></i></a>' + '<a class="text-dark" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Detail Permohonan"><i class="far fa-eye"></i></a>');
@@ -167,6 +168,57 @@ echo $js_inlines;
                     }
             }
             ]
+    });
+    };
+    Page.Hapus = function(id) {
+    swal({
+    title: 'Apakah anda yakin?',
+            text: "data yang telah dihapus tidak dapat dikembalikan!",
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Hapus',
+            cancelButtonText: 'Tidak',
+            allowOutsideClick: false
+    }).then(function (result) {
+    if (result) {
+    App.IsLoading(true);
+    var data = {
+    id: id
+    };
+    var url = '<?php echo base_url('Urais/Layanan_1/Hapus/'); ?>';
+    ajaxPost(url, data, function (data) {
+    App.IsLoading(false);
+    if (data.success === false) {
+    swal({
+    title: '<strong>Error</strong>',
+            type: 'error',
+            text: "Surat Permohonan gagal dihapus",
+            showCloseButton: false,
+            showCancelButton: false,
+            focusConfirm: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false
+    });
+    } else {
+    swal({
+    title: '<strong>Success</strong>',
+            type: 'success',
+            text: "Surat Permohonan berhasil dihapus",
+            showCloseButton: false,
+            showCancelButton: false,
+            focusConfirm: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false
+    }).then(function (isConfirm) {
+    if (isConfirm) {
+    Page.InitGrid();
+    }
+    });
+    }
+    });
+    }
     });
     };
     Page.Detail = function (id) {
