@@ -19,169 +19,220 @@ class Binsyar_m extends CI_Model {
 		return $this->db->get();
 	}
 
-	// Kumpulan Edit data Layanan Masing Masing Form
-	function get_dt_kegiatan($id)
+	// Kumpulan Edit data Layanan Izin Kegiatan Keagamaan
+	function get_edit_pemohon($id)
 	{
-		// cara merge
-		$session_user = $this->session->userdata('DX_user_id');
-		$query1 = $this->db->query("
-			SELECT
-			a.id, a.id_user, c.fullname, c.email, c.telp, c.tgl_lhr, c.nik, b.nm_keg, b.tgl_awal_keg, b.tgl_akhir_keg, b.esti_keg, a.id_provinsi, a.id_kabupaten, a.id_kecamatan, a.id_kelurahan, b.alamat_keg, b.lemb_keg, b.id_layanan, b.id
-			FROM
-			dt_layanan as a
-			JOIN dt_kegiatan as b ON a.id = b.id_layanan
-			JOIN sys_users as c ON a.id_user = c.id
-			WHERE
-			a.id = $id AND a.stat = 1 AND a.id_user = $session_user
-            ");
-		// return $query1->result();
-
-		$query2 = $this->db->query("
-			SELECT
-			a.id, a.id_layanan, a.narsum
-			FROM
-			dt_penceramah as a
-			WHERE
-			a.id_layanan = $id
-            ");
-
-		$query3 = $this->db->query("
-			SELECT
-			a.id, a.id_layanan, a.ktp, a.proposal_keg, a.surat_permohonan_keg
-			FROM
-			dt_layanan_dokumen as a
-			WHERE
-			a.id_layanan = $id
-			");
-
-		$result1 = $query1->result();
-        $result2 = $query2->result();
-        $result3 = $query3->result();
-
-        return array_merge($result1, $result2, $result3);
+		$kondisi = array(
+			"a.id" => $this->session->userdata('DX_user_id'),
+			"b.id" => $id,
+			"b.id_user" => $this->session->userdata('DX_user_id'),
+			"b.jenis_layanan" => 1,
+			"b.stat" => 1
+		);
+		$query = $this->db->select("b.id, b.id_user, b.id_stat, b.id_provinsi, b.id_kabupaten, b.id_kecamatan, b.id_kelurahan, b.jenis_layanan, a.nik, a.tgl_lhr, a.fullname, a.email, a.telp")
+				->from("sys_users a")
+				->join("dt_layanan b", "a.id = b.id_user")
+				->where($kondisi)
+				->get()->row();
+		return $query;
 	}
 
-	function get_dt_ekspor($id)
+	function get_edit_kegiatan($id)
 	{
-		$kondisi_a = array(
-			"a.id" => $this->session->userdata("DX_user_id"),
-			"b.id" => $id,
-			"b.id_user" => $this->session->userdata("DX_user_id")
+		$kondisi = array(
+			"a.id_layanan" => $id
 		);
-		$this->db->select("a.fullname, a.nik, a.telp, a.email, a.tgl_lhr, b.id_user, if(b.jenis_layanan = 2, 'ijin pengiriman dari keluar negeri', 'null') as jenis_layanan")
-				 ->from("sys_users a")
-				 ->join("dt_layanan b", "a.id = b.id_user")
-				 ->where($kondisi_a);
-		$query_a = $this->db->get();
-
-		$kondisi_c = array(
-			"c.id_layanan" => $id
-		);
-		$this->db->select("c.id, c.id_layanan, c.nm_keg, c.lemb_keg, c.esti_keg, c.tgl_awal_keg, c.tgl_akhir_keg, c.alamat_keg, c.code_negara")
-				 ->from("dt_kegiatan c")
-				 ->where($kondisi_c);
-		$query_c = $this->db->get();
-
-		$kondisi_d = array(
-			"d.id_layanan" => $id
-		);
-		$this->db->select("d.id, d.id_layanan, d.narsum, d.tmp_lhr, d.tgl_lhr, d.jns_kelamin, d.no_paspor, d.id_provinsi, d.id_kabupaten, d.id_kecamatan, d.id_kelurahan, d.almt_penceramah, d.negara_asl")
-				 ->from("dt_penceramah d")
-				 ->where($kondisi_d)
-				 ->group_by("d.id");
-		$query_d = $this->db->get();
-
-		$kondisi_e = array(
-			"e.id_layanan" => $id
-		);
-		$this->db->select("e.id, e.id_layanan, e.surat_permohonan_luar, e.proposal_luar, e.cv_crmh_luar, e.pasp_crmh_luar, e.pasp_pengundang_luar, e.pas_foto_crmh_luar")
-				 ->from("dt_layanan_dokumen e")
-				 ->where($kondisi_e);
-		$query_e = $this->db->get();
-
-		$results = array();
-		if($query_a->num_rows()){
-			$results = array_merge($results, $query_a->result());
-		}
-
-		if($query_c->num_rows()){
-			$results = array_merge($results, $query_c->result());
-		}
-
-		if($query_d->num_rows()){
-			$results = array_merge($results, $query_d->result());
-		}
-
-		if($query_e->num_rows()){
-			$results = array_merge($results, $query_e->result());
-		}
-
-		return $results;
+		$query = $this->db->select("a.id, a.id_layanan, a.nm_keg, a.esti_keg, a.lemb_keg, a.tgl_awal_keg, a.tgl_akhir_keg, a.alamat_keg")
+				->from("dt_kegiatan a")
+				->where($kondisi)
+				->get()->row();
+		return $query;
 	}
 
-	function get_dt_impor($id)
+	function get_edit_penceramah($id)
 	{
-		$kondisi_a = array(
-			"a.id" => $this->session->userdata("DX_user_id"),
+		$kondisi = array(
+			"a.id_layanan" => $id
+		);
+		$query = $this->db->select("a.id, a.id_layanan, a.narsum")
+				->from("dt_penceramah a")
+				->where($kondisi)
+				->get()->result();
+		return $query;
+	}
+
+	function get_edit_lampiran($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id
+		);
+		$query = $this->db->select("a.id, a.id_layanan, a.ktp, a.proposal_keg, a.surat_permohonan_keg")
+				->from("dt_layanan_dokumen a")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
+
+	// Kumpulan Edit data Layanan Izin Penceramah Keluar Negeri
+	function get_edit_pemohon_ekspor($id)
+	{
+		$kondisi = array(
+			"a.id" => $this->session->userdata('DX_user_id'),
 			"b.id" => $id,
-			"b.id_user" => $this->session->userdata("DX_user_id"),
-			"b.jenis_layanan" => 3
+			"b.id_user" => $this->session->userdata('DX_user_id'),
+			"b.jenis_layanan" => 2,
+			"b.stat" => 1
 		);
-		$this->db->select("b.id, a.fullname, a.nik, a.telp, a.email, a.tgl_lhr, b.id_user, if(b.jenis_layanan = 3, 'ijin penceramah dari luar negeri', 'null') as jenis_layanan, case 
-			when b.id_stat = 1 then 'permohonan diterima'
-			when b.id_stat = 2 then 'permohonan diproses'
-			when b.id_stat = 3 then 'permohonan disetujui'
-			when b.id_stat = 4 then 'permohonan ditolak' end as status_permohonan
-			")
-				 ->from("sys_users a")
-				 ->join("dt_layanan b", "a.id = b.id_user")
-				 ->join("mt_status_layanan c", "b.id_stat = c.id")
-				 ->where($kondisi_a);
-		$query_a = $this->db->get();
+		$query = $this->db->select("b.id, b.id_user, b.id_stat, b.id_provinsi, b.id_kabupaten, b.id_kecamatan, b.id_kelurahan, b.jenis_layanan, a.nik, a.tgl_lhr, a.fullname, a.email, a.telp, c.nama_layanan, d.nama_stat")
+				->from("sys_users a")
+				->join("dt_layanan b", "a.id = b.id_user")
+				->join("mt_layanan c", "b.jenis_layanan = c.id")
+				->join("mt_status_layanan d", "b.id_stat = d.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
 
-		$kondisi_c = array(
-			"c.id_layanan" => $id
+	function get_edit_kegiatan_ekspor($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id
 		);
-		$this->db->select("c.id, c.id_layanan, c.nm_keg, c.lemb_keg, c.esti_keg, c.tgl_awal_keg, c.tgl_akhir_keg, c.id_provinsi, c.id_kabupaten, c.id_kecamatan, c.id_kelurahan")
-				 ->from("dt_kegiatan c")
-				 ->where($kondisi_c);
-		$query_c = $this->db->get();
+		$query = $this->db->select("a.id, a.id_layanan, a.nm_keg, a.esti_keg, a.lemb_keg, a.tgl_awal_keg, a.tgl_akhir_keg, a.alamat_keg, a.code_negara")
+				->from("dt_kegiatan a")
+				->join("dt_layanan b", "a.id_layanan = b.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
 
-		$kondisi_d = array(
-			"d.id_layanan" => $id
+	function get_edit_crmharray_ekspor($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id
 		);
-		$this->db->select("d.id, d.id_layanan, d.narsum, d.tmp_lhr, d.tgl_lhr, d.jns_kelamin, d.no_paspor, d.negara_asl")
-				 ->from("dt_penceramah d")
-				 ->where($kondisi_d)
-				 ->group_by("d.id");
-		$query_d = $this->db->get();
+		$query = $this->db->select("a.id, a.id_layanan, a.narsum")
+				->from("dt_penceramah a")
+				->join("dt_layanan b", "a.id_layanan = b.id")
+				->where($kondisi)
+				->get()->result();
+		return $query;
+	}
 
-		$kondisi_e = array(
-			"e.id_layanan" => $id
+	function get_edit_crmh_ekspor($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id
 		);
-		$this->db->select("e.id, e.id_layanan, e.surat_permohonan_dalam, e.proposal_dalam, e.cv_crmh_dalam, e.pasp_crmh_dalam, e.ktp_dalam, e.pas_foto_crmh_dalam")
-				 ->from("dt_layanan_dokumen e")
-				 ->where($kondisi_e);
-		$query_e = $this->db->get();
 
-		$results = array();
-		if($query_a->num_rows()){
-			$results = array_merge($results, $query_a->result());
-		}
+		$query = $this->db->distinct()
+		->select("a.tmp_lhr, a.tgl_lhr, a.jns_kelamin, a.no_paspor, a.id_provinsi, a.id_kabupaten, a.id_kecamatan, a.id_kelurahan, a.almt_penceramah, a.negara_asl")
+				->from("dt_penceramah a")
+				->join("dt_layanan b", "a.id_layanan = b.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
 
-		if($query_c->num_rows()){
-			$results = array_merge($results, $query_c->result());
-		}
+	function get_edit_lampiran_ekspor($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id
+		);
 
-		if($query_d->num_rows()){
-			$results = array_merge($results, $query_d->result());
-		}
+		$query = $this->db->select("a.id, a.id_layanan, a.surat_permohonan_luar, a.proposal_luar, a.cv_crmh_luar, a.pasp_crmh_luar, a.pasp_pengundang_luar, a.pas_foto_crmh_luar")
+				->from("dt_layanan_dokumen a")
+				->join("dt_layanan b", "a.id_layanan = b.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
 
-		if($query_e->num_rows()){
-			$results = array_merge($results, $query_e->result());
-		}
+	// Kumpulan Edit data Layanan Izin Penceramah Dari luar Negeri
+	function get_edit_pemohon_impor($id)
+	{
+		$kondisi = array(
+			"a.id" => $this->session->userdata('DX_user_id'),
+			"b.id" => $id,
+			"b.id_user" => $this->session->userdata('DX_user_id'),
+			"b.jenis_layanan" => 3,
+			"b.stat" => 1
+		);
+		$query = $this->db->select("b.id, b.id_user, b.id_stat, b.id_provinsi, b.id_kabupaten, b.id_kecamatan, b.id_kelurahan, b.jenis_layanan, a.nik, a.tgl_lhr, a.fullname, a.email, a.telp, c.nama_layanan, d.nama_stat")
+				->from("sys_users a")
+				->join("dt_layanan b", "a.id = b.id_user")
+				->join("mt_layanan c", "b.jenis_layanan = c.id")
+				->join("mt_status_layanan d", "b.id_stat = d.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
 
-		return $results;
+	function get_edit_kegiatan_impor($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id
+		);
+		$query = $this->db->select("a.id, a.id_layanan, a.nm_keg, a.esti_keg, a.lemb_keg, a.tgl_awal_keg, a.tgl_akhir_keg, a.alamat_keg, a.code_negara, a.id_provinsi, a.id_kabupaten, a.id_kecamatan, a.id_kelurahan")
+				->from("dt_kegiatan a")
+				->join("dt_layanan b", "a.id_layanan = b.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
+
+	function get_edit_crmharray_impor($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id
+		);
+		$query = $this->db->select("a.id, a.id_layanan, a.narsum")
+				->from("dt_penceramah a")
+				->join("dt_layanan b", "a.id_layanan = b.id")
+				->where($kondisi)
+				->get()->result();
+		return $query;
+	}
+
+	function get_edit_crmh_impor($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id
+		);
+
+		$query = $this->db->distinct()
+		->select("a.tmp_lhr, a.tgl_lhr, a.jns_kelamin, a.no_paspor, a.negara_asl")
+				->from("dt_penceramah a")
+				->join("dt_layanan b", "a.id_layanan = b.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
+
+	function get_edit_lampiran_impor($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id
+		);
+
+		$query = $this->db->select("a.id, a.id_layanan, a.surat_permohonan_dalam, a.proposal_dalam, a.cv_crmh_dalam, a.pasp_crmh_dalam, a.ktp_dalam, a.pas_foto_crmh_dalam")
+				->from("dt_layanan_dokumen a")
+				->join("dt_layanan b", "a.id_layanan = b.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
+
+	// Cek Cek Lainnya
+	function cek_gambar($id_layanan)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id_layanan
+		);
+
+		$query = $this->db->from("dt_layanan_dokumen a")
+				->where($kondisi)->get()->row();
+		return $query;
 	}
 
 	function get_identitas()
@@ -383,6 +434,27 @@ class Binsyar_m extends CI_Model {
 		$this->db->insert('dt_layanan_dokumen', $dokumen);
 	}
 
+	// Proses Insert Kegiatan Versi Lembaga
+	function kirim_dataLayanan_lembaga($layanan)
+	{
+		$this->db->insert('dt_layanan', $layanan);
+	}
+
+	function kirim_dataKegiatan_lembaga($kegiatan)
+	{
+		$this->db->insert('dt_kegiatan', $kegiatan);
+	}
+
+	function kirim_dataPenceramah_lembaga($data)
+	{
+		$this->db->insert_batch('dt_penceramah', $data);
+	}
+
+	function kirim_dataDokumen_lembaga($dokumen)
+	{
+		$this->db->insert('dt_layanan_dokumen', $dokumen);
+	}
+
 	// Proses Update ke DB
 	function save_tbl_kegiatan($data_kegiatan, $id)
 	{
@@ -390,9 +462,9 @@ class Binsyar_m extends CI_Model {
 		$this->db->update('dt_kegiatan', $data_kegiatan);
 	}
 
-	function save_tbl_layananprop($data_layanan, $id_layanan)
+	function save_tbl_layananprop($data_layanan, $id)
 	{
-		$this->db->where('id', $id_layanan);
+		$this->db->where('id', $id);
 		$this->db->update('dt_layanan', $data_layanan);
 	}
 
