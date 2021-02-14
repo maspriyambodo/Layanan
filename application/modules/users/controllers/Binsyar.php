@@ -5,6 +5,7 @@ class Binsyar extends MX_Controller {
     {
       parent::__construct();
       $this->load->model('Binsyar_m','bm');
+      $this->load->library('upload');
       $this->setGroup = $this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
     }
 
@@ -396,6 +397,48 @@ class Binsyar extends MX_Controller {
         $this->template->load($view, $data, $this->template->getDefaultLayout());
     }
 
+    public function lembaga()
+    {
+        $this->template->setPageId("SUB_BINSYAR_KEGIATAN_LEMBAGA");
+        $data["title"] = $this->bm->get_title();
+        $data = array();
+
+        $sitetitle = "Form Binsyar";
+        $pagetitle = "Form Permohonan Kegiatan Keagamaan Kategori Lembaga";
+        $view = "/users/binsyar/v_tambahlima";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+        
+        // $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data['id_session'] = $this->bm->get_identitas();
+        $data['ambil_provinsi'] = $this->bm->get_provinsi();
+        $data['jenis_layanan'] = $this->bm->get_layanan_binsyar();
+        $data['id_dtlayanan'] = $this->bm->get_id_dtlayanan();
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout());
+    }
+
     public function ekspor()
     {
         $this->template->setPageId("SUB_BINSYAR_EKSPOR");
@@ -607,7 +650,10 @@ class Binsyar extends MX_Controller {
         $data["dt_kabupaten"] = $this->bm->get_kabupaten();
         $data["dt_kecamatan"] = $this->bm->get_kecamatan();
         $data["dt_kelurahan"] = $this->bm->get_kelurahan();
-        $data["dataku"] = $this->bm->get_dt_kegiatan($id);
+        $data["pemohon"] = $this->bm->get_edit_pemohon($id);
+        $data["kegiatan"] = $this->bm->get_edit_kegiatan($id);
+        $data["penceramah"] = $this->bm->get_edit_penceramah($id);
+        $data["lampiran"] = $this->bm->get_edit_lampiran($id);
         // var_dump(json_encode($data['dataku'][3]->proposal_keg));
         // die();
         $data["js_inlines"] = $js_inlines;
@@ -656,8 +702,12 @@ class Binsyar extends MX_Controller {
         $data["dt_kecamatan"] = $this->bm->get_kecamatan();
         $data["dt_kelurahan"] = $this->bm->get_kelurahan();
         $data["dt_negara"] = $this->bm->get_negara();
-        $data["dataku"] = $this->bm->get_dt_ekspor($id);
-        // var_dump($data['dataku'][2]->id_provinsi);
+        $data["pemohon"] = $this->bm->get_edit_pemohon_ekspor($id);
+        $data["kegiatan"] = $this->bm->get_edit_kegiatan_ekspor($id);
+        $data["crmh_array"] = $this->bm->get_edit_crmharray_ekspor($id);
+        $data["crmh"] = $this->bm->get_edit_crmh_ekspor($id);
+        $data["lampiran"] = $this->bm->get_edit_lampiran_ekspor($id);
+        // var_dump($data['crmh']->tmp_lhr);
         // die();
         $data["js_inlines"] = $js_inlines;
 
@@ -707,6 +757,11 @@ class Binsyar extends MX_Controller {
         $data["dt_kelurahan"] = $this->bm->get_kelurahan();
         $data["dt_negara"] = $this->bm->get_negara();
         $data["dataku"] = $this->bm->get_dt_impor($id);
+        $data["pemohon"] = $this->bm->get_edit_pemohon_impor($id);
+        $data["kegiatan"] = $this->bm->get_edit_kegiatan_impor($id);
+        $data["crmh_array"] = $this->bm->get_edit_crmharray_impor($id);
+        $data["crmh"] = $this->bm->get_edit_crmh_impor($id);
+        $data["lampiran"] = $this->bm->get_edit_lampiran_impor($id);
         // var_dump($data['dataku'][4]->ktp_dalam);
         // die();
         $data["js_inlines"] = $js_inlines;
@@ -735,9 +790,12 @@ class Binsyar extends MX_Controller {
         $this->form_validation->set_rules('id_kelurahan', 'kelurahan kegiatan', 'trim|required|is_numeric');
 
         // Data Lampiran
-        // $this->form_validation->set_rules('ktp', 'dokumen KTP', 'required');
-        // $this->form_validation->set_rules('proposal_keg', 'proposal kegiatan', 'required');
-        // $this->form_validation->set_rules('surat_permohonan_keg', 'surat permohonan', 'required');
+        if(empty($_FILES['ktp']['name'])){
+            $this->form_validation->set_rules('ktp', 'upload ktp', 'required');}
+        if(empty($_FILES['proposal_keg']['name'])){
+            $this->form_validation->set_rules('proposal_keg', 'upload proposal kegiatan', 'required');}
+        if(empty($_FILES['surat_permohonan_keg']['name'])){
+            $this->form_validation->set_rules('surat_permohonan_keg', 'upload surat permohonan kegiatan', 'required');}
 
         if ($this->form_validation->run() == TRUE) {
             // Mengambil id layanan terakhir
@@ -753,6 +811,7 @@ class Binsyar extends MX_Controller {
                 "id_kelurahan" => $this->input->post("id_kelurahan", TRUE),
                 "jenis_layanan" => $this->input->post("jenis_layanan", TRUE),
                 "stat" => 1,
+                "kategori_pemohon" => 1,
                 "syscreateuser" => $this->input->post("id_user", TRUE),
                 "syscreatedate" => $this->input->post("syscreatedate", TRUE)
             );
@@ -788,13 +847,13 @@ class Binsyar extends MX_Controller {
 
             $dokumen = array(
                 "id_layanan" => $this->input->post('id_layanan'),
-                "ktp" => $this->uplodan->doupload_ktp_kegiatan(),
-                "proposal_keg" => $this->uplodan->doupload_proposal_kegiatan(),
-                "surat_permohonan_keg" => $this->uplodan->doupload_permohonan_kegiatan()
+                "ktp" => $this->_do_upload_ktp(),
+                "proposal_keg" => $this->_do_upload_proposal_keg(),
+                "surat_permohonan_keg" => $this->_do_upload_surat_permohonan_keg()
             );
             $this->bm->kirim_dataDokumen($dokumen);
             
-            echo "<script>alert('Data berhasil disimpan');window.location = '".site_url('users/binsyar/kegiatan/')."';</script>";
+            echo "<script>alert('Data berhasil disimpan');window.location = '".site_url('users/binsyar/datakegiatan/')."';</script>";
         } else {
             return $this->kegiatan();
         }
@@ -824,12 +883,18 @@ class Binsyar extends MX_Controller {
         $this->form_validation->set_rules('lemb_keg', 'lembaga penyelenggara', 'trim|required');
 
         // Data Lampiran
-        // $this->form_validation->set_rules('surat_permohonan_luar', 'surat permohonan', 'trim|required');
-        // $this->form_validation->set_rules('proposal_luar', 'proposal', 'trim|required');
-        // $this->form_validation->set_rules('cv_crmh_luar', 'cv penceramah', 'trim|required');
-        // $this->form_validation->set_rules('pasp_crmh_luar', 'paspor penceramah', 'trim|required');
-        // $this->form_validation->set_rules('pasp_pengundang_luar', 'paspor pengundang', 'trim|required');
-        // $this->form_validation->set_rules('pas_foto_crmh_luar', 'pas foto penceramah', 'trim|required');
+        if(empty($_FILES['surat_permohonan_luar']['name'])){
+            $this->form_validation->set_rules('surat_permohonan_luar', 'upload surat permohonan', 'required');}
+        if(empty($_FILES['proposal_luar']['name'])){
+            $this->form_validation->set_rules('proposal_luar', 'upload proposal', 'required');}
+        if(empty($_FILES['cv_crmh_luar']['name'])){
+            $this->form_validation->set_rules('cv_crmh_luar', 'upload cv penceramah', 'required');}
+        if(empty($_FILES['pasp_crmh_luar']['name'])){
+            $this->form_validation->set_rules('pasp_crmh_luar', 'upload paspor penceramah', 'required');}
+        if(empty($_FILES['pasp_pengundang_luar']['name'])){
+            $this->form_validation->set_rules('pasp_pengundang_luar', 'upload paspor pengundang', 'required');}
+        if(empty($_FILES['pas_foto_crmh_luar']['name'])){
+            $this->form_validation->set_rules('pas_foto_crmh_luar', 'upload pas foto penceramah', 'required');}
 
         if ($this->form_validation->run() == TRUE) {
             // Mengambil id layanan terakhir
@@ -844,8 +909,6 @@ class Binsyar extends MX_Controller {
                 "syscreateuser" => $this->input->post("id_user", TRUE),
                 "syscreatedate" => $this->input->post("syscreatedate", TRUE)
             );
-            // var_dump($layanan);
-            // die();
             $this->bm->kirim_dataLayanan_ekspor($layanan);
 
             // Data Penceramah
@@ -883,9 +946,6 @@ class Binsyar extends MX_Controller {
                 ));
                 $index++;
             }
-
-            // var_dump($data);
-            // die();
             $this->bm->kirim_dataPenceramah_ekspor($data);
 
             // Data Kegiatan
@@ -899,24 +959,20 @@ class Binsyar extends MX_Controller {
                 "esti_keg" => $this->input->post("esti_keg", TRUE),
                 "lemb_keg" => $this->input->post("lemb_keg", TRUE)
             );
-            // var_dump($kegiatan);
-            // die();
             $this->bm->kirim_dataKegiatan_ekspor($kegiatan);
 
             // Data Lampiran
             $lampiran = array(
                 "id_layanan" => $id_dt_layanan['id']->id + 1,
-                "surat_permohonan_luar" => $this->uplodan->doupload_sp_luar(),
-                "proposal_luar" => $this->uplodan->doupload_proposal_luar(),
-                "cv_crmh_luar" => $this->uplodan->doupload_cv_luar(),
-                "pasp_crmh_luar" => $this->uplodan->doupload_paspor_luar(),
-                "pasp_pengundang_luar" => $this->uplodan->doupload_pengundang_luar(),
-                "pas_foto_crmh_luar" => $this->uplodan->doupload_foto_luar()
+                "surat_permohonan_luar" => $this->_do_upload_surat_permohonan_luar(),
+                "proposal_luar" => $this->_do_upload_proposal_luar(),
+                "cv_crmh_luar" => $this->_do_upload_cv_crmh_luar(),
+                "pasp_crmh_luar" => $this->_do_upload_pasp_crmh_luar(),
+                "pasp_pengundang_luar" => $this->_do_upload_pasp_pengundang_luar(),
+                "pas_foto_crmh_luar" => $this->_do_upload_pas_foto_crmh_luar()
             );
-            // var_dump($lampiran);
-            // die();
             $this->bm->kirim_dataLampiran_ekspor($lampiran);
-            echo "<script>alert('Data berhasil disimpan');window.location = '".site_url('users/binsyar/ekspor/')."';</script>";
+            echo "<script>alert('Data berhasil disimpan');window.location = '".site_url('users/binsyar/dataekspor/')."';</script>";
         } else {
             return $this->ekspor();
         }
@@ -944,12 +1000,18 @@ class Binsyar extends MX_Controller {
         $this->form_validation->set_rules('lemb_keg', 'lembaga penyelenggara', 'trim|required');
 
         // Data Lampiran
-        // $this->form_validation->set_rules('surat_permohonan_dalam', 'surat permohonan', 'trim|required');
-        // $this->form_validation->set_rules('proposal_dalam', 'proposal', 'trim|required');
-        // $this->form_validation->set_rules('cv_crmh_dalam', 'cv penceramah', 'trim|required');
-        // $this->form_validation->set_rules('pasp_crmh_dalam', 'paspor penceramah', 'trim|required');
-        // $this->form_validation->set_rules('ktp_dalam', 'paspor pengundang', 'trim|required');
-        // $this->form_validation->set_rules('pas_foto_crmh_dalam', 'pas foto penceramah', 'trim|required');
+        if(empty($_FILES['surat_permohonan_dalam']['name'])){
+            $this->form_validation->set_rules('surat_permohonan_dalam', 'upload surat permohonan', 'required');}
+        if(empty($_FILES['proposal_dalam']['name'])){
+            $this->form_validation->set_rules('proposal_dalam', 'upload proposal', 'required');}
+        if(empty($_FILES['cv_crmh_dalam']['name'])){
+            $this->form_validation->set_rules('cv_crmh_dalam', 'upload cv penceramah', 'required');}
+        if(empty($_FILES['pasp_crmh_dalam']['name'])){
+            $this->form_validation->set_rules('pasp_crmh_dalam', 'upload paspor penceramah', 'required');}
+        if(empty($_FILES['ktp_dalam']['name'])){
+            $this->form_validation->set_rules('ktp_dalam', 'upload ktp', 'required');}
+        if(empty($_FILES['pas_foto_crmh_dalam']['name'])){
+            $this->form_validation->set_rules('pas_foto_crmh_dalam', 'upload pas foto penceramah', 'required');}
 
         if($this->form_validation->run() == TRUE)
         {
@@ -1014,15 +1076,15 @@ class Binsyar extends MX_Controller {
             // Data Lampiran
             $lampiran = array(
                 "id_layanan" => $id_dt_layanan['id']->id + 1,
-                "surat_permohonan_dalam" => $this->uplodan->doupload_sp_dalam(),
-                "proposal_dalam" => $this->uplodan->doupload_proposal_dalam(),
-                "cv_crmh_dalam" => $this->uplodan->doupload_cv_dalam(),
-                "pasp_crmh_dalam" => $this->uplodan->doupload_paspor_dalam(),
-                "ktp_dalam" => $this->uplodan->doupload_ktp_dalam(),
-                "pas_foto_crmh_dalam" => $this->uplodan->doupload_foto_dalam()
+                "surat_permohonan_dalam" => $this->_do_upload_surat_permohonan_dalam(),
+                "proposal_dalam" => $this->_do_upload_proposal_dalam(),
+                "cv_crmh_dalam" => $this->_do_upload_cv_crmh_dalam(),
+                "pasp_crmh_dalam" => $this->_do_upload_pasp_crmh_dalam(),
+                "ktp_dalam" => $this->_do_upload_ktp_dalam(),
+                "pas_foto_crmh_dalam" => $this->_do_upload_pas_foto_crmh_dalam()
             );
             $this->bm->kirim_dataLampiran_impor($lampiran);
-            echo "<script>alert('Data berhasil disimpan');window.location = '".site_url('users/binsyar/import/')."';</script>";
+            echo "<script>alert('Data berhasil disimpan');window.location = '".site_url('users/binsyar/dataimpor/')."';</script>";
         } else {
             return $this->import();
         }
@@ -1048,15 +1110,21 @@ class Binsyar extends MX_Controller {
         $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
 
         // Data Lampiran
-        // Data Lampiran
-        // $this->form_validation->set_rules('surat_permohonan_safari', 'surat permohonan', 'trim|required');
-        // $this->form_validation->set_rules('proposal_safari', 'proposal', 'trim|required');
-        // $this->form_validation->set_rules('cv_crmh_safari', 'cv penceramah', 'trim|required');
-        // $this->form_validation->set_rules('pasp_crmh_safari', 'paspor penceramah', 'trim|required');
-        // $this->form_validation->set_rules('ktp_safari', 'ktp penceramah', 'trim|required');
-        // $this->form_validation->set_rules('pas_foto_crmh_safari', 'pas foto penceramah', 'trim|required');
-        // $this->form_validation->set_rules('crt_crmh_safari', 'sertifikat penceramah', 'trim|required');
-
+        if(empty($_FILES['surat_permohonan_safari']['name'])){
+            $this->form_validation->set_rules('surat_permohonan_safari', 'upload surat permohonan', 'required');}
+        if(empty($_FILES['proposal_safari']['name'])){
+            $this->form_validation->set_rules('proposal_safari', 'upload proposal', 'required');}
+        if(empty($_FILES['cv_crmh_safari']['name'])){
+            $this->form_validation->set_rules('cv_crmh_safari', 'upload cv penceramah', 'required');}
+        if(empty($_FILES['pasp_crmh_safari']['name'])){
+            $this->form_validation->set_rules('pasp_crmh_safari', 'upload paspor penceramah', 'required');}
+        if(empty($_FILES['ktp_safari']['name'])){
+            $this->form_validation->set_rules('ktp_safari', 'upload ktp', 'required');}
+        if(empty($_FILES['pas_foto_crmh_safari']['name'])){
+            $this->form_validation->set_rules('pas_foto_crmh_safari', 'upload pas foto penceramah', 'required');}
+        if(empty($_FILES['crt_crmh_safari']['name'])){
+            $this->form_validation->set_rules('crt_crmh_safari', 'scan sertifikat penceramah', 'required');}
+        
         if ($this->form_validation->run() == TRUE)
         {
             $id_dt_layanan['id'] = $this->bm->get_id_dtlayanan();
@@ -1114,18 +1182,103 @@ class Binsyar extends MX_Controller {
 
             $lampiran = array(
                 "id_layanan" => $id_dt_layanan['id']->id + 1,
-                "surat_permohonan_safari" => $this->uplodan->doupload_sp_safari(),
-                "proposal_safari" => $this->uplodan->doupload_proposal_safari(),
-                "cv_crmh_safari" => $this->uplodan->doupload_cv_safari(),
-                "pasp_crmh_safari" => $this->uplodan->doupload_paspor_safari(),
-                "ktp_safari" => $this->uplodan->doupload_ktp_safari(),
-                "pas_foto_crmh_safari" => $this->uplodan->doupload_foto_safari(),
-                "crt_crmh_safari" => $this->uplodan->doupload_crt_safari()
+                "surat_permohonan_safari" => $this->_do_upload_surat_permohonan_safari(),
+                "proposal_safari" => $this->_do_upload_proposal_safari(),
+                "cv_crmh_safari" => $this->_do_upload_cv_crmh_safari(),
+                "pasp_crmh_safari" => $this->_do_upload_pasp_crmh_safari(),
+                "ktp_safari" => $this->_do_upload_ktp_safari(),
+                "pas_foto_crmh_safari" => $this->_do_upload_pas_foto_crmh_safari(),
+                "crt_crmh_safari" => $this->_do_upload_crt_crmh_safari()
             );
             $this->bm->kirim_dataLampiran_safari($lampiran);
             echo "<script>alert('Data berhasil disimpan, mohon isi data pendidikan');window.location = '".site_url('users/binsyar/safaripendidikan/')."';</script>";
         } else {
             return $this->safari();
+        }
+    }
+
+    public function simpan_forme()
+    {
+        // Data kegiatan
+        $this->form_validation->set_rules('narsum[]', 'penceramah', 'trim|required');
+        $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
+        $this->form_validation->set_rules('esti_keg', 'estimasi jumlah jamaah', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('lemb_keg', 'lembaga penyelenggara', 'trim|required');
+        $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
+        $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
+        $this->form_validation->set_rules('alamat_keg', 'alamat kegiatan', 'trim|required');
+        $this->form_validation->set_rules('id_provinsi', 'provinsi kegiatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kabupaten', 'kabupaten kegiatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kecamatan', 'kecamatan kegiatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kelurahan', 'kelurahan kegiatan', 'trim|required|is_numeric');
+
+        // Data Lampiran
+        if(empty($_FILES['ktp']['name'])){
+            $this->form_validation->set_rules('ktp', 'upload ktp', 'required');}
+        if(empty($_FILES['proposal_keg']['name'])){
+            $this->form_validation->set_rules('proposal_keg', 'upload proposal kegiatan', 'required');}
+        if(empty($_FILES['surat_permohonan_keg']['name'])){
+            $this->form_validation->set_rules('surat_permohonan_keg', 'upload surat permohonan kegiatan', 'required');}
+
+        if ($this->form_validation->run() == TRUE) {
+            // Mengambil id layanan terakhir
+            $id_dt_layanan['id'] = $this->bm->get_id_dtlayanan();
+
+            // Data single
+            $layanan = array(
+                "id_user" => $this->input->post("id_user", TRUE),
+                "id_stat" => $this->input->post("id_stat", TRUE),
+                "id_provinsi" => $this->input->post("id_provinsi", TRUE),
+                "id_kabupaten" => $this->input->post("id_kabupaten", TRUE),
+                "id_kecamatan" => $this->input->post("id_kecamatan", TRUE),
+                "id_kelurahan" => $this->input->post("id_kelurahan", TRUE),
+                "jenis_layanan" => $this->input->post("jenis_layanan", TRUE),
+                "stat" => 1,
+                "kategori_pemohon" => 2,
+                "syscreateuser" => $this->input->post("id_user", TRUE),
+                "syscreatedate" => $this->input->post("syscreatedate", TRUE)
+            );
+            $this->bm->kirim_dataLayanan_lembaga($layanan);
+
+            $kegiatan = array(
+                "id_layanan" => $id_dt_layanan['id']->id + 1,
+                "nm_keg" => $this->input->post('nm_keg'),
+                "esti_keg" => $this->input->post('esti_keg'),
+                "lemb_keg" => $this->input->post('lemb_keg'),
+                "tgl_awal_keg" => $this->input->post('tgl_awal_keg'),
+                "tgl_akhir_keg" => $this->input->post('tgl_akhir_keg'),
+                "alamat_keg" => $this->input->post('alamat_keg')
+            );
+            $this->bm->kirim_dataKegiatan_lembaga($kegiatan);
+
+            $narsum = $_POST['narsum'];
+            $narsum_single = array(
+                "id_layanan" => $id_dt_layanan['id']->id + 1,
+            );
+            $data = array();
+            $index = 0;
+
+            foreach($narsum as $nm)
+            {
+                array_push($data, array(
+                    'id_layanan'=>$narsum_single['id_layanan'],
+                    'narsum'=>$nm,
+                ));
+                $index++;
+            }
+            $this->bm->kirim_dataPenceramah_lembaga($data);
+
+            $dokumen = array(
+                "id_layanan" => $this->input->post('id_layanan'),
+                "ktp" => $this->_do_upload_ktp(),
+                "proposal_keg" => $this->_do_upload_proposal_keg(),
+                "surat_permohonan_keg" => $this->_do_upload_surat_permohonan_keg()
+            );
+            $this->bm->kirim_dataDokumen_lembaga($dokumen);
+            
+            echo "<script>alert('Data berhasil disimpan');window.location = '".site_url('users/binsyar/datakegiatan/')."';</script>";
+        } else {
+            return $this->lembaga();
         }
     }
 
@@ -1161,6 +1314,30 @@ class Binsyar extends MX_Controller {
     }
 
     //------------------------------ Kumpulan Data Proses Edit Ke DB
+    public function simpanedit_layanankegiatan()
+    {
+        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required|is_numeric');
+        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
+
+        $id = $this->input->post("id", TRUE);
+        $data_layanan = array(
+            "id_user" => $this->input->post("id_user", TRUE),
+            "id_provinsi" => $this->input->post("id_provinsi", TRUE),
+            "id_kabupaten" => $this->input->post("id_kabupaten", TRUE),
+            "id_kecamatan" => $this->input->post("id_kecamatan", TRUE),
+            "id_kelurahan" => $this->input->post("id_kelurahan", TRUE),
+            "jenis_layanan" => $this->input->post("jenis_layanan", TRUE),
+            "sysupdateuser" => $this->input->post("sysupdateuser", TRUE),
+            "sysupdatedate" => $this->input->post("sysupdatedate", TRUE),
+            "id_stat" => $this->input->post("id_stat", TRUE),
+            "kategori_pemohon" => 1,
+        );
+        $this->bm->save_tbl_layananprop($data_layanan, $id);
+        echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+    }
+
     public function simpanedit_kegiatan()
     {
         $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
@@ -1168,15 +1345,11 @@ class Binsyar extends MX_Controller {
         $this->form_validation->set_rules('lemb_keg', 'lembaga kegiatan', 'trim|required');
         $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
         $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
-        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required|is_numeric');
-        $this->form_validation->set_rules('id_kabupaten', 'kabupaten', 'trim|required|is_numeric');
-        $this->form_validation->set_rules('id_kecamatan', 'kecamatan', 'trim|required|is_numeric');
-        $this->form_validation->set_rules('id_kelurahan', 'kelurahan', 'trim|required|is_numeric');
         $this->form_validation->set_rules('alamat_keg', 'alamat kegiatan', 'trim|required');
 
-        if ($this->form_validation->run() == TRUE) {
+        if ($this->form_validation->run() == TRUE)
+        {
             $id = $this->input->post("id", TRUE);
-
             $data_kegiatan = array(
                 "id_layanan" => $this->input->post("id_layanan", TRUE),
                 "nm_keg" => $this->input->post("nm_keg", TRUE),
@@ -1187,20 +1360,7 @@ class Binsyar extends MX_Controller {
                 "alamat_keg" => $this->input->post("alamat_keg", TRUE)
             );
             $this->bm->save_tbl_kegiatan($data_kegiatan, $id);
-
-            $id_layanan = $this->input->post("id_layanan", TRUE);
-            $data_layanan = array(
-                "id_provinsi" => $this->input->post("id_provinsi", TRUE),
-                "id_kabupaten" => $this->input->post("id_kabupaten", TRUE),
-                "id_kecamatan" => $this->input->post("id_kecamatan", TRUE),
-                "id_kelurahan" => $this->input->post("id_kelurahan", TRUE),
-                "sysupdateuser" => $this->input->post("sysupdateuser", TRUE),
-                "sysupdatedate" => $this->input->post("sysupdatedate", TRUE)
-            );
-            $this->bm->save_tbl_layananprop($data_layanan, $id_layanan);
-            
             echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
-            // redirect(site_url('pendakwahlokal/update/'.$this->input->post('f_idpendakwah')));
         } else {
             return $this->editkegiatan($id);
         }
@@ -1232,9 +1392,9 @@ class Binsyar extends MX_Controller {
                 ));
                 $index++;
             }
-            $this->db->update_batch('dt_penceramah', $data, 'id');
             // var_dump($data);
             // die();
+            $this->db->update_batch('dt_penceramah', $data, 'id');
             echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
         } else {
             return $this->editkegiatan($id);
@@ -1243,28 +1403,47 @@ class Binsyar extends MX_Controller {
 
     public function simpanedit_lampiran()
     {
-        $this->form_validation->set_rules('id_layanan', 'layanan', 'trim|required|is_numeric');
-        // $this->form_validation->set_rules('ktp', 'ktp', 'trim|required');
-        // $this->form_validation->set_rules('proposal_keg', 'proposal kegiatan', 'trim|required');
-        // $this->form_validation->set_rules('surat_permohonan_keg', 'surat permohonan kegiatan', 'trim|required');
+        $id = $this->input->post('id');
+        $id_layanan = $this->input->post('id_layanan');
+        $data = array(
+            "id_layanan" => $this->input->post('id_layanan')
+        );
 
-        if ($this->form_validation->run() == TRUE) {
-            $id = $this->input->post('id');
-            $data = array(
-                "id_layanan" => $this->input->post('id_layanan'),
-                "ktp" => $this->uplodan->doupload_ktp_kegiatan(),
-                "proposal_keg" => $this->uplodan->doupload_proposal_kegiatan(),
-                "surat_permohonan_keg" => $this->uplodan->doupload_permohonan_kegiatan()
-            );
+        if (!empty($_FILES['ktp']['name'])) {
+            $ktpimage = $this->_do_upload_ktp();
 
-            $this->bm->save_tbl_lampiran($data, $id);
-            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
-        } else {
-            return $this->editkegiatan($id);
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->ktp) && $upload->ktp) {
+                unlink('assets/uploads/binsyar/'.$upload->ktp);
+            }
+            $data['ktp'] = $ktpimage;
         }
+
+        if (!empty($_FILES['proposal_keg']['name'])) {
+            $proposal_kegimage = $this->_do_upload_ktp();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->proposal_keg) && $upload->proposal_keg) {
+                unlink('assets/uploads/binsyar/'.$upload->proposal_keg);
+            }
+            $data['proposal_keg'] = $proposal_kegimage;
+        }
+
+        if (!empty($_FILES['surat_permohonan_keg']['name'])) {
+            $surat_permohonan_kegimage = $this->_do_upload_ktp();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->surat_permohonan_keg) && $upload->surat_permohonan_keg) {
+                unlink('assets/uploads/binsyar/'.$upload->surat_permohonan_keg);
+            }
+            $data['surat_permohonan_keg'] = $surat_permohonan_kegimage;
+        }
+
+        $this->bm->save_tbl_lampiran($data, $id);
+        echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
     }
 
-    public function simpanedit_ekspor()
+    public function simpanedit_ekspor_kegiatan()
     {
         $this->form_validation->set_rules('nm_keg', 'nama kegiatan', 'trim|required');
         $this->form_validation->set_rules('esti_keg', 'estimasi jamaah kegiatan', 'trim|required|is_numeric');
@@ -1272,7 +1451,7 @@ class Binsyar extends MX_Controller {
         $this->form_validation->set_rules('tgl_awal_keg', 'tanggal awal kegiatan', 'trim|required');
         $this->form_validation->set_rules('tgl_akhir_keg', 'tanggal akhir kegiatan', 'trim|required');
         $this->form_validation->set_rules('alamat_keg', 'alamat kegiatan', 'trim|required');
-        $this->form_validation->set_rules('code_negara', 'kode negara', 'trim|required');
+        $this->form_validation->set_rules('code_negara', 'kode negara', 'trim|required|is_numeric');
 
         if($this->form_validation->run() == TRUE)
         {
@@ -1356,30 +1535,74 @@ class Binsyar extends MX_Controller {
 
     public function simpanedit_ekspor_lampiran()
     {
-        $this->form_validation->set_rules('id_layanan', 'layanan', 'trim|required|is_numeric');
-        // $this->form_validation->set_rules('ktp', 'ktp', 'trim|required');
-        // $this->form_validation->set_rules('proposal_keg', 'proposal kegiatan', 'trim|required');
-        // $this->form_validation->set_rules('surat_permohonan_keg', 'surat permohonan kegiatan', 'trim|required');
+        $id = $this->input->post('id');
+        $id_layanan = $this->input->post('id_layanan');
+        $data = array(
+            "id_layanan" => $this->input->post('id_layanan')
+        );
 
-        if ($this->form_validation->run() == TRUE)
-        {
-            $id = $this->input->post('id');
-            $data = array(
-                "id_layanan" => $this->input->post('id_layanan'),
-                "surat_permohonan_luar" => $this->uplodan->doupload_sp_luar(),
-                "proposal_luar" => $this->uplodan->doupload_proposal_luar(),
-                "cv_crmh_luar" => $this->uplodan->doupload_cv_luar(),
-                "pasp_crmh_luar" => $this->uplodan->doupload_paspor_luar(),
-                "pasp_pengundang_luar" => $this->uplodan->doupload_pengundang_luar(),
-                "pas_foto_crmh_luar" => $this->uplodan->doupload_foto_luar()
-            );
-            // var_dump($data);
-            // die();
-            $this->bm->save_tbl_ekspor_lampiran($data, $id);
-            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
-        } else {
-            return $this->editkegiatan($id);
+        if (!empty($_FILES['surat_permohonan_luar']['name'])) {
+            $surat_permohonan_luarimage = $this->_do_upload_surat_permohonan_luar();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->surat_permohonan_luar) && $upload->surat_permohonan_luar) {
+                unlink('assets/uploads/binsyar/'.$upload->surat_permohonan_luar);
+            }
+            $data['surat_permohonan_luar'] = $surat_permohonan_luarimage;
         }
+
+        if (!empty($_FILES['proposal_luar']['name'])) {
+            $proposal_luarimage = $this->_do_upload_proposal_luar();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->proposal_luar) && $upload->proposal_luar) {
+                unlink('assets/uploads/binsyar/'.$upload->proposal_luar);
+            }
+            $data['proposal_luar'] = $proposal_luarimage;
+        }
+
+        if (!empty($_FILES['cv_crmh_luar']['name'])) {
+            $cv_crmh_luarimage = $this->_do_upload_cv_crmh_luar();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->cv_crmh_luar) && $upload->cv_crmh_luar) {
+                unlink('assets/uploads/binsyar/'.$upload->cv_crmh_luar);
+            }
+            $data['cv_crmh_luar'] = $cv_crmh_luarimage;
+        }
+
+        if (!empty($_FILES['pasp_crmh_luar']['name'])) {
+            $pasp_crmh_luarimage = $this->_do_upload_pasp_crmh_luar();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->pasp_crmh_luar) && $upload->pasp_crmh_luar) {
+                unlink('assets/uploads/binsyar/'.$upload->pasp_crmh_luar);
+            }
+            $data['pasp_crmh_luar'] = $pasp_crmh_luarimage;
+        }
+
+        if (!empty($_FILES['pasp_pengundang_luar']['name'])) {
+            $pasp_pengundang_luarimage = $this->_do_upload_pasp_pengundang_luar();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->pasp_pengundang_luar) && $upload->pasp_pengundang_luar) {
+                unlink('assets/uploads/binsyar/'.$upload->pasp_pengundang_luar);
+            }
+            $data['pasp_pengundang_luar'] = $pasp_pengundang_luarimage;
+        }
+
+        if (!empty($_FILES['pas_foto_crmh_luar']['name'])) {
+            $pas_foto_crmh_luarimage = $this->_do_upload_pas_foto_crmh_luar();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->pas_foto_crmh_luar) && $upload->pas_foto_crmh_luar) {
+                unlink('assets/uploads/binsyar/'.$upload->pas_foto_crmh_luar);
+            }
+            $data['pas_foto_crmh_luar'] = $pas_foto_crmh_luarimage;
+        }
+
+        $this->bm->save_tbl_ekspor_lampiran($data, $id);
+        echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
     }
 
     public function simpanedit_impor()
@@ -1447,18 +1670,17 @@ class Binsyar extends MX_Controller {
             foreach($narsum as $nm)
             {
                 array_push($data, array(
+                    'narsum' => $nm,
                     'id' => $id[$index],
                     'id_layanan' => $id_layanan[$index],
                     'jns_kelamin' => $single['jns_kelamin'],
                     'no_paspor' => $single['no_paspor'],
                     'tmp_lhr' => $single['tmp_lhr'],
                     'tgl_lhr' => $single['tgl_lhr'],
-                    'negara_asl' => $single['negara_asl'],
-                    'narsum' => $nm
+                    'negara_asl' => $single['negara_asl']
                 ));
                 $index++;
             }
-
             $this->db->update_batch('dt_penceramah', $data, 'id');
             echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
         } else {
@@ -1468,29 +1690,537 @@ class Binsyar extends MX_Controller {
 
     public function simpanedit_impor_lampiran()
     {
-        $this->form_validation->set_rules('id_layanan', 'layanan', 'trim|required|is_numeric');
-        // $this->form_validation->set_rules('ktp', 'ktp', 'trim|required');
-        // $this->form_validation->set_rules('proposal_keg', 'proposal kegiatan', 'trim|required');
-        // $this->form_validation->set_rules('surat_permohonan_keg', 'surat permohonan kegiatan', 'trim|required');
+        $id = $this->input->post('id');
+        $id_layanan = $this->input->post('id_layanan');
+        $data = array(
+            "id_layanan" => $this->input->post('id_layanan')
+        );
 
-        if ($this->form_validation->run() == TRUE)
-        {
-            $id = $this->input->post('id');
-            $data = array(
-                "id_layanan" => $this->input->post('id_layanan'),
-                "surat_permohonan_dalam" => $this->uplodan->doupload_sp_dalam(),
-                "proposal_dalam" => $this->uplodan->doupload_proposal_dalam(),
-                "cv_crmh_dalam" => $this->uplodan->doupload_cv_dalam(),
-                "pasp_crmh_dalam" => $this->uplodan->doupload_paspor_dalam(),
-                "ktp_dalam" => $this->uplodan->doupload_ktp_dalam(),
-                "pas_foto_crmh_dalam" => $this->uplodan->doupload_foto_dalam()
-            );
+        if (!empty($_FILES['surat_permohonan_dalam']['name'])) {
+            $surat_permohonan_dalamimage = $this->_do_upload_surat_permohonan_dalam();
 
-            $this->bm->save_tbl_impor_lampiran($data, $id);
-            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
-        } else {
-            return $this->editimpor($id);
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->surat_permohonan_dalam) && $upload->surat_permohonan_dalam) {
+                unlink('assets/uploads/binsyar/'.$upload->surat_permohonan_dalam);
+            }
+            $data['surat_permohonan_dalam'] = $surat_permohonan_dalamimage;
         }
+
+        if (!empty($_FILES['proposal_dalam']['name'])) {
+            $proposal_dalamimage = $this->_do_upload_proposal_dalam();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->proposal_dalam) && $upload->proposal_dalam) {
+                unlink('assets/uploads/binsyar/'.$upload->proposal_dalam);
+            }
+            $data['proposal_dalam'] = $proposal_dalamimage;
+        }
+
+        if (!empty($_FILES['cv_crmh_dalam']['name'])) {
+            $cv_crmh_dalamimage = $this->_do_upload_cv_crmh_dalam();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->cv_crmh_dalam) && $upload->cv_crmh_dalam) {
+                unlink('assets/uploads/binsyar/'.$upload->cv_crmh_dalam);
+            }
+            $data['cv_crmh_dalam'] = $cv_crmh_dalamimage;
+        }
+
+        if (!empty($_FILES['pasp_crmh_dalam']['name'])) {
+            $pasp_crmh_dalamimage = $this->_do_upload_pasp_crmh_dalam();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->pasp_crmh_dalam) && $upload->pasp_crmh_dalam) {
+                unlink('assets/uploads/binsyar/'.$upload->pasp_crmh_dalam);
+            }
+            $data['pasp_crmh_dalam'] = $pasp_crmh_dalamimage;
+        }
+
+        if (!empty($_FILES['ktp_dalam']['name'])) {
+            $ktp_dalamimage = $this->_do_upload_ktp_dalam();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->ktp_dalam) && $upload->ktp_dalam) {
+                unlink('assets/uploads/binsyar/'.$upload->ktp_dalam);
+            }
+            $data['ktp_dalam'] = $ktp_dalamimage;
+        }
+
+        if (!empty($_FILES['pas_foto_crmh_dalam']['name'])) {
+            $pas_foto_crmh_dalamimage = $this->_do_upload_pas_foto_crmh_dalam();
+
+            $upload = $this->bm->cek_gambar($id_layanan);
+            if (file_exists('assets/uploads/binsyar/'.$upload->pas_foto_crmh_dalam) && $upload->pas_foto_crmh_dalam) {
+                unlink('assets/uploads/binsyar/'.$upload->pas_foto_crmh_dalam);
+            }
+            $data['pas_foto_crmh_dalam'] = $pas_foto_crmh_dalamimage;
+        }
+
+        $this->bm->save_tbl_impor_lampiran($data, $id);
+        echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+    }
+
+    // Kumpulan Uplodan per form
+    private function _do_upload_ktp()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["ktp"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('ktp')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->kegiatan();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_proposal_keg()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["proposal_keg"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('proposal_keg')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->kegiatan();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_surat_permohonan_keg()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["surat_permohonan_keg"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('surat_permohonan_keg')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->ekspor();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_surat_permohonan_luar()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["surat_permohonan_luar"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('surat_permohonan_luar')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->ekspor();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_proposal_luar()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["proposal_luar"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('proposal_luar')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->ekspor();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_cv_crmh_luar()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["cv_crmh_luar"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('cv_crmh_luar')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->ekspor();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_pasp_crmh_luar()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["pasp_crmh_luar"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('pasp_crmh_luar')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->ekspor();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_pasp_pengundang_luar()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["pasp_pengundang_luar"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('pasp_pengundang_luar')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->ekspor();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_pas_foto_crmh_luar()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["pas_foto_crmh_luar"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('pas_foto_crmh_luar')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->kegiatan();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_surat_permohonan_dalam()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["surat_permohonan_dalam"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('surat_permohonan_dalam')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_proposal_dalam()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["proposal_dalam"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('proposal_dalam')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_cv_crmh_dalam()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["cv_crmh_dalam"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('cv_crmh_dalam')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_pasp_crmh_dalam()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["pasp_crmh_dalam"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('pasp_crmh_dalam')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_ktp_dalam()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["ktp_dalam"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('ktp_dalam')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_pas_foto_crmh_dalam()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["pas_foto_crmh_dalam"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('pas_foto_crmh_dalam')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_surat_permohonan_safari()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["surat_permohonan_safari"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('surat_permohonan_safari')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_proposal_safari()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["proposal_safari"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('proposal_safari')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_cv_crmh_safari()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["cv_crmh_safari"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('cv_crmh_safari')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_pasp_crmh_safari()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["pasp_crmh_safari"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('pasp_crmh_safari')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_ktp_safari()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["ktp_safari"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('ktp_safari')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_pas_foto_crmh_safari()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["pas_foto_crmh_safari"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('pas_foto_crmh_safari')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
+    }
+
+    private function _do_upload_crt_crmh_safari()
+    {
+        $data['user'] = $this->bm->get_identitas();
+        $image_name = date('d-m-Y').'_'.$data['user']->fullname.'_'.$_FILES["crt_crmh_safari"]['name'];
+
+        $config['upload_path']      = 'assets/uploads/binsyar/';
+        $config['allowed_types']    = 'gif|jpg|jpeg|png|doc|docx|xls|xlsx|pdf';
+        $config['max_size']         = 1024;
+        $config['max_widht']        = 1000;
+        $config['max_height']       = 1000;
+        $config['file_name']        = $image_name;
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('crt_crmh_safari')) {
+            $this->session->set_flashdata('msg', $this->upload->display_errors('', ''));
+            return $this->import();
+        }
+        return $this->upload->data('file_name');
     }
 
     // Kumpulan Data-Data Provinsi, Kabupaten, Kecamtan, Kelurahan
