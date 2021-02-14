@@ -421,7 +421,7 @@ class Layanan_1 extends CI_Controller {
                     'kabupaten' => $this->input->post('kabupaten'),
                     'kecamatan' => $this->input->post('kectxt'),
                     'kelurahan' => $this->input->post('keltxt'),
-                    'keterangan_kegiatan' => $this->input->post('keterangan_kegiatan'),
+                    'keterangan_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('keterangan_kegiatan')),
                     'mt_layanan' => 1
                 ],
                 'dt_kegiatan' => [
@@ -466,7 +466,7 @@ class Layanan_1 extends CI_Controller {
                 'kabupaten' => $this->input->post('kabupaten'),
                 'kecamatan' => $this->input->post('kectxt'),
                 'kelurahan' => $this->input->post('keltxt'),
-                'keterangan_kegiatan' => $this->input->post('keterangan_kegiatan'),
+                'keterangan_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('keterangan_kegiatan')),
                 'user_update' => $this->session->userdata('DX_user_id')
             ],
             'dt_kegiatan' => [
