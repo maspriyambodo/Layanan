@@ -425,15 +425,15 @@ class Layanan_1 extends CI_Controller {
                     'mt_layanan' => 1
                 ],
                 'dt_kegiatan' => [
-                    'nama_kegiatan' => $this->input->post('nm_keg'),
+                    'nama_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('nm_keg')),
                     'jumlah_peserta' => $this->input->post('esti_keg'),
-                    'lembaga' => $this->input->post('lemb_keg'),
+                    'lembaga' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('lemb_keg')),
                     'tmt_awal' => $this->input->post('tgl_awal_keg'),
                     'tmt_akhir' => $this->input->post('tgl_akhir_keg'),
-                    'alamat_kegiatan' => $this->input->post('alamat_kegiatan')
+                    'alamat_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('alamat_kegiatan'))
                 ],
                 'dt_penceramah' => [
-                    'penceramah' => $this->input->post('narsum')
+                    'penceramah' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('narsum'))
                 ],
                 'dt_layanan_dokumen' => [
                     'ktp_kegiatan' => $ktp['file_name'],
@@ -470,15 +470,15 @@ class Layanan_1 extends CI_Controller {
                 'user_update' => $this->session->userdata('DX_user_id')
             ],
             'dt_kegiatan' => [
-                'nama_kegiatan' => $this->input->post('nm_keg'),
+                'nama_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('nm_keg')),
                 'jumlah_peserta' => $this->input->post('esti_keg'),
-                'lembaga' => $this->input->post('lemb_keg'),
+                'lembaga' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('lemb_keg')),
                 'tmt_awal' => $this->input->post('tgl_awal_keg'),
                 'tmt_akhir' => $this->input->post('tgl_akhir_keg'),
-                'alamat_kegiatan' => $this->input->post('alamat_kegiatan')
+                'alamat_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('alamat_kegiatan'))
             ],
             'dt_penceramah' => [
-                'penceramah' => $this->input->post('narsum')
+                'penceramah' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('narsum'))
             ]
         ];
 //        echo '<pre>';

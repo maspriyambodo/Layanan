@@ -135,7 +135,7 @@ class M_layanan1 extends CI_Model {
     }
 
     private function Insert_layanan($data) {
-        $exec = $this->db->query('CALL insert_dt_layanan(' . $data['id_user'] . ',' . $data['dt_layanan']['provinsi'] . ',' . $data['dt_layanan']['kabupaten'] . ',' . $data['dt_layanan']['kecamatan'] . ',' . $data['dt_layanan']['kelurahan'] . ',"' . $data['dt_layanan']['keterangan_kegiatan'] . '",' . $data['dt_layanan']['mt_layanan'] . ',@id_layanan)');
+        $exec = $this->db->query('CALL insert_dt_layanan(' . $data['id_user'] . ',' . $data['dt_layanan']['provinsi'] . ',' . $data['dt_layanan']['kabupaten'] . ',' . $data['dt_layanan']['kecamatan'] . ',"' . $data['dt_layanan']['kelurahan'] . '","' . $data['dt_layanan']['keterangan_kegiatan'] . '",' . $data['dt_layanan']['mt_layanan'] . ',@id_layanan)');
         if (empty($exec->conn_id->affected_rows) or $exec->conn_id->affected_rows == 0) {
             log_message('error', APPPATH . 'modules/Urais/models/M_layanan1 -> function Insert_layanan ' . ' error ketika insert detil layanan');
             $result = [
@@ -259,7 +259,7 @@ class M_layanan1 extends CI_Model {
     }
 
     private function Update_layanan($data) {
-        $exec = $this->db->query('CALL update_dt_layanan(' . $data['id_layanan'] . ',' . $data['dt_layanan']['provinsi'] . ',' . $data['dt_layanan']['kabupaten'] . ',' . $data['dt_layanan']['kecamatan'] . ',' . $data['dt_layanan']['kelurahan'] . ',"' . $data['dt_layanan']['keterangan_kegiatan'] . '",' . $data['dt_layanan']['user_update'] . ')');
+        $exec = $this->db->query('CALL update_dt_layanan(' . $data['id_layanan'] . ',' . $data['dt_layanan']['provinsi'] . ',' . $data['dt_layanan']['kabupaten'] . ',' . $data['dt_layanan']['kecamatan'] . ',"' . $data['dt_layanan']['kelurahan'] . '","' . $data['dt_layanan']['keterangan_kegiatan'] . '",' . $data['dt_layanan']['user_update'] . ')');
         if ($exec->conn_id->sqlstate != 00000) {
             log_message('error', APPPATH . 'modules/Urais/models/M_layanan1 -> function Update_layanan' . 'error ketika mengubah data layanan');
             $result = [
