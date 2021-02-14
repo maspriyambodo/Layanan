@@ -12,7 +12,7 @@ CREATE TABLE `dt_layanan` (
   `id_provinsi` int DEFAULT NULL COMMENT 'provinsi',
   `id_kabupaten` int DEFAULT NULL COMMENT 'kabupaten',
   `id_kecamatan` int DEFAULT NULL COMMENT 'kecamatan',
-  `id_kelurahan` int DEFAULT NULL,
+  `id_kelurahan` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `keterangan` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `jenis_layanan` int DEFAULT NULL COMMENT 'relasi dengan id table daftar layanan',
   `alasan_tolak` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
