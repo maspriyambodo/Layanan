@@ -29,7 +29,7 @@ class Binsyar_m extends CI_Model {
 			"b.jenis_layanan" => 1,
 			"b.stat" => 1
 		);
-		$query = $this->db->select("b.id, b.id_user, b.id_stat, b.id_provinsi, b.id_kabupaten, b.id_kecamatan, b.id_kelurahan, b.jenis_layanan, a.nik, a.tgl_lhr, a.fullname, a.email, a.telp")
+		$query = $this->db->select("b.id, b.id_user, b.id_stat, b.id_provinsi, b.id_kabupaten, b.id_kecamatan, b.id_kelurahan, b.jenis_layanan, a.nik, a.tgl_lhr, a.fullname, a.email, a.telp, b.kategori_pemohon")
 				->from("sys_users a")
 				->join("dt_layanan b", "a.id = b.id_user")
 				->where($kondisi)
