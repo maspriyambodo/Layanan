@@ -61,7 +61,17 @@ class M_layanan1 extends CI_Model {
     }
 
     public function Proses_verif($param) {
-        $this->db->query('CALL verif_IKK(' . $param['e'] . ',' . $param['a'] . ',' . $param['b'] . ',' . $param['c'] . ',"' . $param['d'] . '")');
+        $exec = $this->db->query('CALL verif_IKK(' . $param['e'] . ',' . $param['a'] . ',' . $param['b'] . ',' . $param['c'] . ',"' . $param['d'] . '")');
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', APPPATH . 'modules/Urais/models/M_layanan1 -> function Proses_verif' . 'error ketika verifikasi permohonan');
+            $result = [
+                'status' => false,
+                'pesan' => 'kesalahan saat verifikasi permohonan!'
+            ];
+        } else {
+            $result['status'] = true;
+        }
+        return $result;
     }
 
     public function Provinsi() {

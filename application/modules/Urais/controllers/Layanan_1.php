@@ -240,6 +240,7 @@ class Layanan_1 extends CI_Controller {
     public function Proses() {//permohonan status proses
         $this->template->setPageId("DIPROSES_IKK");
         $data = [];
+        $data['msg'] = ['gagal' => $this->session->flashdata('gagal'), 'sukses' => $this->session->flashdata('sukses')];
         $sitetitle = "Permohonan dalam Proses";
         $pagetitle = "Daftar Permohonan di Proses";
         $view = "layanan1/v_proses";
@@ -302,10 +303,15 @@ class Layanan_1 extends CI_Controller {
             $alasan = '"' . $this->input->post('alasan') . '"';
         }
         $data = ['a' => $this->input->post('hasil'), 'b' => $alasan, 'c' => $this->session->userdata('DX_user_id'), 'd' => date("Y-m-d H:i:s"), 'e' => $this->input->post('id_layanan')];
-        $this->M_layanan1->Proses_verif($data);
+        $exec = $this->M_layanan1->Proses_verif($data);
         //$mail = $this->M_layanan1->Detail($this->input->post('id_layanan'));
         //$this->Mail($mail);
-        redirect(base_url('Urais/Layanan_1/Proses/'), 'refresh');
+        if ($exec['status'] == true) {
+            $result = redirect(base_url('Urais/Layanan_1/Proses/'), $this->session->set_flashdata('sukses', 'Berhasil verifikasi permohonan!'));
+        } else {
+            $result = redirect(base_url('Urais/Layanan_1/Detail_Proses/' . $this->input->post('id_layanan')), $this->session->set_flashdata('gagal', $exec['pesan']));
+        }
+        return $result;
     }
 
     public function Tambah() {

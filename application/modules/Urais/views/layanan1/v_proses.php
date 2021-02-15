@@ -3,11 +3,40 @@
         {CONTENT BLOCK}
     </div>
 </div>
+<input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
+<input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
 {JS START}
 <?php
 echo $js_inlines;
 ?>
 <script type="text/javascript">
+    window.onload = function() {
+    toastr.options = {
+    closeButton: true,
+            debug: false,
+            newestOnTop: false,
+            progressBar: false,
+            positionClass: "toast-top-right",
+            preventDuplicates: true,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "2000",
+            timeOut: false,
+            extendedTimeOut: "2000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+    };
+    var a, b;
+    a = $('input[name="err_msg"]').val();
+    b = $('input[name="succ_msg"]').val();
+    if (a !== "") {
+    toastr.error(a);
+    } else if (b !== "") {
+    toastr.success(b);
+    }
+    };
     var Page = {};
     Page.RefreshGrid = function () {
     Page.InitGrid();
