@@ -141,6 +141,7 @@ echo $js_inlines;
             index: 'nama_stat',
                     title: 'STATUS PERMOHONAN',
                     width: 150,
+                    rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
                     o.value = '' + ('<div class="fancy-grid-cell-inner" style="margin-top:0px !important;"><span class="badge bg-danger">tidak disetujui</span></div>');
@@ -151,7 +152,7 @@ echo $js_inlines;
             index: 'id_layanan',
                     title: 'CONTROL',
                     // width: 95,
-                    // rightLocked: true,
+                    rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
                     o.value = ''
