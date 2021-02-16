@@ -45,7 +45,7 @@
                     <div class="form-row">
                       <div class="form-group col-md-4">
                         <label>Tanggal Lahir</label>
-                        <input type="text" class="form-control" name="tgl_lhr" value="<?php echo $pemohon->tgl_lhr;?>" readonly>
+                        <input type="text" class="form-control" name="tgl_lhr" value="<?php echo $pemohon->nama_layanan;?>" readonly>
                       </div>
                       <div class="form-group col-md-4">
                         <label>Telepon</label>

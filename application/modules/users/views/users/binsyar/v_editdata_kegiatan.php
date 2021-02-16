@@ -23,18 +23,25 @@
                     <input type="hidden" name="id_user" value="<?php echo $pemohon->id_user;?>">
                     <input type="hidden" name="id_stat" value="<?php echo $pemohon->id_stat;?>">
                     <input type="hidden" name="jenis_layanan" value="<?php echo $pemohon->jenis_layanan;?>">
-                    <input type="hidden" name="syscreateuser" value="<?php echo $pemohon->id_user;?>">
-                    <input type="hidden" name="syscreatedate" value="<?php echo date('Y-m-d h:i:s');?>">
+                    <input type="hidden" name="sysupdateuser" value="<?php echo $pemohon->id_user;?>">
+                    <input type="hidden" name="sysupdatedate" value="<?php echo date('Y-m-d h:i:s');?>">
 
                     <!-- <legend>Data Pemohon :</legend> -->
                     <div class="form-row">
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-4">
                         <label>NIK</label>
                         <input type="text" class="form-control" name="nik" value="<?php echo $pemohon->nik;?>" readonly>
                       </div>
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-4">
                         <label>Nama Lengkap</label>
                         <input type="text" class="form-control" name="fullname" value="<?php echo $pemohon->fullname;?>" readonly>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label>Kategori Pemohon</label>
+                        <select class="form-control" name="kategori_pemohon">
+                          <option <?php if($pemohon->kategori_pemohon == 1){echo "selected"; } ?> value="1">Sebagai pemohon</option>
+                          <option <?php if($pemohon->kategori_pemohon == 2){echo "selected"; } ?> value="2">Sebagai lembaga</option>
+                        </select>
                       </div>
                     </div>
 

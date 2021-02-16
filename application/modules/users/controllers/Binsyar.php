@@ -61,7 +61,12 @@ class Binsyar extends MX_Controller {
 
         $this->setGroup;
         $this->db->select("b.id, e.fullname, c.nm_keg, c.tgl_awal_keg, c.esti_keg, lemb_keg,
-        count(a.id) as jumlah_penceramah");
+        count(a.id) as jumlah_penceramah,
+        case
+        when b.kategori_pemohon = 1 then 'sebagai pemohon'
+        when b.kategori_pemohon = 2 then 'sebagai lembaga'
+        end as kategori
+        ");
         $this->db->from("dt_penceramah a");
         $this->db->join("dt_layanan b", "a.id_layanan = b.id");
         $this->db->join("dt_kegiatan c","b.id = c.id_layanan");
@@ -1329,10 +1334,10 @@ class Binsyar extends MX_Controller {
             "id_kecamatan" => $this->input->post("id_kecamatan", TRUE),
             "id_kelurahan" => $this->input->post("id_kelurahan", TRUE),
             "jenis_layanan" => $this->input->post("jenis_layanan", TRUE),
+            "kategori_pemohon" => $this->input->post("kategori_pemohon", TRUE),
             "sysupdateuser" => $this->input->post("sysupdateuser", TRUE),
             "sysupdatedate" => $this->input->post("sysupdatedate", TRUE),
-            "id_stat" => $this->input->post("id_stat", TRUE),
-            "kategori_pemohon" => 1,
+            "id_stat" => $this->input->post("id_stat", TRUE)
         );
         $this->bm->save_tbl_layananprop($data_layanan, $id);
         echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";

@@ -1,7 +1,7 @@
-<form method="post" action="<?php echo site_url('users/zawaf/simpan_forma');?>" enctype="multipart/form-data">
+<form method="post" action="<?php echo site_url('users/zawaf/simpan_formb');?>" enctype="multipart/form-data">
 <!-- Kumpulan inputan di hidden -->
 <input type="hidden" name="id_stat" value="1" />
-<input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[2]->id;?>" />
+<input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[0]->id;?>" />
 <input type="hidden" name="id_user" value="<?php echo $id_session->id;?>" />
 <input type="hidden" name="syscreatedate" value="<?php echo date('Y-m-d h:i:s');?>">
 
@@ -108,49 +108,71 @@
               <legend>Data Lampiran Dokumen :</legend>
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  <label>Surat Permohonan Tertulis Untuk Menteri Agama</label>
-                  <input type="hidden" name="id_layanan" value="<?php echo $id_dtlayanan->id+1;?>" />
-                  <input type="file" class="form-control" name="srt_prmhn_tertulis_lkspwu">
-                  <?php echo form_error('srt_prmhn_tertulis_lkspwu',"<div style='color:red'>","</div>");?>
+                  <label>Surat Permohonan Teruntuk Menteri Agama</label>
+                  <input type="file" class="form-control" name="srt_prmhn_mntr_laz">
+                  <?php echo form_error('srt_prmhn_mntr_laz',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-4">
-                  <label>Anggaran Dasar</label>
-                  <input type="file" class="form-control" name="agrn_dsr_lkspwu">
-                  <?php echo form_error('agrn_dsr_lkspwu',"<div style='color:red'>","</div>");?>
+                  <label>Rekomendasi Baznas</label>
+                  <input type="file" class="form-control" name="rcmd_baznas_laz">
+                  <?php echo form_error('rcmd_baznas_laz',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-4">
-                  <label>SK Badan Hukum</label>
-                  <input type="file" class="form-control" name="sk_bdn_hkm_lkspwu">
-                  <?php echo form_error('sk_bdn_hkm_lkspwu',"<div style='color:red'>","</div>");?>
+                  <label>Anggaran Dasar Organisasi</label>
+                  <input type="file" class="form-control" name="agrn_dsr_laz">
+                  <?php echo form_error('agrn_dsr_laz',"<div style='color:red'>","</div>");?>
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group col-md-3">
-                  <label>Surat Keterangan Domisili Usaha</label>
-                  <input type="file" class="form-control" name="dmsl_ush_lkspwu">
-                  <?php echo form_error('dmsl_ush_lkspwu',"<div style='color:red'>","</div>");?>
+                  <label>SK Sebagai Badan Hukum</label>
+                  <input type="file" class="form-control" name="sk_bdn_hkm_laz">
+                  <?php echo form_error('sk_bdn_hkm_laz',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-3">
-                  <label>Surat Keterangan Dibidang Keuangan Syariah</label>
-                  <input type="file" class="form-control" name="suket_keuangan_lkspwu">
-                  <?php echo form_error('suket_keuangan_lkspwu',"<div style='color:red'>","</div>");?>
+                  <label>Susunan Pengawas Syariat</label>
+                  <input type="file" class="form-control" name="ssn_pngws_laz">
+                  <?php echo form_error('ssn_pngws_laz',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-3">
-                  <label>Memiliki Fungsi Menerima Titipan</label>
-                  <input type="file" class="form-control" name="trm_ttpn_lkspwu">
-                  <?php echo form_error('trm_ttpn_lkspwu',"<div style='color:red'>","</div>");?>
+                  <label>Surat Pernyataan Sebagai Pengawas</label>
+                  <input type="file" class="form-control" name="srt_sbg_pngws_laz">
+                  <?php echo form_error('srt_sbg_pngws_laz',"<div style='color:red'>","</div>");?>
                 </div>
                 <div class="form-group col-md-3">
-                  <label>Laporan Keuangan (Jumlah, Nilai, Hasil Wakaf)</label>
-                  <input type="file" class="form-control" name="lprn_keuangan_lkspwu">
-                  <?php echo form_error('lprn_keuangan_lkspwu',"<div style='color:red'>","</div>");?>
+                  <label>Daftar Pegawai Dibidang Teknis</label>
+                  <input type="file" class="form-control" name="dftr_pgw_laz">
+                  <?php echo form_error('dftr_pgw_laz',"<div style='color:red'>","</div>");?>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label>FC Kartu BPJS</label>
+                  <input type="file" class="form-control" name="fc_kartubpjs_laz">
+                  <?php echo form_error('fc_kartubpjs_laz',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-3">
+                  <label>Pernyataan Pegawai Non Rangkap Baznas</label>
+                  <input type="file" class="form-control" name="srt_pgw_baznas_laz">
+                  <?php echo form_error('srt_pgw_baznas_laz',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-3">
+                  <label>Pernyataan Siap Diaudit Syariat & Keuangan</label>
+                  <input type="file" class="form-control" name="srt_sediaaudit_laz">
+                  <?php echo form_error('srt_sediaaudit_laz',"<div style='color:red'>","</div>");?>
+                </div>
+                <div class="form-group col-md-3">
+                  <label>Ikhtisar Perencanaan Program</label>
+                  <input type="file" class="form-control" name="iktsr_prcn_laz">
+                  <?php echo form_error('iktsr_prcn_laz',"<div style='color:red'>","</div>");?>
                 </div>
               </div>
           </fieldset><br>
 
           <button type="submit" class="btn btn-primary btn-md"><i class="material-icons">save</i>KIRIM DATA</button>
-          <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/datapermohonan') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
+          <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/datalaz') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
 
         </div>
     </div>

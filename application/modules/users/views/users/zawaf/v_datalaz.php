@@ -1,22 +1,6 @@
 <div class="widget-list">
     <div class="col-md-12 widget-holder widget-full-height">
         <div class="widget-bg">
-            <!-- <div class="row">
-                <div class="col-md-12">
-                    <select id="filter_provinsi" class="w200 display-inline form-control" onchange="Page.SetFilterKabupaten()">
-                        <option value="">- Provinsi -</option>
-                        <?php //foreach ($provinsi as $p) : ?>
-                            <option value="<?php //echo $p->provinsi_id ?>"><?php //echo $p->provinsi_name ?></option>
-                        <?php //endforeach; ?>
-                    </select>
-                    <select id="filter_kabupaten" class="w300 display-inline form-control">
-                        <option value="">- Kabupaten/Kota -</option>
-                    </select>
-                    <button onclick="Page.RefreshGrid()" class="btn btn-xs btn-success" type="button"><i class="fa fa-refresh"></i> Filter</button>
-                </div>
-                <div class="clearfix"></div>
-            </div> -->
-
             <br>
             {CONTENT BLOCK}
 
@@ -53,7 +37,7 @@ echo $js_inlines;
                 remoteFilter: false,
                 remoteSort: false,
                 proxy: {
-                    url: '<?php echo base_url(); ?>users/binsyar/joinan_kegiatan',
+                    url: '<?php echo base_url(); ?>users/zawaf/joinan_lkspwu',
                     params: {}
                 },
             },
@@ -99,43 +83,37 @@ echo $js_inlines;
                     }
                 },{
                     index: 'fullname',
-                    title: 'Pemohon',
-                    width: 110,
-                    // locked: true,
-                },{
-                    index: 'kategori',
-                    title: 'Kategori',
+                    title: 'Nama Pemohon',
                     width: 150,
                     // locked: true,
                 },{
-                    index: 'nm_keg',
-                    title: 'Nama Kegiatan',
+                    index: 'nama_layanan',
+                    title: 'Permohonan Jenis',
+                    width: 180,
+                    // locked: true,
+                },{
+                    index: 'nm_instansi',
+                    title: 'Nama Instansi',
                     width: 150,
                     // locked: true,
                 },{
-                    index: 'tgl_awal_keg',
-                    title: 'Awal Kegiatan',
-                    width: 100,
+                    index: 'telp_instansi',
+                    title: 'Telpon Instansi',
+                    width: 150,
                     // locked: true,
                 },
                 {
-                    index: 'esti_keg',
-                    title: 'Estimasi Jamaah',
+                    index: 'email_instansi',
+                    title: 'Email email_instansi',
                     width: 120,
                     // locked: true,
                 },
                 {
-                    index: 'lemb_keg',
-                    title: 'Lembaga Penyelenggara',
+                    index: 'nama',
+                    title: 'Provinsi Instansi',
                     width: 150,
                     // locked: true,
-                },
-                {
-                    index: 'jumlah_penceramah',
-                    title: 'Jumlah Penceramah',
-                    width: 130,
-                    // locked: true,
-                }, {
+                },{
                     index: 'id',
                     title: 'Control',
                     ellipsis: false,
@@ -178,7 +156,7 @@ echo $js_inlines;
                 var data = {
                     id: id,
                 };
-                var url = '<?php echo base_url(); ?>users/binsyar/hapus_dt_kegiatan';
+                var url = '<?php echo base_url(); ?>users/zawaf/hapus_dt_lkspwu';
                 ajaxPost(url, data, function(data) {
                     App.IsLoading(false);
                     swal(
@@ -199,7 +177,7 @@ echo $js_inlines;
     };
     Page.Edit = function(id) {
         if (id != '') {
-            window.location.href = '<?php echo base_url(); ?>users/binsyar/editkegiatan/' + id;
+            window.location.href = '<?php echo base_url(); ?>users/zawaf/editlkspwu/' + id;
         }
     };
     $(function() {
