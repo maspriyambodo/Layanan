@@ -144,7 +144,7 @@ echo $js_inlines;
                     rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
-                    o.value = '' + ('<div class="fancy-grid-cell-inner" style="margin-top:0px !important;"><span class="badge bg-danger">tidak disetujui</span></div>');
+                    o.value = '<span class="badge bg-danger">tidak disetujui</span>';
                     return o;
                     }
             },

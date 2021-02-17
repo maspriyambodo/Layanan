@@ -107,14 +107,22 @@ class Layanan_1 extends CI_Controller {
         $data = [];
         $detil_param = [
             'id_layanan' => $id,
-            'stat_id' => 1
+            'stat_id' => null
         ];
         $data['detil'] = $this->M_layanan1->Detail($detil_param);
         if (empty($data['detil'])) {
             redirect(base_url(''), 'refresh');
         } else {
             $sitetitle = $data['detil'][0]->nm_keg;
-            $pagetitle = "Izin Kegiatan Keagamaan";
+            if ($data['detil'][0]->stat_id == 1) {
+                $pagetitle = "<b>Status: </b><span class='text-info'>" . $data['detil'][0]->nama_stat . "</span>";
+            } elseif ($data['detil'][0]->stat_id == 2) {
+                $pagetitle = "<b>Status: </b><span class='text-warning'>" . $data['detil'][0]->nama_stat . "</span>";
+            } elseif ($data['detil'][0]->stat_id == 3) {
+                $pagetitle = "<b>Status: </b><span class='text-success'>" . $data['detil'][0]->nama_stat . "</span>";
+            } else {
+                $pagetitle = "<b>Status: </b><span class='text-danger'>" . $data['detil'][0]->nama_stat . "</span>";
+            }
             $view = "layanan1/v_detail";
             $breadcrumbs = [
                 [
@@ -149,11 +157,7 @@ class Layanan_1 extends CI_Controller {
     public function Edit($id) {
         $this->template->setPageId("DITERIMA_IKK");
         $data = [];
-        $detil_param = [
-            'id_layanan' => $id,
-            'stat_id' => 1
-        ];
-        $data['detil'] = $this->M_layanan1->Detail($detil_param);
+        $data['detil'] = $this->M_layanan1->Detail($id);
         if (empty($data['detil'])) {
             redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
         } else {
