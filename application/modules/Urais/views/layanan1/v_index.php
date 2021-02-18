@@ -61,7 +61,7 @@ echo $js_inlines;
                     remoteFilter: false,
                     remoteSort: false,
                     proxy: {
-                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=1&jenis_layanan=1'); ?>'
+                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=null&jenis_layanan=1'); ?>'
                     }
             },
             trackOver: true,
@@ -144,6 +144,25 @@ echo $js_inlines;
                     rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
+                    return o;
+                    }
+            },
+            {
+            index: 'nama_stat',
+                    title: 'STATUS',
+                    width: 200,
+                    rightLocked: true,
+                    render: function (o) {
+                    o.style['text-align'] = 'center';
+                    if (o.value == "permohonan masuk"){
+                    o.value = '<span class="badge badge-info">permohonan masuk</span>'
+                    } else if (o.value == "diproses") {
+                    o.value = '<span class="badge badge-warning">dalam proses</span>'
+                    } else if (o.value == "direkomendasikan") {
+                    o.value = '<span class="badge badge-success">direkomendasikan</span>'
+                    } else {
+                    o.value = '<span class="badge badge-danger">tidak direkomendasikan</span>'
+                    }
                     return o;
                     }
             },

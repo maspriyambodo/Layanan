@@ -17,5 +17,8 @@ CREATE TABLE `dt_penceramah` (
   `id_kecamatan` int DEFAULT NULL,
   `id_kelurahan` int DEFAULT NULL,
   `almt_penceramah` text,
-  `negara_asl` int NOT NULL DEFAULT '101' COMMENT '101 = indonesia'
+  `negara_asl` int NOT NULL DEFAULT '101' COMMENT '101 = indonesia',
+  `cv` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fc_passport` varchar(100) DEFAULT NULL,
+  `pas_foto` varchar(100) DEFAULT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
