@@ -347,7 +347,10 @@
         }
         $('#nm_lemb').hide('slow');
         $('.custom-select').select2();
-        $('input[name="tgl_awal_keg"]').val(moment().format("DD/MM/YYYY"));
+        $('input[name="tgl_awal_keg"]').val(moment().format("YYYY-MM-DD"));
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
     };
     function Save() {
         var a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, ab, ac, ad, ae, af, ag, ah;
@@ -490,7 +493,9 @@
         });
         $("#jumlah-form").val(nextform);
         $('.custom-select').select2();
-        $('#lahir_narsum' + nextform).datepicker();
+        $('#lahir_narsum' + nextform).datepicker({
+            format: 'yyyy-mm-dd'
+        });
     }
     function Del_narsum(id) {
         var a = "#repeat" + id;

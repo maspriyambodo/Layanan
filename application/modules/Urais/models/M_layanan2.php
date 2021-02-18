@@ -20,14 +20,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class M_layanan2 extends CI_Model {
 
     public function index($data) {
+        if ($data['id_stat'] == "null") {
+            $where = [
+                '`admin_izin_kegiatan_keagamaan`.`status_aktif`' => 1 + false,
+                '`admin_izin_kegiatan_keagamaan`.`jenis_layanan`' => $data['jenis_layanan'] + false
+            ];
+        } else {
+            $where = [
+                '`admin_izin_kegiatan_keagamaan`.`status_aktif`' => 1 + false,
+                '`admin_izin_kegiatan_keagamaan`.`id_stat`' => $data['id_stat'] + false,
+                '`admin_izin_kegiatan_keagamaan`.`jenis_layanan`' => $data['jenis_layanan'] + false
+            ];
+        }
         $exec = $this->db->select()
-                ->from('admin_dai_luar')
-                ->where([
-                    'admin_dai_luar.id_stat' => $data['id_stat'] + false,
-                    'admin_dai_luar.jenis_layanan' => $data['jenis_layanan'] + false
-                ])
+                ->from('`admin_izin_kegiatan_keagamaan`')
+                ->where($where)
                 ->get()
                 ->result();
+        print_r($this->db->last_query());
+        die;
         return $exec;
     }
 
@@ -128,6 +139,32 @@ class M_layanan2 extends CI_Model {
             $result['status'] = true;
         }
         return $result;
+    }
+
+    public function Delete_layanan($param) {
+        $query = $this->db->query('CALL delete_dt_layanan(' . $param['id_layanan'] . ',' . $param['user_id'] . ',' . $param['status_id'] . ')');
+        return $query;
+    }
+
+    public function Detail($param) {
+        if ($param['stat_id'] == null) {
+            $where = [
+                '`detail_dai_luar`.`id_layanan`' => $param['id_layanan'] + false,
+                '`detail_dai_luar`.`status_aktif`' => 1 + false
+            ];
+        } else {
+            $where = [
+                '`detail_dai_luar`.`id_layanan`' => $param['id_layanan'] + false,
+                '`detail_dai_luar`.`stat_id`' => $param['stat_id'] + false,
+                '`detail_dai_luar`.`status_aktif`' => 1 + false
+            ];
+        }
+        $exec = $this->db->select()
+                ->from('`detail_dai_luar`')
+                ->where($where)
+                ->get()
+                ->result();
+        return $exec;
     }
 
 }

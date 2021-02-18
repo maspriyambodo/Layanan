@@ -151,55 +151,6 @@ class Layanan_2 extends CI_Controller {
         return $result;
     }
 
-    public function Save() {
-        print_array($this->Upload_dokmohon("cv_narsum")['status'][0]['file_name']);
-        die;
-        /* Array
-          (
-          [status] => Array
-          (
-          [0] => Array
-          (
-          [file_name] => Layanan2_20210218143514.jpg
-          [file_type] => image/jpeg
-          [file_path] => /var/www/layanan/assets/uploads/binsyar/
-          [full_path] => /var/www/layanan/assets/uploads/binsyar/Layanan2_20210218143514.jpg
-          [raw_name] => Layanan2_20210218143514
-          [orig_name] => Layanan2_20210218143514.jpg
-          [client_name] => smago3.jpg
-          [file_ext] => .jpg
-          [file_size] => 124.16
-          [is_image] => 1
-          [image_width] => 1152
-          [image_height] => 864
-          [image_type] => jpeg
-          [image_size_str] => width="1152" height="864"
-          )
-
-          [1] => Array
-          (
-          [file_name] => Layanan2_202102181435141.jpg
-          [file_type] => image/jpeg
-          [file_path] => /var/www/layanan/assets/uploads/binsyar/
-          [full_path] => /var/www/layanan/assets/uploads/binsyar/Layanan2_202102181435141.jpg
-          [raw_name] => Layanan2_202102181435141
-          [orig_name] => Layanan2_20210218143514.jpg
-          [client_name] => smago1.jpg
-          [file_ext] => .jpg
-          [file_size] => 138.26
-          [is_image] => 1
-          [image_width] => 1152
-          [image_height] => 648
-          [image_type] => jpeg
-          [image_size_str] => width="1152" height="648"
-          )
-
-          )
-
-          )
-         */
-    }
-
     public function Simpan() {
         $cv_narsum = $this->Dok_array("cv_narsum");
         $paspor_narsum = $this->Dok_array("paspor_narsum");
@@ -261,6 +212,73 @@ class Layanan_2 extends CI_Controller {
             redirect(base_url('Urais/Layanan_2/index/'), $this->session->set_flashdata('sukses', 'Berhasil tambah permohonan penceramah keluar negeri!'));
         } else {
             redirect(base_url('Urais/Layanan_2/Tambah/'), $this->session->set_flashdata('gagal', $exec['pesan']));
+        }
+    }
+
+    public function Hapus() {
+        $data = [
+            'id_layanan' => $this->input->post('id'),
+            'user_id' => $this->session->userdata('DX_user_id'),
+            'status_id' => 3
+        ];
+        $exec = $this->M_layanan2->Delete_layanan($data);
+        if (empty($exec) or $exec->conn_id->sqlstate != 00000) {
+            $direct = toJSON(resultError("Error", 0));
+        } else {
+            $direct = toJSON(resultSuccess("OK", 1));
+        }
+        return $direct;
+    }
+
+    public function Detail($id) {
+        $this->template->setPageId("DITERIMA_IDKLN");
+        $data = [];
+        $detil_param = [
+            'id_layanan' => $id,
+            'stat_id' => null
+        ];
+        $data['detil'] = $this->M_layanan2->Detail($detil_param);
+        if (empty($data['detil'])) {
+            redirect(base_url(''), 'refresh');
+        } else {
+            $sitetitle = $data['detil'][0]->nm_keg;
+            if ($data['detil'][0]->stat_id == 1) {
+                $pagetitle = "<b>Status: </b><span class='text-info'>" . $data['detil'][0]->nama_stat . "</span>";
+            } elseif ($data['detil'][0]->stat_id == 2) {
+                $pagetitle = "<b>Status: </b><span class='text-warning'>" . $data['detil'][0]->nama_stat . "</span>";
+            } elseif ($data['detil'][0]->stat_id == 3) {
+                $pagetitle = "<b>Status: </b><span class='text-success'>" . $data['detil'][0]->nama_stat . "</span>";
+            } else {
+                $pagetitle = "<b>Status: </b><span class='text-danger'>" . $data['detil'][0]->nama_stat . "</span>";
+            }
+            $view = "layanan2/v_detail";
+            $breadcrumbs = [
+                [
+                    "title" => "Permohonan Masuk",
+                    "link" => base_url('Urais/Layanan_2/index/'),
+                    "is_actived" => false
+                ],
+                [
+                    "title" => "Detail",
+                    "link" => "",
+                    "is_actived" => true
+                ]
+            ];
+            $sql = "";
+            $mejo = new Mejo();
+            $mejo->setQuery($sql);
+            $tampilan = $mejo->metungul();
+            $metune = $tampilan->metune;
+            $js_lib_files = $tampilan->js_lib_files;
+            $css_lib_files = $tampilan->css_lib_files;
+            $js_inlines = $tampilan->js_inlines;
+            $this->template->setCssFiles($css_lib_files);
+            $this->template->setJsFiles($js_lib_files);
+            $data["js_inlines"] = $js_inlines;
+            $this->template->setSiteTitle($sitetitle);
+            $this->template->setPageTitle($pagetitle);
+            $this->template->setBreadcrumbs($breadcrumbs);
+            $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
         }
     }
 
