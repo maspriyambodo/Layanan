@@ -12,6 +12,7 @@ CREATE TABLE `dt_penceramah` (
   `tmp_lhr` varchar(20) DEFAULT NULL,
   `tgl_lhr` date DEFAULT NULL,
   `jns_kelamin` tinyint DEFAULT NULL COMMENT '1 = laki | 2 = wanita',
+  `no_paspor` VARCHAR (50) DEFAULT NULL,
   `id_provinsi` int DEFAULT NULL,
   `id_kabupaten` int DEFAULT NULL,
   `id_kecamatan` int DEFAULT NULL,
