@@ -27,6 +27,7 @@ class CommonMethods {
     public function do_upload_multiple_files($fieldName, $options) {
         $files = $_FILES;
         $cpt = count($_FILES[$fieldName]['name']);
+        $result = [];
         for ($i = 0; $i < $cpt; $i++) {
             $_FILES[$fieldName]['name'] = $files[$fieldName]['name'][$i];
             $_FILES[$fieldName]['type'] = $files[$fieldName]['type'][$i];
@@ -38,9 +39,9 @@ class CommonMethods {
             //upload the image
             if (!$this->CI->upload->do_upload($fieldName)) {
                 log_message('error', $this->CI->upload->display_errors('<p>', '</p>'));
-                $result = false;
+                $result['status'][] = false;
             } else {
-                $result = $this->CI->upload->data();
+                $result['status'][] = $this->CI->upload->data();
             }
         }
         return $result;
