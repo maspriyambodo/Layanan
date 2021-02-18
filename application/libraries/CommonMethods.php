@@ -25,8 +25,6 @@ class CommonMethods {
     }
 
     public function do_upload_multiple_files($fieldName, $options) {
-
-        $response = [];
         $files = $_FILES;
         $cpt = count($_FILES[$fieldName]['name']);
         for ($i = 0; $i < $cpt; $i++) {
@@ -41,13 +39,17 @@ class CommonMethods {
 
             //upload the image
             if (!$this->CI->upload->do_upload($fieldName)) {
-                $response['erros'][] = $this->CI->upload->display_errors();
+                log_message('error', $this->upload->display_errors('<p>', '</p>'));
+                $result = false;
             } else {
-                $response['result'][] = $this->CI->upload->data();
+                $data = $this->upload->data();
+//            $picture = ['id' => '', 'nik' => $this->result[0]->nik, 'nopen' => $this->uri->segment(4), 'tgl_input' => date("Y-m-d h:i:s"), 'path' => "assets/images/lap_marketing/" . $data['file_name']];
+//            $this->M_Interaksi->Insertpict($picture);
+                $result = $data;
             }
         }
 
-        return $response;
+        return $result;
     }
 
 }
