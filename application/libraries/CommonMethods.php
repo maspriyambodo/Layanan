@@ -37,10 +37,10 @@ class CommonMethods {
             $this->CI->upload->initialize($options);
             //upload the image
             if (!$this->CI->upload->do_upload($fieldName)) {
-                log_message('error', $this->upload->display_errors('<p>', '</p>'));
+                log_message('error', $this->CI->upload->display_errors('<p>', '</p>'));
                 $result = false;
             } else {
-                $result = $this->upload->data();
+                $result = $this->CI->upload->data();
             }
         }
         return $result;
