@@ -172,11 +172,11 @@
                     $('#kelurahan').load(url);
                     return true;
             });
-            $("#kelurahan").change(function () {
-                    var url = "<?php echo site_url('users/binsyar/add_ajax_des'); ?>/" + $(this).val();
-                    $('#desa').load(url);
-                    return true;
-            });
+            // $("#kelurahan").change(function () {
+            //         var url = "<?php //echo site_url('users/binsyar/add_ajax_des'); ?>/" + $(this).val();
+            //         $('#desa').load(url);
+            //         return true;
+            // });
     </script>
 
     <script>

@@ -172,7 +172,7 @@
           </fieldset><br>
 
           <button type="submit" class="btn btn-primary btn-md"><i class="material-icons">save</i>KIRIM DATA</button>
-          <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/datalaz') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
+          <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/zawaf/datalaz') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
 
         </div>
     </div>
