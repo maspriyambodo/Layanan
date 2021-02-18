@@ -153,6 +153,57 @@ class Zawaf_m extends CI_Model {
 		return $query;
 	}
 
+	function get_edit_pemohon_laz($id)
+	{
+		$kondisi = array(
+			"a.id" => $this->session->userdata('DX_user_id'),
+			"b.id" => $id,
+			"b.id_user" => $this->session->userdata('DX_user_id'),
+			"b.jenis_layanan" => 4,
+			"b.stat" => 1
+		);
+		$query = $this->db->select("b.id, b.id_user, b.id_stat, b.jenis_layanan, a.nik, a.tgl_lhr, a.fullname, a.email, a.telp, c.nama_stat, d.nama_layanan")
+				->from("sys_users a")
+				->join("dt_layanan b", "a.id = b.id_user")
+				->join("mt_status_layanan c", "b.id_stat = c.id")
+				->join("mt_layanan d", "b.jenis_layanan = d.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
+
+	function get_edit_instansi_laz($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id,
+			"b.id_user" => $this->session->userdata('DX_user_id'),
+			"b.jenis_layanan" => 4,
+			"b.stat" => 1
+		);
+		$query = $this->db->select("a.id, a.id_layanan, a.nm_instansi, a.id_provinsi, a.id_kabupaten, a.id_kecamatan, a.id_kelurahan, a.almt_instansi, a.telp_instansi, a.email_instansi")
+				->from("dt_instansi a")
+				->join("dt_layanan b", "a.id_layanan = b.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
+
+	function get_edit_lampiran_laz($id)
+	{
+		$kondisi = array(
+			"a.id_layanan" => $id,
+			"b.id_user" => $this->session->userdata('DX_user_id'),
+			"b.jenis_layanan" => 4,
+			"b.stat" => 1
+		);
+		$query = $this->db->select("a.id, a.id_layanan, a.srt_prmhn_mntr_laz, a.rcmd_baznas_laz, a.agrn_dsr_laz, a.sk_bdn_hkm_laz, a.ssn_pngws_laz, a.srt_sbg_pngws_laz, a.dftr_pgw_laz, a.fc_kartubpjs_laz, a.srt_pgw_baznas_laz, a.srt_sediaaudit_laz, a.iktsr_prcn_laz")
+				->from("dt_layanan_dokumen a")
+				->join("dt_layanan b", "a.id_layanan = b.id")
+				->where($kondisi)
+				->get()->row();
+		return $query;
+	}
+
 	//------------------------------------------------------- Kumpulan Kirim Insert Data Ke DB
 	function kirim_editinstansi_lkspwu($data, $id)
 	{
@@ -161,6 +212,18 @@ class Zawaf_m extends CI_Model {
 	}
 
 	function kirim_editlampiran_lkspwu($data, $id)
+	{
+		$this->db->where("id", $id);
+		$this->db->update("dt_layanan_dokumen", $data);
+	}
+
+	function kirim_editinstansi_laz($data, $id)
+	{
+		$this->db->where("id", $id);
+		$this->db->update("dt_instansi", $data);
+	}
+
+	function kirim_editlampiran_laz($data, $id)
 	{
 		$this->db->where("id", $id);
 		$this->db->update("dt_layanan_dokumen", $data);
@@ -178,6 +241,21 @@ class Zawaf_m extends CI_Model {
 	}
 
 	function kirim_dt_lampiran_lkspwu($lampiran)
+	{
+		$this->db->insert('dt_layanan_dokumen', $lampiran);
+	}
+
+	function kirim_dt_layanan_laz($layanan)
+	{
+		$this->db->insert('dt_layanan', $layanan);
+	}
+
+	function kirim_dt_instansi_laz($instansi)
+	{
+		$this->db->insert('dt_instansi', $instansi);
+	}
+
+	function kirim_dt_lampiran_laz($lampiran)
 	{
 		$this->db->insert('dt_layanan_dokumen', $lampiran);
 	}

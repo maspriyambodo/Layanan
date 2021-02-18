@@ -37,7 +37,7 @@ echo $js_inlines;
                 remoteFilter: false,
                 remoteSort: false,
                 proxy: {
-                    url: '<?php echo base_url(); ?>users/zawaf/joinan_lkspwu',
+                    url: '<?php echo base_url(); ?>users/zawaf/joinan_laz',
                     params: {}
                 },
             },
@@ -156,7 +156,7 @@ echo $js_inlines;
                 var data = {
                     id: id,
                 };
-                var url = '<?php echo base_url(); ?>users/zawaf/hapus_dt_lkspwu';
+                var url = '<?php echo base_url(); ?>users/zawaf/hapus_dt_laz';
                 ajaxPost(url, data, function(data) {
                     App.IsLoading(false);
                     swal(
@@ -177,7 +177,7 @@ echo $js_inlines;
     };
     Page.Edit = function(id) {
         if (id != '') {
-            window.location.href = '<?php echo base_url(); ?>users/zawaf/editlkspwu/' + id;
+            window.location.href = '<?php echo base_url(); ?>users/zawaf/editlaz/' + id;
         }
     };
     $(function() {

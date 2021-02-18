@@ -2259,14 +2259,14 @@ class Binsyar extends MX_Controller {
         echo $data;
     }
 
-    public function add_ajax_des($id_kec)
-    {
-        $query = $this->db->get_where('mt_wil_kelurahan',array('id_kecamatan'=>$id_kec));
-        $data = "<option value=''> - Pilih Kelurahan - </option>";
-        foreach ($query->result() as $value) {
-            $data .= "<option value='".$value->id_kelurahan."'>".$value->nama."</option>";
-        }
-        echo $data;
-    }
+    // public function add_ajax_des($id_kec)
+    // {
+    //     $query = $this->db->get_where('mt_wil_kelurahan',array('id_kecamatan'=>$id_kec));
+    //     $data = "<option value=''> - Pilih Kelurahan - </option>";
+    //     foreach ($query->result() as $value) {
+    //         $data .= "<option value='".$value->id_kelurahan."'>".$value->nama."</option>";
+    //     }
+    //     echo $data;
+    // }
 
 }

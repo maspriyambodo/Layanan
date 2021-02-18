@@ -8,9 +8,20 @@ class Palidasi
         $this->CI = &get_instance();
     }
 
-	public function kegiatan()
+	public function user()
 	{
-		//
+		$config = array(
+        array(
+                'field' => 'role_id',
+                'label' => 'user group',
+                'rules' => 'required'
+        ),
+        array(
+                'field' => 'username',
+                'label' => 'username',
+                'rules' => 'required'
+                ),
+        );
 	}
 
 }

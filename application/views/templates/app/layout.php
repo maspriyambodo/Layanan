@@ -219,7 +219,7 @@
 
     <!-- Date picker bagus -->
     <script src="<?php echo base_url(); ?>assets/app/js/daterangepicker.js"></script>
-    
+
     <!-- Onchange provinsi bagus -->
     <script>
             $("#provinsi").change(function () {
@@ -237,11 +237,11 @@
                     $('#kelurahan').load(url);
                     return true;
             });
-            $("#kelurahan").change(function () {
-                    var url = "<?php echo site_url('users/binsyar/add_ajax_des'); ?>/" + $(this).val();
-                    $('#desa').load(url);
-                    return true;
-            });
+            // $("#kelurahan").change(function () {
+            //         var url = "<?php //echo site_url('users/binsyar/add_ajax_des'); ?>/" + $(this).val();
+            //         $('#desa').load(url);
+            //         return true;
+            // });
     </script>
 
     <script>
