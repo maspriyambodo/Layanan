@@ -265,10 +265,10 @@
     }
     function Verif() {
         var a = $('select[name=hasil] option:selected').text();
-        if (a === "di Tolak") {
+        if (a === "tidak direkomendasikan") {
             $('#alasan').show('slow');
             $('textarea[name="alasan"]').attr('required', '');
-        } else if (a === "di Setujui") {
+        } else if (a === "direkomendasikan") {
             $('#alasan').hide('slow');
             $('textarea[name="alasan"]').removeAttr('required');
         } else {
