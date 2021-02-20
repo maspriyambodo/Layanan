@@ -10,21 +10,13 @@ class Uplodan
 
     //--------------------------------------------- Punya Kegiatan Keagamaan
     public function doupload_ktp_kegiatan()
-<<<<<<< HEAD
-    {   $user['tampil'] = $this->bm->get_identitas();
-=======
     {   
         // $user['tampil'] = $this->CI->binsyar_m->get_identitas();
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
         $type = explode('.', $_FILES["ktp"]["name"]);
         $type = $type[count($type)-1];
 
         $file_name = $_FILES["ktp"]["name"];
-<<<<<<< HEAD
-        $url = "./assets/uploads/binsyar/".date('d-m-Y')."_".$user['tampil']->fullname."_".$file_name;
-=======
         $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 
         if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
             if(is_uploaded_file($_FILES["ktp"]["tmp_name"]))
@@ -33,24 +25,14 @@ class Uplodan
         return "";
     }
 
-<<<<<<< HEAD
-    private function doupload_proposal_kegiatan()
-    {   
-        $user['tampil'] = $this->bm->get_identitas();
-=======
     public function doupload_proposal_kegiatan()
     {   
         // $user['tampil'] = $this->CI->binsyar_m->get_identitas();
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
         $type = explode('.', $_FILES["proposal_keg"]["name"]);
         $type = $type[count($type)-1];
 
         $file_name = $_FILES["proposal_keg"]["name"];
-<<<<<<< HEAD
-        $url = "./assets/uploads/binsyar/".date('dy')."_".$user['tampil']->fullname."_"."_".$file_name;
-=======
         $url = "./assets/uploads/binsyar/".date('dy').$file_name;
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 
         if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
             if(is_uploaded_file($_FILES["proposal_keg"]["tmp_name"]))
@@ -59,24 +41,14 @@ class Uplodan
         return "";
     }
 
-<<<<<<< HEAD
-    private function doupload_permohonan_kegiatan()
-    {   
-        $user['tampil'] = $this->bm->get_identitas();
-=======
     public function doupload_permohonan_kegiatan()
     {   
         // $user['tampil'] = $this->CI->binsyar_m->get_identitas();
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
         $type = explode('.', $_FILES["surat_permohonan_keg"]["name"]);
         $type = $type[count($type)-1];
 
         $file_name = $_FILES["surat_permohonan_keg"]["name"];
-<<<<<<< HEAD
-        $url = "./assets/uploads/binsyar/".date('dy')."_".$user['tampil']->fullname."_"."_".$file_name;
-=======
         $url = "./assets/uploads/binsyar/".date('dy').$file_name;
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 
         if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
             if(is_uploaded_file($_FILES["surat_permohonan_keg"]["tmp_name"]))
@@ -267,8 +239,6 @@ class Uplodan
         return "";
     }
 
-<<<<<<< HEAD
-=======
     //--------------------------------------------- Punya Safari Dakwah Dalam Negeri
     public function doupload_sp_safari()
     {
@@ -375,7 +345,6 @@ class Uplodan
         return "";
     }
 
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 }
 
 /* End of file Uplodan.php */

@@ -1,11 +1,7 @@
 <form method="post" action="<?php echo site_url('users/binsyar/simpan_formd');?>" enctype="multipart/form-data">
 <!-- Kumpulan inputan di hidden -->
 <input type="hidden" name="id_stat" value="1" />
-<<<<<<< HEAD
-<input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[0]->id;?>" />
-=======
 <input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[5]->id;?>" />
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 <input type="hidden" name="id" value="<?php echo $id_dtlayanan->id;?>" />
 <input type="hidden" name="id_user" value="<?php echo $id_session->id;?>" />
 <input type="hidden" name="syscreatedate" value="<?php echo date('Y-m-d h:i:s');?>">
@@ -74,20 +70,12 @@
               <div class="form-row">
                 <div class="form-group col-md-4">
                   <label>Jenis Kelamin</label>
-<<<<<<< HEAD
-                  <select class="form-control" id="exampleFormControlSelect1" name="jen_kel">
-=======
                   <select class="form-control" id="exampleFormControlSelect1" name="jns_kelamin">
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                     <option>Pilih . .</option>
                     <option value="1">Laki-Laki</option>
                     <option value="2">Wanita</option>
                   </select>
-<<<<<<< HEAD
-                  <?php echo form_error('jen_kel',"<div style='color:red'>","</div>");?>
-=======
                   <?php echo form_error('jns_kelamin',"<div style='color:red'>","</div>");?>
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                 </div>
                 <div class="form-group col-md-4">
                   <label>Tempat Lahir</label>
@@ -101,11 +89,7 @@
                 </div>
               </div>
 
-<<<<<<< HEAD
-              <div class="form-row">
-=======
               <!-- <div class="form-row">
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                 <div class="form-group col-md-6">
                   <label>Pendidikan Formal</label>
                   <div class="input-group mb-6">
@@ -147,11 +131,7 @@
                     </div>
                   </div>
                 </div>
-<<<<<<< HEAD
-              </div>
-=======
               </div> -->
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
           </fieldset><br>
 
           <fieldset>
@@ -225,15 +205,6 @@
           <fieldset>
               <legend>Data Lampiran Dokumen :</legend>
               <div class="form-row">
-<<<<<<< HEAD
-                <div class="form-group col-md-8">
-                  <label style="margin-bottom: 10px;">Dokumen Pendukung (Surat Permohonan, Proposal Program, CV Penceramah, FC Passport Penceramah, Scan KTP, Pas Foto Penceramah, Scan Sertifikat)</label>
-                  <input type="hidden" name="id_layanan" value="<?php echo $id_dtlayanan->id+1;?>" />
-                  <?php for ($i=1; $i <=7 ; $i++) :?>
-                  <input type="file" class="form-control-file" name="files<?php echo $i;?>"><br>
-                  <?php endfor;?>
-                  <?php echo form_error('nama_file',"<div style='color:red'>","</div>");?>
-=======
                 <div class="form-group col-md-4">
                   <label style="margin-bottom: 10px;">Surat Permohonan</label>
                   <input type="hidden" name="id_layanan" value="<?php echo $id_dtlayanan->id+1;?>" />
@@ -272,155 +243,14 @@
                   <label style="margin-bottom: 10px;">Scan Sertifikat Penceramah</label>
                   <input type="file" class="form-control-file" name="crt_crmh_safari"><br>
                   <?php echo form_error('crt_crmh_safari',"<div style='color:red'>","</div>");?>
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                 </div>
               </div>
           </fieldset><br>
 
           <button type="submit" class="btn btn-primary btn-md"><i class="material-icons">save</i>KIRIM DATA</button>
-<<<<<<< HEAD
-          <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/datapermohonan') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
-=======
           <button type="button" id="btnCancel" onclick="document.location.href='<?php echo site_url('users/binsyar/datasafari') ?>'" class="btn btn-warning btn-md"><i class="material-icons">cancel</i>BATAL</button>
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 
         </div>
     </div>
 </div>
-<<<<<<< HEAD
 </form>
-
-{JS START}
-<script type="text/javascript">
-
-var Page = {};
-Page.FormMode = ko.observable("<?php echo $formMode; ?>")
-Page.Cek = $('#formKabupaten').cek();
-Page.FormData = ko.observable({
-    id_provinsi : ko.observable(""),
-    id_kabupaten : ko.observable(""),
-    nama : ko.observable(""),
-});
-Page.Save = function(e){
-    $('#btnSave').attr('disabled', 'disabled');
-    var isValid = Page.Cek.monggo();
-    if(!isValid) { 
-        swal(
-                'Error',
-                'Mohon lengkapi semua field!',
-                'warning'
-            );
-      $('#btnSave').removeAttr('disabled');
-      return;
-    } else {
-      App.IsLoading(true);
-      e.preventDefault();
-      var url = '<?php echo site_url("datamaster/address/save_kabupaten") ?>';
-      var dataKab = ko.mapping.toJS(Page.FormData());
-      dataKab.id_provinsi = $("#dd_province").val();
-      var formData = new FormData();
-      formData.append("formData", JSON.stringify(dataKab));
-      formData.append("formMode", "<?php echo $formMode; ?>");
-
-      $.ajax({
-        url: url,
-        data: formData,
-        method: 'POST',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-          if(data.success) {
-            $('#btnSave').removeAttr('disabled');
-            swal(
-                'Saved!',
-                'Data sukses disimpan!',
-                'success'
-            ).then(function(result){
-              window.location.href = '<?php echo site_url("datamaster/address/kabupaten"); ?>';
-            });
-          } else {
-            $('#btnSave').removeAttr('disabled');
-            swal(
-                'Error saving data!',
-                data.message,
-                'warning'
-            );
-          }
-          App.IsLoading(false);
-        }
-      });
-      e.stopImmediatePropagation();
-      return false;
-    }
-}
-
-function getRekomendasiKode() {
-    $.ajax({
-        url: "<?php echo site_url("datamaster/address/getRekomendasiKodeKabupaten") ?>"+"/"+$("#dd_province").val(),
-        data: "",
-        method: 'POST',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            Page.FormData().kabupaten_kode(data.data);
-        }
-      });
-}
-
-Page.PopulateMasterProvince = function(urlProv) {
-    // console.log("PopulateMasterProvince")
-    $.ajax({
-        url: urlProv,
-        data: {},
-        method: 'GET',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(data) {
-            if (data.success) {
-                $("#dd_province").select2("destroy")
-                $("#dd_province").select2({
-                    data: data.data,
-                    placeholder: "Pilih Provinsi"
-                });
-                if (Page.FormData().id_provinsi() != 0){
-                    $("#dd_province").val(Page.FormData().id_provinsi());
-                    $("#dd_province").select2().trigger("change");
-                }
-                <?php if($formMode == "edit") : ?>
-                    $("#dd_province"). prop("disabled", true);
-                <?php else: ?>
-                $("#dd_province").select2().on("change", function(){
-                    getRekomendasiKode();
-                });
-                setTimeout(function() {
-                    getRekomendasiKode();
-                }, 500)
-                <?php endif; ?>
-            } else {
-                swal(
-                    'Error getting province master data!',
-                    data.message,
-                    'warning'
-                );
-            }
-        }
-    });
-}
-
-$(function() { 
-    <?php if($formMode == "edit"): ?>
-        var dataKab = <?php echo $dataKabupaten; ?>;
-        Page.FormData(ko.mapping.fromJS(dataKab));
-    <?php endif; ?>
-    Page.Cek.dong();
-    $("#dd_province").select2({});
-    Page.PopulateMasterProvince("<?php echo site_url("datamaster/address/populateProvinces") ?>","<?php echo site_url("datamaster/address/populateCities") ?>","<?php echo site_url("datamaster/address/populateDistricts") ?>");
-});
-</script>
-{JS END}
-=======
-</form>
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44

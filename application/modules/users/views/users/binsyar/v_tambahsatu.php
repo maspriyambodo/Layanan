@@ -13,10 +13,7 @@
 
     <div class="col-md-12 widget-holder widget-full-height">
         <div class="widget-bg">
-<<<<<<< HEAD
-=======
         <!-- <p><?php //echo $this->session->flashdata('msg');?></p><br> -->
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
             <fieldset>
               <legend>Data Pemohon :</legend>
               <div class="form-row">
@@ -146,17 +143,6 @@
           <fieldset>
               <legend>Data Lampiran Dokumen :</legend>
               <div class="form-row">
-<<<<<<< HEAD
-                <!-- <div class="form-group col-md-8">
-                  <label style="margin-bottom: 10px;">Dokumen Pendukung (KTP, &nbsp;Proposal Kegiatan, &nbsp;Surat Permohonan Rekomendasi)</label>
-                  <input type="hidden" name="id_layanan" value="<?php //echo $id_dtlayanan->id+1;?>" />
-                  <?php //for ($i=1; $i <=3 ; $i++) :?>
-                  <input type="file" class="form-control-file" name="files<?php //echo $i;?>" required><br>
-                  <?php //endfor;?>
-                  <?php //echo form_error('nama_file',"<div style='color:red'>","</div>");?>
-                </div> -->
-=======
->>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                 <div class="form-group col-md-4">
                   <label>KTP Pemohon</label>
                   <input type="hidden" name="id_layanan" value="<?php echo $id_dtlayanan->id+1;?>" />
