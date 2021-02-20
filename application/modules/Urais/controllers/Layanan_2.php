@@ -482,4 +482,39 @@ class Layanan_2 extends CI_Controller {
         exit;
     }
 
+    public function Change() {
+        $data = [
+            'p1' => $this->input->post('id_layanan'),
+            'p2' => $this->input->post('id_user'),
+            'sys_users' => [
+                'no_ktp' => $this->input->post('ktp'),
+                'tanggal_lahir' => $this->input->post('tgl_lahir'),
+                'nama_lengkap' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('nama')),
+                'mail_user' => $this->input->post('mali'),
+                'telepon' => $this->input->post('telpon')
+            ],
+            'dt_layanan' => [
+                'provinsi' => $this->input->post('provinsi'),
+                'kabupaten' => $this->input->post('kabupaten'),
+                'kecamatan' => $this->input->post('kectxt'),
+                'kelurahan' => $this->input->post('keltxt'),
+                'keterangan_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('keterangan_kegiatan')),
+            ],
+            'dt_kegiatan' => [
+                'nama_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('nm_keg')),
+                'jumlah_peserta' => $this->input->post('esti_keg'),
+                'lembaga' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('lemb_keg')),
+                'tmt_awal' => $this->input->post('tgl_awal_keg'),
+                'tmt_akhir' => $this->input->post('tgl_akhir_keg'),
+                'alamat_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('alamat_kegiatan'))
+            ]
+        ];
+        $exec = $this->M_layanan2->Change($data);
+        if ($exec['status'] == true) {
+            redirect(base_url('Urais/Layanan_2/index/'), $this->session->set_flashdata('sukses', 'data permohonan berhasil diperbarui!'));
+        } else {
+            redirect(base_url('Urais/Layanan_2/Edit/' . $data['p1']), $this->session->set_flashdata('gagal', $exec['pesan']));
+        }
+    }
+
 }

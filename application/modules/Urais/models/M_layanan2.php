@@ -98,7 +98,7 @@ class M_layanan2 extends CI_Model {
     private function Insert_kegiatan($data) {
         $exec = $this->db->query('CALL insert_dai_keluar(' . $data['id_layanan'] . ',"' . $data['dt_kegiatan']['nama_kegiatan'] . '",' . $data['dt_kegiatan']['jumlah_peserta'] . ',"' . $data['dt_kegiatan']['lembaga'] . '","' . $data['dt_kegiatan']['tmt_awal'] . '","' . $data['dt_kegiatan']['tmt_akhir'] . '","' . $data['dt_kegiatan']['alamat_kegiatan'] . '",' . $data['dt_kegiatan']['negara_tujuan'] . ')');
         if (empty($exec->conn_id->affected_rows) or $exec->conn_id->affected_rows == 0) {
-            log_message('error', APPPATH . 'modules/Urais/models/M_layanan1 -> function Insert_kegiatan ' . ' error ketika insert detil kegiatan');
+            log_message('error', APPPATH . 'modules/Urais/models/M_layanan2 -> function Insert_kegiatan ' . ' error ketika insert detil kegiatan');
             $result = [
                 'status' => false,
                 'pesan' => 'error ketika menyimpan data kegiatan'
@@ -116,7 +116,7 @@ class M_layanan2 extends CI_Model {
             mysqli_next_result($this->db->conn_id);
         }
         if (empty($exec->conn_id->affected_rows) or $exec->conn_id->affected_rows == 0) {
-            log_message('error', APPPATH . 'modules/Urais/models/M_layanan1 -> function Insert_penceramah ' . ' error ketika insert data penceramah');
+            log_message('error', APPPATH . 'modules/Urais/models/M_layanan2 -> function Insert_penceramah ' . ' error ketika insert data penceramah');
             $result = [
                 'status' => false,
                 'pesan' => 'error ketika menyimpan data penceramah'
@@ -130,7 +130,7 @@ class M_layanan2 extends CI_Model {
     private function Insert_dokmohon($data) {
         $exec = $this->db->query('CALL insert_dokmohon_keluar(' . $data['id_layanan'] . ',"' . $data['dt_layanan_dokumen']['surat_permohonan_luar'] . '","' . $data['dt_layanan_dokumen']['proposal_luar'] . '")');
         if (empty($exec->conn_id->affected_rows) or $exec->conn_id->affected_rows == 0) {
-            log_message('error', APPPATH . 'modules/Urais/models/M_layanan1 -> function Insert_penceramah ' . ' error ketika insert data penceramah');
+            log_message('error', APPPATH . 'modules/Urais/models/M_layanan2 -> function Insert_penceramah ' . ' error ketika insert data penceramah');
             $result = [
                 'status' => false,
                 'pesan' => 'error ketika menyimpan data dokumen permohonan'
@@ -278,6 +278,51 @@ class M_layanan2 extends CI_Model {
             $status = 1;
         }
         return $status;
+    }
+
+    public function Change($data) {
+        $exec = $this->db->query('CALL update_user(' . $data['p2'] . ',' . $data['sys_users']['no_ktp'] . ',"' . $data['sys_users']['tanggal_lahir'] . '","' . $data['sys_users']['nama_lengkap'] . '","' . $data['sys_users']['mail_user'] . '","' . $data['sys_users']['telepon'] . '")');
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', $exec->conn_id->sqlstate . ' | ' . APPPATH . 'modules/Urais/models/M_layanan2 -> function Change ' . 'error ketika update pemohon');
+            $result = [
+                'status' => false,
+                'pesan' => 'gagal ketika mengubah data pemohon'
+            ];
+        } else {
+            mysqli_next_result($this->db->conn_id);
+            $result = $this->Update_layanan($data);
+        }
+        return $result;
+    }
+
+    private function Update_layanan($data) {
+        $exec = $this->db->query('CALL update_dt_layanan(' . $data['p1'] . ',' . $data['dt_layanan']['provinsi'] . ',' . $data['dt_layanan']['kabupaten'] . ',' . $data['dt_layanan']['kecamatan'] . ',"' . $data['dt_layanan']['kelurahan'] . '","' . $data['dt_layanan']['keterangan_kegiatan'] . '",' . $this->session->userdata('DX_user_id') . ')');
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', APPPATH . 'modules/Urais/models/M_layanan2 -> function Update_layanan' . 'gagal ketika mengubah data layanan');
+            $result = [
+                'status' => false,
+                'pesan' => 'gagal ketika mengubah data layanan'
+            ];
+        } else {
+            mysqli_next_result($this->db->conn_id);
+            $result = $this->Update_kegiatan($data);
+        }
+        return $result;
+    }
+
+    private function Update_kegiatan($data) {
+        $exec = $this->db->query('CALL update_dt_kegiatan(' . $data['p1'] . ',"' . $data['dt_kegiatan']['nama_kegiatan'] . '",' . $data['dt_kegiatan']['jumlah_peserta'] . ',"' . $data['dt_kegiatan']['lembaga'] . '","' . $data['dt_kegiatan']['tmt_awal'] . '","' . $data['dt_kegiatan']['tmt_akhir'] . '","' . $data['dt_kegiatan']['alamat_kegiatan'] . '")');
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', APPPATH . 'modules/Urais/models/M_layanan2 -> function Update_kegiatan ' . ' gagal ketika mengubah data kegiatan');
+            $result = [
+                'status' => false,
+                'pesan' => 'gagal ketika mengubah data kegiatan'
+            ];
+        } else {
+            mysqli_next_result($this->db->conn_id);
+            $result['status'] = true;
+        }
+        return $result;
     }
 
 }

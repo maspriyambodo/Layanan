@@ -426,7 +426,7 @@ class Layanan_1 extends CI_Controller {
                     'no_ktp' => $this->input->post('ktp'),
                     'tanggal_lahir' => $this->input->post('tgl_lahir'),
                     'uname' => $this->input->post('uname'),
-                    'nama_lengkap' => $this->input->post('nama'),
+                    'nama_lengkap' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('nama')),
                     'mail_user' => $this->input->post('mali'),
                     'telepon' => $this->input->post('telpon')
                 ],

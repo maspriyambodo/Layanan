@@ -259,8 +259,8 @@
                     </div>
                     <div style="clear:both;margin: 20px 0px;"></div>
                     <div class="form-group text-center">
-                        <button type="button" class="btn btn-danger"><i class="fas fa-window-close"></i> Batal</button>
-                        <button type="button" class="btn btn-success"><i class="fas fa-save"></i> Simpan</button>
+                        <a id="cancelbtn" href="<?php echo base_url('Urais/Layanan_2/index/'); ?>" class="btn btn-danger"><i class="fas fa-window-close"></i> Batal</a>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_save" onclick="Modal()"><i class="fas fa-save"></i> Simpan</button>
                     </div>
                 </div>
             </div>
@@ -277,7 +277,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak!</button>
-                    <button type="submit" class="btn btn-info">Ya!</button>
+                    <button id="svbtn" type="submit" class="btn btn-info" onclick="Save()">Ya!</button>
                 </div>
             </div>
         </div>
@@ -445,6 +445,66 @@
             format: 'yyyy-mm-dd'
         });
     };
+    function Save() {
+        var a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r;
+        a = $('input[name="nama"]').val();
+        b = $('input[name="tgl_lahir"]').val();
+        c = $('input[name="ktp"]').val();
+        d = $('input[name="mali"]').val();
+        e = $('input[name="telpon"]').val();
+        f = $('select[name="provinsi"]').val();
+        g = $('select[name="kabupaten"]').val();
+        h = $('select[name="kectxt"]').val();
+        i = $('select[name="keltxt"]').val();
+        j = $('input[name="nm_keg"]').val();
+        k = $('input[name="tgl_awal_keg"]').val();
+        l = $('input[name="tgl_akhir_keg"]').val();
+        m = $('input[name="esti_keg"]').val();
+        n = $('select[name="lembaga"]').val();
+        o = $('select[name="negara"]').val();
+        p = $('textarea[name="keterangan_kegiatan"]').val();
+        q = $('input[name="alamat_kegiatan"]').val();
+        r = $('input[name="lemb_keg"]').val();
+        if (!a) {
+            toastr.warning('Harap masukkan nama pemohon!');
+        } else if (!b) {
+            toastr.warning('Harap masukkan tanggal lahir pemohon!');
+        } else if (!c) {
+            toastr.warning('Harap masukkan nomor ktp pemohon!');
+        } else if (!d) {
+            toastr.warning('Harap masukkan email pemohon!');
+        } else if (!e) {
+            toastr.warning('Harap masukkan nomor telepon pemohon!');
+        } else if (!f) {
+            toastr.warning('Harap pilih provinsi pemohon!');
+        } else if (!g) {
+            toastr.warning('Harap pilih kabupaten pemohon!');
+        } else if (!h) {
+            toastr.warning('Harap pilih kecamatan pemohon!');
+        } else if (!i) {
+            toastr.warning('Harap pilih kelurahan pemohon!');
+        } else if (!j) {
+            toastr.warning('Harap masukkan nama kegiatan!');
+        } else if (!k) {
+            toastr.warning('Harap masukkan tanggal awal kegiatan!');
+        } else if (!l) {
+            toastr.warning('Harap masukkan tanggal akhir kegiatan!');
+        } else if (!m) {
+            toastr.warning('Harap masukkan estimasi peserta kegiatan!');
+        } else if (!n) {
+            toastr.warning('Harap pilih jenis lembaga kegiatan!');
+        } else if (!o) {
+            toastr.warning('Harap masukkan negara tujuan kegiatan!');
+        } else if (!p) {
+            toastr.warning('Harap masukkan keterangan kegiatan!');
+        } else if (!q) {
+            toastr.warning('Harap masukkan lokasi kegiatan!');
+        } else if (!r) {
+            toastr.warning('Harap masukkan nama lembaga kegiatan!');
+        } else {
+            $('#svbtn').attr('disabled', true);
+        }
+    }
     function Provinsi_user(val, id_kab) {
         $('#kectxt').children('option').remove();
         $('#kotkabtxt').children('option').remove();
