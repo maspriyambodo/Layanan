@@ -167,4 +167,117 @@ class M_layanan2 extends CI_Model {
         return $exec;
     }
 
+    public function Get_narsum($data) {
+        $exec = $this->db->select()
+                ->from('Get_penceramah')
+                ->where([
+                    '`Get_penceramah`.`layanan_id`' => $data['id_layanan'] + false,
+                    '`Get_penceramah`.`penceramah_id`' => $data['id_penceramah'] + false
+                ])
+                ->get()
+                ->result();
+        return $exec;
+    }
+
+    public function S_Cv($data) {
+        mysqli_next_result($this->db->conn_id);
+        $exec = $this->db->query('CALL update_cv_penceramah(' . $data['layanan_id'] . ',' . $data['penceramah_id'] . ',"' . $data['cv_penceramah']['file_name'] . '",@old_cv)');
+        mysqli_next_result($this->db->conn_id);
+        log_message('error', $this->db->last_query());
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', APPPATH . 'modules/Urais/models/M_layanan2 -> function S_Cv ' . 'error ketika insert cv_penceramah');
+            $result = [
+                'status' => false,
+                'pesan' => 'error ketika menyimpan data cv_penceramah'
+            ];
+        } else {
+            $result = [
+                'old_cv' => $exec->result()[0]->old_cv
+            ];
+        }
+        return $result;
+    }
+
+    public function S_paspor($data) {
+        mysqli_next_result($this->db->conn_id);
+        $exec = $this->db->query('CALL update_paspor_penceramah(' . $data['layanan_id'] . ',' . $data['penceramah_id'] . ',"' . $data['paspor_penceramah']['file_name'] . '",@old_paspor)');
+        mysqli_next_result($this->db->conn_id);
+        log_message('error', $this->db->last_query());
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', APPPATH . 'modules/Urais/models/M_layanan2 -> function S_paspor ' . 'error ketika insert paspor_penceramah');
+            $result = [
+                'status' => false,
+                'pesan' => 'kesalahan ketika menyimpan data passport penceramah'
+            ];
+        } else {
+            $result = [
+                'old_cv' => $exec->result()[0]->old_cv
+            ];
+        }
+        return $result;
+    }
+
+    public function S_foto($data) {
+        mysqli_next_result($this->db->conn_id);
+        $exec = $this->db->query('CALL update_foto_penceramah(' . $data['layanan_id'] . ',' . $data['penceramah_id'] . ',"' . $data['foto_penceramah']['file_name'] . '",@old_foto)');
+        mysqli_next_result($this->db->conn_id);
+        log_message('error', $this->db->last_query());
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', APPPATH . 'modules/Urais/models/M_layanan2 -> function S_foto ' . 'error ketika insert foto_penceramah');
+            $result = [
+                'status' => false,
+                'pesan' => 'kesalahan ketika menyimpan data pas foto penceramah'
+            ];
+        } else {
+            $result = [
+                'old_foto' => $exec->result()[0]->old_foto
+            ];
+        }
+        return $result;
+    }
+
+    public function Update_narsum($data) {
+        $exec = $this->db->query('CALL update_narsum(' . $data['id_narsum'] . ',' . $data['layanan_id'] . ',"' . $data['nama_penceramah'] . '","' . $data['tempat_lahir'] . '","' . $data['tanggal_lahir'] . '",' . $data['jenis_kelamin'] . ',"' . $data['nomor_passport'] . '",' . $data['id_prov'] . ',' . $data['id_kab'] . ',' . $data['id_kec'] . ',"' . $data['id_kel'] . '","' . $data['alamat_rumah'] . '")');
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', $exec->conn_id->sqlstate . ' | ' . APPPATH . 'modules/Urais/models/M_layanan2 -> function Update_narsum ' . 'error ketika update dt_penceramah');
+            $result = [
+                'status' => false,
+                'pesan' => 'gagal ketika mengubah data penceramah'
+            ];
+        } else {
+            $result['status'] = true;
+        }
+        return $result;
+    }
+
+    public function S_spk($data) {
+        $this->db->trans_begin();
+        $this->db->set('dt_layanan_dokumen.surat_permohonan_luar', $data['sp_keg']['file_name'])
+                ->where('`dt_layanan_dokumen`.`id_layanan`', $data['id_layanan'], false)
+                ->update('dt_layanan_dokumen');
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            $status = 0;
+        } else {
+            $this->db->trans_commit();
+            $status = 1;
+        }
+        return $status;
+    }
+
+    public function S_proposal($data) {
+        $this->db->trans_begin();
+        $this->db->set('dt_layanan_dokumen.proposal_luar', $data['proposal']['file_name'])
+                ->where('`dt_layanan_dokumen`.`id_layanan`', $data['id_layanan'], false)
+                ->update('dt_layanan_dokumen');
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            $status = 0;
+        } else {
+            $this->db->trans_commit();
+            $status = 1;
+        }
+        return $status;
+    }
+
 }

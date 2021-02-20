@@ -157,7 +157,11 @@ class Layanan_1 extends CI_Controller {
     public function Edit($id) {
         $this->template->setPageId("DITERIMA_IKK");
         $data = [];
-        $data['detil'] = $this->M_layanan1->Detail($id);
+        $detil_param = [
+            'id_layanan' => $id,
+            'stat_id' => null
+        ];
+        $data['detil'] = $this->M_layanan1->Detail($detil_param);
         if (empty($data['detil'])) {
             redirect(base_url('Urais/Layanan_1/index/'), 'refresh');
         } else {
