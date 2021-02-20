@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <form method="post" action="<?php echo site_url('');?>" enctype="multipart/form-data">
 <!-- Kumpulan inputan di hidden -->
 <!-- <input type="hidden" name="id_stat" value="1" />
@@ -5,6 +6,8 @@
 <input type="hidden" name="id" value="<?php echo $id_dtlayanan->id;?>" />
 <input type="hidden" name="id_user" value="<?php echo $id_session->id;?>" />
 <input type="hidden" name="syscreatedate" value="<?php echo date('Y-m-d h:i:s');?>"> -->
+=======
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 <input type="hidden" name="id" value="<?php echo $dataku[0]->id;?>" />
 
 <div class="widget-list">
@@ -32,6 +35,7 @@
                     <div class="form-row">
                       <div class="form-group col-md-3">
                         <label>NIK</label>
+<<<<<<< HEAD
                         <input type="text" class="form-control" name="nik" value="<?php echo $dataku[0]->nik;?>" readonly>
                       </div>
                       <div class="form-group col-md-3">
@@ -46,12 +50,29 @@
                         <label>Status Permohonan</label>
                         <input type="text" class="form-control" name="fullname" value="<?php echo $dataku[0]->status_permohonan;?>" readonly>
                         <small>Selanjutnya, menunggu disetujui atau ditolak</small>
+=======
+                        <input type="text" class="form-control" name="nik" value="<?php echo $pemohon->nik;?>" readonly>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label>Nama Lengkap</label>
+                        <input type="text" class="form-control" name="fullname" value="<?php echo $pemohon->fullname;?>" readonly>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label>Jenis Layanan</label>
+                        <input type="text" class="form-control" name="nama_layanan" value="<?php echo $pemohon->nama_layanan;?>" readonly>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label>Status Permohonan</label>
+                        <input type="text" class="form-control" name="nama_stat" value="<?php echo $pemohon->nama_stat;?>" readonly>
+                        <small class="form-text text-muted">Tahap selanjutnya, diproses, disetujui / ditolak.</small>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                       </div>
                     </div>
 
                     <div class="form-row">
                       <div class="form-group col-md-4">
                         <label>Tanggal Lahir</label>
+<<<<<<< HEAD
                         <input type="text" class="form-control" name="tgl_lhr" value="<?php echo $dataku[0]->tgl_lhr;?>" readonly>
                       </div>
                       <div class="form-group col-md-4">
@@ -61,6 +82,17 @@
                       <div class="form-group col-md-4">
                         <label>Email</label>
                         <input type="text" class="form-control" name="email" value="<?php echo $dataku[0]->email;?>" readonly>
+=======
+                        <input type="text" class="form-control" name="tgl_lhr" value="<?php echo $pemohon->nama_layanan;?>" readonly>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label>Telepon</label>
+                        <input type="text" class="form-control" name="telp" value="<?php echo $pemohon->telp;?>" readonly>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label>Email</label>
+                        <input type="text" class="form-control" name="email" value="<?php echo $pemohon->email;?>" readonly>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                       </div>
                     </div>
                 </fieldset><br>
@@ -76,31 +108,53 @@
                     <div class="form-row">
                       <div class="form-group col-md-6">
                         <label>Nama Kegiatan</label>
+<<<<<<< HEAD
                         <input type="text" class="form-control" name="nm_keg" value="<?php echo $dataku[1]->nm_keg;?>">
                         <input type="hidden" class="form-control" name="id" value="<?php echo $dataku[1]->id;?>">
                         <input type="hidden" class="form-control" name="id_layanan" value="<?php echo $dataku[1]->id_layanan;?>">
+=======
+                        <input type="text" class="form-control" name="nm_keg" value="<?php echo $kegiatan->nm_keg;?>">
+                        <input type="hidden" class="form-control" name="id" value="<?php echo $kegiatan->id;?>">
+                        <input type="hidden" class="form-control" name="id_layanan" value="<?php echo $kegiatan->id_layanan;?>">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                         <input type="hidden" class="form-control" name="sysupdatedate" value="<?php echo date('Y-m-d h:i:s');?>">
                       </div>
                       <div class="form-group col-md-6">
                         <label>Nama Lembaga</label>
+<<<<<<< HEAD
                         <input type="text" class="form-control" name="lemb_keg" value="<?php echo $dataku[1]->lemb_keg;?>">
+=======
+                        <input type="text" class="form-control" name="lemb_keg" value="<?php echo $kegiatan->lemb_keg;?>">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                       </div>
                     </div>
 
                     <div class="form-row">
                       <div class="form-group col-md-4">
                         <label>Tanggal Awal Kegiatan</label>
+<<<<<<< HEAD
                         <input type="text" class="form-control" name="tgl_awal_keg" placeholder="dd-mm-yyyy" onclick="this.type='date'" onmouseout="timeFunctionLong(this)" value="<?php echo $dataku[1]->tgl_awal_keg;?>">
+=======
+                        <input type="text" class="form-control" name="tgl_awal_keg" placeholder="dd-mm-yyyy" onclick="this.type='date'" onmouseout="timeFunctionLong(this)" value="<?php echo $kegiatan->tgl_awal_keg;?>">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                         <?php echo form_error('tgl_awal_keg');?>
                       </div>
                       <div class="form-group col-md-4">
                         <label>Tanggal Akhir Kegiatan</label>
+<<<<<<< HEAD
                         <input type="text" class="form-control" name="tgl_akhir_keg" placeholder="dd-mm-yyyy" onclick="this.type='date'" onmouseout="timeFunctionLong(this)" value="<?php echo $dataku[1]->tgl_akhir_keg;?>">
+=======
+                        <input type="text" class="form-control" name="tgl_akhir_keg" placeholder="dd-mm-yyyy" onclick="this.type='date'" onmouseout="timeFunctionLong(this)" value="<?php echo $kegiatan->tgl_akhir_keg;?>">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                         <?php echo form_error('tgl_akhir_keg');?>
                       </div>
                       <div class="form-group col-md-4">
                         <label>Estimasi Jumlah Jamaah</label>
+<<<<<<< HEAD
                         <input type="number" class="form-control" name="esti_keg" value="<?php echo $dataku[1]->esti_keg;?>">
+=======
+                        <input type="number" class="form-control" name="esti_keg" value="<?php echo $kegiatan->esti_keg;?>">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                         <?php echo form_error('esti_keg');?>
                       </div>
                     </div>
@@ -111,7 +165,11 @@
                         <select class="form-control" name="id_provinsi" id="provinsi">
                           <option>Pilih . .</option>
                           <?php foreach($dt_provinsi as $provinsi){?>
+<<<<<<< HEAD
                           <option <?php if($dataku[1]->id_provinsi === $provinsi->id_provinsi){echo "selected"; } ?> value="<?php echo $provinsi->id_provinsi;?>"><?php echo $provinsi->nama;?></option>
+=======
+                          <option <?php if($kegiatan->id_provinsi === $provinsi->id_provinsi){echo "selected"; } ?> value="<?php echo $provinsi->id_provinsi;?>"><?php echo $provinsi->nama;?></option>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                           <?php }?>
                         </select>
                       </div>
@@ -119,7 +177,11 @@
                         <label>Kabupaten</label>
                         <select class="form-control" name="id_kabupaten" id="kabupaten">
                           <?php foreach($dt_kabupaten as $kabupaten){?>
+<<<<<<< HEAD
                           <option <?php if($dataku[1]->id_kabupaten === $kabupaten->id_kabupaten){echo "selected"; } ?> value="<?php echo $kabupaten->id_kabupaten;?>"><?php echo $kabupaten->nama;?></option>
+=======
+                          <option <?php if($kegiatan->id_kabupaten === $kabupaten->id_kabupaten){echo "selected"; } ?> value="<?php echo $kabupaten->id_kabupaten;?>"><?php echo $kabupaten->nama;?></option>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                           <?php }?>
                         </select>
                       </div>
@@ -127,7 +189,11 @@
                         <label for="inputEmail4">Kecamatan</label>
                         <select class="form-control" name="id_kecamatan" id="kecamatan">
                           <?php foreach($dt_kecamatan as $kecamatan){?>
+<<<<<<< HEAD
                           <option <?php if($dataku[1]->id_kecamatan === $kecamatan->id_kecamatan){echo "selected"; } ?> value="<?php echo $kecamatan->id_kecamatan;?>"><?php echo $kecamatan->nama;?></option>
+=======
+                          <option <?php if($kegiatan->id_kecamatan === $kecamatan->id_kecamatan){echo "selected"; } ?> value="<?php echo $kecamatan->id_kecamatan;?>"><?php echo $kecamatan->nama;?></option>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                           <?php }?>
                         </select>
                       </div>
@@ -135,7 +201,11 @@
                         <label for="inputPassword4">Kelurahan</label>
                         <select class="form-control" name="id_kelurahan" id="kelurahan">
                           <?php foreach($dt_kelurahan as $kelurahan){?>
+<<<<<<< HEAD
                           <option <?php if($dataku[1]->id_kelurahan === $kelurahan->id_kelurahan){echo "selected"; } ?> value="<?php echo $kelurahan->id_kelurahan;?>"><?php echo $kelurahan->nama;?></option>
+=======
+                          <option <?php if($kegiatan->id_kelurahan === $kelurahan->id_kelurahan){echo "selected"; } ?> value="<?php echo $kelurahan->id_kelurahan;?>"><?php echo $kelurahan->nama;?></option>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                           <?php }?>
                         </select>
                       </div>
@@ -151,6 +221,7 @@
               <form action="<?php echo site_url('users/binsyar/simpanedit_impor_penceramah');?>" method="post">
                 <fieldset>
                     <div class="form-row">
+<<<<<<< HEAD
                       <div class="form-group col-md-3">
                         <label>Nama Penceramah</label>
                         <?php
@@ -202,37 +273,68 @@
                         }
                         ?>
                       </div>
+=======
+                      <?php foreach($crmh_array as $data){?>
+                      <div class="form-group col-md-3">
+                        <label>Nama Penceramah</label>
+                        <input type="hidden" name="id[]" value="<?php echo $data->id;?>">
+                        <input type="hidden" name="id_layanan[]" value="<?php echo $data->id_layanan;?>">
+                        <input type="text" clalampirancontrol" name="narsum[]" value="<?php echo $data->narsum;?>">
+                      </div>
+                      <?php }?>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                     </div>
 
                     <div class="form-row">
                       <div class="form-group col-md-2">
                         <label>Jenis Kelamin</label>
                         <select class="form-control" name="jns_kelamin">
+<<<<<<< HEAD
                           <option <?php if($dataku[2]->jns_kelamin == 1){echo "selected"; } ?> value="1">Laki-laki</option>
                           <option <?php if($dataku[2]->jns_kelamin == 2){echo "selected"; } ?> value="2">Wanita</option>
+=======
+                          <option <?php if($crmh->jns_kelamin == 1){echo "selected"; } ?> value="1">Laki-laki</option>
+                          <option <?php if($crmh->jns_kelamin == 2){echo "selected"; } ?> value="2">Wanita</option>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                         </select>
                         <?php echo form_error('jns_kelamin');?>
                       </div>
                       <div class="form-group col-md-2">
                         <label>Nomor Passport</label>
+<<<<<<< HEAD
                         <input type="text" class="form-control" name="no_paspor" value="<?php echo $dataku[2]->no_paspor;?>">
+=======
+                        <input type="text" class="form-control" name="no_paspor" value="<?php echo $crmh->no_paspor;?>">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                         <?php echo form_error('no_paspor');?>
                       </div>
                       <div class="form-group col-md-2">
                         <label for="inputEmail4">Tempat Lahir</label>
+<<<<<<< HEAD
                         <input type="text" class="form-control" name="tmp_lhr" value="<?php echo $dataku[2]->tmp_lhr;?>">
+=======
+                        <input type="text" class="form-control" name="tmp_lhr" value="<?php echo $crmh->tmp_lhr;?>">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                         <?php echo form_error('tmp_lhr');?>
                       </div>
                       <div class="form-group col-md-3">
                         <label>Tanggal Lahir</label>
+<<<<<<< HEAD
                         <input type="text" class="form-control" name="tgl_lhr" value="<?php echo $dataku[2]->tgl_lhr;?>">
+=======
+                        <input type="text" class="form-control" name="tgl_lhr" value="<?php echo $crmh->tgl_lhr;?>">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                         <?php echo form_error('tgl_lhr');?>
                       </div>
                       <div class="form-group col-md-3">
                         <label>Negara Asal</label>
                         <select class="form-control" name="negara_asl">
                           <?php foreach($dt_negara as $negara){?>
+<<<<<<< HEAD
                           <option <?php if($dataku[2]->negara_asl === $negara->id){echo "selected"; } ?> value="<?php echo $negara->id;?>"><?php echo $negara->country;?></option>
+=======
+                          <option <?php if($crmh->negara_asl === $negara->id){echo "selected"; } ?> value="<?php echo $negara->id;?>"><?php echo $negara->country;?></option>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                           <?php }?>
                         </select>
                       </div>
@@ -246,32 +348,55 @@
             <!--Data Lampiran-->
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
               <form method="post" action="<?php echo site_url('users/binsyar/simpanedit_impor_lampiran');?>" enctype="multipart/form-data">
+<<<<<<< HEAD
+=======
+                <input type="hidden" name="id" value="<?php echo $lampiran->id;?>">
+                <input type="hidden" name="id_layanan" value="<?php echo $lampiran->id_layanan;?>">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                 <fieldset>
                     <div class="form-row">
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">Surat Permohonan</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
+<<<<<<< HEAD
                           <img src="<?php echo base_url().$dataku[4]->surat_permohonan_dalam;?>">
                         </div><br>
                         <input type="file" class="form-control-file" name="surat_permohonan_dalam" value="<?php echo $dataku[4]->surat_permohonan_dalam;?>">
                         <input type="hidden" class="form-control-file" name="id" value="<?php echo $dataku[4]->id;?>">
                         <input type="hidden" class="form-control-file" name="id_layanan" value="<?php echo $dataku[4]->id_layanan;?>">
+=======
+                          <img src="<?php echo base_url()?>assets/uploads/binsyar/<?php echo $lampiran->surat_permohonan_dalam;?>">
+                        </div><br>
+                        <input type="file" class="form-control-file" name="surat_permohonan_dalam">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                       </div>
 
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">Proposal</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
+<<<<<<< HEAD
                           <img src="<?php echo base_url().$dataku[4]->proposal_dalam;?>">
                         </div><br>
                         <input type="file" class="form-control-file" name="proposal_dalam" value="<?php echo $dataku[4]->proposal_dalam;?>">
+=======
+                          <img src="<?php echo base_url()?>assets/uploads/binsyar/<?php echo $lampiran->proposal_dalam;?>">
+                        </div><br>
+                        <input type="file" class="form-control-file" name="proposal_dalam" value="<?php echo $lampiran->proposal_dalam;?>">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                       </div>
 
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">CV Penceramah</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
+<<<<<<< HEAD
                           <img src="<?php echo base_url().$dataku[4]->cv_crmh_dalam;?>">
                         </div><br>
                         <input type="file" class="form-control-file" name="cv_crmh_dalam" value="<?php echo $dataku[4]->cv_crmh_dalam;?>">
+=======
+                          <img src="<?php echo base_url()?>assets/uploads/binsyar/<?php echo $lampiran->cv_crmh_dalam;?>">
+                        </div><br>
+                        <input type="file" class="form-control-file" name="cv_crmh_dalam">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                       </div>
                     </div>
 
@@ -279,25 +404,43 @@
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">FC Pasport Penceramah</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
+<<<<<<< HEAD
                           <img src="<?php echo base_url().$dataku[4]->pasp_crmh_dalam;?>">
                         </div><br>
                         <input type="file" class="form-control-file" name="pasp_crmh_dalam" value="<?php echo $dataku[4]->pasp_crmh_dalam;?>">
+=======
+                          <img src="<?php echo base_url()?>assets/uploads/binsyar/<?php echo $lampiran->pasp_crmh_dalam;?>">
+                        </div><br>
+                        <input type="file" class="form-control-file" name="pasp_crmh_dalam">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                       </div>
 
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">FC Passport Pengundang</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
+<<<<<<< HEAD
                           <img src="<?php echo base_url().$dataku[4]->ktp_dalam;?>">
                         </div><br>
                         <input type="file" class="form-control-file" name="ktp_dalam" value="<?php echo $dataku[4]->ktp_dalam;?>">
+=======
+                          <img src="<?php echo base_url()?>assets/uploads/binsyar/<?php echo $lampiran->ktp_dalam;?>">
+                        </div><br>
+                        <input type="file" class="form-control-file" name="ktp_dalam">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                       </div>
 
                       <div class="form-group col-md-4">
                         <label style="margin-bottom: 10px;">Pas Foto Penceramah</label>
                         <div style="width:100px; height: 100px; background-color: #ccc;">
+<<<<<<< HEAD
                           <img src="<?php echo base_url().$dataku[4]->pas_foto_crmh_dalam;?>">
                         </div><br>
                         <input type="file" class="form-control-file" name="pas_foto_crmh_dalam" value="<?php echo $dataku[4]->pas_foto_crmh_dalam;?>">
+=======
+                          <img src="<?php echo base_url()?>assets/uploads/binsyar/<?php echo $lampiran->pas_foto_crmh_dalam;?>">
+                        </div><br>
+                        <input type="file" class="form-control-file" name="pas_foto_crmh_dalam">
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                       </div>
                     </div>
                 </fieldset><br>
@@ -309,5 +452,9 @@
 
         </div><!--widget-bg-->
     </div>
+<<<<<<< HEAD
 </div>
 </form>
+=======
+</div>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44

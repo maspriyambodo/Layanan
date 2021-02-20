@@ -3,11 +3,40 @@
         {CONTENT BLOCK}
     </div>
 </div>
+<input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
+<input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
 {JS START}
 <?php
 echo $js_inlines;
 ?>
 <script type="text/javascript">
+    window.onload = function() {
+    toastr.options = {
+    closeButton: true,
+            debug: false,
+            newestOnTop: false,
+            progressBar: false,
+            positionClass: "toast-top-right",
+            preventDuplicates: true,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "2000",
+            timeOut: false,
+            extendedTimeOut: "2000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+    };
+    var a, b;
+    a = $('input[name="err_msg"]').val();
+    b = $('input[name="succ_msg"]').val();
+    if (a !== "") {
+    toastr.error(a);
+    } else if (b !== "") {
+    toastr.success(b);
+    }
+    };
     var Page = {};
     Page.RefreshGrid = function () {
     Page.InitGrid();
@@ -104,6 +133,7 @@ echo $js_inlines;
             index: 'tgl_awal_keg',
                     title: 'TMT PELAKSANAAN',
                     width: 150,
+                    rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
                     return o;
@@ -131,9 +161,10 @@ echo $js_inlines;
             index: 'nama_stat',
                     title: 'STATUS PERMOHONAN',
                     width: 150,
+                    rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
-                    o.value = '' + ('<div class="fancy-grid-cell-inner" style="margin-top:0px !important;"><span class="badge badge-orange">Dalam proses</span></div>');
+                    o.value = '<span class="badge badge-orange">Dalam proses</span>';
                     return o;
                     }
             },
@@ -141,7 +172,7 @@ echo $js_inlines;
             index: 'id_layanan',
                     title: 'CONTROL',
                     // width: 95,
-                    // rightLocked: true,
+                    rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
                     o.value = ''

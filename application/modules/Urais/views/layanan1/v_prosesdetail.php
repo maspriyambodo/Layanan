@@ -103,7 +103,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md" style="margin: 10px 0px;">
-                <a href="<?php echo base_url('assets/images/' . $detil[0]->ktp_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                <a href="<?php echo base_url('assets/uploads/binsyar/' . $detil[0]->ktp_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
                     <div class="card-body">
                         <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                             <i class="fas fa-id-card" style="font-size: 48px;"></i>
@@ -115,7 +115,7 @@
                 </a>
             </div>
             <div class="col-md" style="margin: 10px 0px;">
-                <a href="<?php echo base_url('assets/images/' . $detil[0]->surat_permohonan_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                <a href="<?php echo base_url('assets/uploads/binsyar/' . $detil[0]->surat_permohonan_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
                     <div class="card-body">
                         <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                             <i class="fas fa-file-alt" style="font-size: 48px;"></i>
@@ -127,7 +127,7 @@
                 </a>
             </div>
             <div class="col-md" style="margin: 10px 0px;">
-                <a href="<?php echo base_url('assets/images/' . $detil[0]->proposal_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
+                <a href="<?php echo base_url('assets/uploads/binsyar/' . $detil[0]->proposal_keg); ?>" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b" target="_new">
                     <div class="card-body">
                         <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                             <i class="fas fa-file" style="font-size: 48px;"></i>
@@ -182,29 +182,93 @@
         <div class="card-footer">
             <div class="text-center">
                 <a href="<?php echo base_url('Urais/Layanan_1/Proses/'); ?>" class="btn btn-default btn-sm"><i class="fas fa-times-circle"></i> Batal</a>
-                <button id="btnsub" type="submit" class="btn btn-success btn-sm" disabled="true"><i class="fas fa-check"></i> Proses Verifikasi</button>
+                <button id="btnsub" type="button" class="btn btn-success btn-sm" disabled="true"><i class="fas fa-check"></i> Proses Verifikasi</button>
+            </div>
+        </div>
+        <div class="modal fade" id="modal_verif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Verifikasi Permohonan</h4>
+                    </div>
+                    <div class="modal-body">
+                        Anda yakin ingin verifikasi data?
+                    </div>
+                    <div class="modal-footer">
+                        <button id="close" type="button" class="btn btn-danger" data-dismiss="modal">Tidak!</button>
+                        <button type="submit" class="btn btn-info" onclick="Svbtn();">Ya!</button>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
 </div>
 <div style="clear: both;margin: 5% 0px;"></div>
+<input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
+<input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
 <script>
     window.onload = function () {
         $('#alasan').hide('slow');
         $('input[type="checkbox"]').click(function () {
             if ($(this).is(":checked")) {
                 document.getElementById("btnsub").disabled = false;
+                $('#btnsub').attr('data-toggle', 'modal');
+                $('#btnsub').attr('data-target', '#modal_verif');
+                $('#btnsub').attr('onclick', 'Modal()');
             } else {
                 document.getElementById("btnsub").disabled = true;
+                $('#btnsub').removeAttr('data-toggle');
+                $('#btnsub').removeAttr('data-target');
+                $('#btnsub').removeAttr('onclick');
             }
         });
+        toastr.options = {
+            closeButton: true,
+            debug: false,
+            newestOnTop: false,
+            progressBar: false,
+            positionClass: "toast-top-right",
+            preventDuplicates: true,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "2000",
+            timeOut: false,
+            extendedTimeOut: "2000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+        };
+        var a, b;
+        a = $('input[name="err_msg"]').val();
+        b = $('input[name="succ_msg"]').val();
+        if (a !== "") {
+            toastr.error(a);
+        } else if (b !== "") {
+            toastr.success(b);
+        }
     };
+    function Svbtn() {
+        var a, b;
+        a = $('select[name="hasil"]').val();
+        b = $('textarea[name="alasan"]').val();
+        if (a == "") {
+            $("#modal_verif #close").click();
+            toastr.warning("Silahkan pilih keputusan!");
+        } else if (b == "" & a == 4) {
+            $("#modal_verif #close").click();
+            toastr.warning("Silahkan berikan alasan penolakan!");
+        }
+    }
+    function Modal() {
+        $('#modal_verif').modal({backdrop: 'static', keyboard: false});
+    }
     function Verif() {
         var a = $('select[name=hasil] option:selected').text();
-        if (a === "di Tolak") {
+        if (a === "tidak direkomendasikan") {
             $('#alasan').show('slow');
             $('textarea[name="alasan"]').attr('required', '');
-        } else if (a === "di Setujui") {
+        } else if (a === "direkomendasikan") {
             $('#alasan').hide('slow');
             $('textarea[name="alasan"]').removeAttr('required');
         } else {

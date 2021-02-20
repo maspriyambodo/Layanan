@@ -1,0 +1,161 @@
+bentuk array tambah permohonan penceramah keluar negeri
+Array
+(
+    [sys_user] => Array
+        (
+            [no_ktp] => 23423
+            [tanggal_lahir] => 07/02/1989
+            [uname] => maoscm
+            [nama_lengkap] => amcpo
+            [mail_user] => asmoc@gmail.com
+            [telepon] => 89987
+        )
+
+    [dt_layanan] => Array
+        (
+            [provinsi] => 15
+            [kabupaten] => 1505
+            [kecamatan] => 150506
+            [kelurahan] => 1505062005
+            [keterangan_kegiatan] => wvw
+            [mt_layanan] => 2
+        )
+
+    [dt_kegiatan] => Array
+        (
+            [nama_kegiatan] => amsckmo
+            [jumlah_peserta] => 34
+            [lembaga] => Perorangan
+            [tmt_awal] => 18/02/2021
+            [tmt_akhir] => 19/02/2021
+            [alamat_kegiatan] => sdvsdv
+        )
+
+    [dt_layanan_dokumen] => Array
+        (
+            [surat_permohonan_luar] => narsum_202102181606353.jpg
+            [proposal_luar] => narsum_202102181606354.jpg
+        )
+
+    [dt_penceramah] => Array
+        (
+            [narsum] => Array
+                (
+                    [0] => wvef
+                )
+
+            [tmp_lhr] => Array
+                (
+                    [0] => wvef
+                )
+
+            [tgl_lhr] => Array
+                (
+                    [0] => 04/02/2021
+                )
+
+            [kelamin] => Array
+                (
+                    [0] => 1
+                )
+
+            [no_paspor] => Array
+                (
+                    [0] => wef
+                )
+
+            [id_provinsi] => Array
+                (
+                    [0] => 11
+                )
+
+            [id_kabupaten] => Array
+                (
+                    [0] => 1101
+                )
+
+            [id_kecamatan] => Array
+                (
+                    [0] => 110101
+                )
+
+            [id_kelurahan] => Array
+                (
+                    [0] => 1101012001
+                )
+
+            [almt_penceramah] => Array
+                (
+                    [0] => wefvef
+                )
+
+            [cv] => Array
+                (
+                    [0] => Array
+                        (
+                            [file_name] => narsum_20210218160635.jpg
+                            [file_type] => image/jpeg
+                            [file_path] => /var/www/layanan/assets/uploads/binsyar/
+                            [full_path] => /var/www/layanan/assets/uploads/binsyar/narsum_20210218160635.jpg
+                            [raw_name] => narsum_20210218160635
+                            [orig_name] => narsum_20210218160635.jpg
+                            [client_name] => HD-Wallpapers-1366x768_id8.jpg
+                            [file_ext] => .jpg
+                            [file_size] => 312.2
+                            [is_image] => 1
+                            [image_width] => 1351
+                            [image_height] => 768
+                            [image_type] => jpeg
+                            [image_size_str] => width="1351" height="768"
+                        )
+
+                )
+
+            [fc_passport] => Array
+                (
+                    [0] => Array
+                        (
+                            [file_name] => narsum_202102181606351.jpg
+                            [file_type] => image/jpeg
+                            [file_path] => /var/www/layanan/assets/uploads/binsyar/
+                            [full_path] => /var/www/layanan/assets/uploads/binsyar/narsum_202102181606351.jpg
+                            [raw_name] => narsum_202102181606351
+                            [orig_name] => narsum_20210218160635.jpg
+                            [client_name] => IMG_20200802_023642.jpg
+                            [file_ext] => .jpg
+                            [file_size] => 525.39
+                            [is_image] => 1
+                            [image_width] => 3016
+                            [image_height] => 4032
+                            [image_type] => jpeg
+                            [image_size_str] => width="3016" height="4032"
+                        )
+
+                )
+
+            [pas_foto] => Array
+                (
+                    [0] => Array
+                        (
+                            [file_name] => narsum_202102181606352.jpg
+                            [file_type] => image/jpeg
+                            [file_path] => /var/www/layanan/assets/uploads/binsyar/
+                            [full_path] => /var/www/layanan/assets/uploads/binsyar/narsum_202102181606352.jpg
+                            [raw_name] => narsum_202102181606352
+                            [orig_name] => narsum_20210218160635.jpg
+                            [client_name] => HD-Wallpapers-1366x768_id8.jpg
+                            [file_ext] => .jpg
+                            [file_size] => 312.2
+                            [is_image] => 1
+                            [image_width] => 1351
+                            [image_height] => 768
+                            [image_type] => jpeg
+                            [image_size_str] => width="1351" height="768"
+                        )
+
+                )
+
+        )
+
+)
+

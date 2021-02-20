@@ -537,25 +537,25 @@ class Address extends MX_Controller {
           toJson($result);
     }
 
-    public function getRekomendasiKodeKabupaten($idprov) {
-        $query = $this->db->query("select max(id_kabupaten) as kode from mt_wil_kabupaten where id_provinsi = '".$idprov."'")->row();
-        $maxkode = $query->kode;
-        $split = explode(".",$maxkode);
-        $nextkode = 0;
-        if(count($split) >= 1){
-            $reckode = (int)$split[1] + 1;
-            if($reckode < 10) {
-                $reckode = "0". (string)$reckode;
-            }
-            $nextkode = $split[0].".".$reckode;
-        }
+    // public function getRekomendasiKodeKabupaten($idprov) {
+    //     $query = $this->db->query("select max(id_kabupaten) as kode from mt_wil_kabupaten where id_provinsi = '".$idprov."'")->row();
+    //     $maxkode = $query->kode;
+    //     $split = explode(".",$maxkode);
+    //     $nextkode = 0;
+    //     if(count($split) >= 1){
+    //         $reckode = (int)$split[1] + 1;
+    //         if($reckode < 10) {
+    //             $reckode = "0". (string)$reckode;
+    //         }
+    //         $nextkode = $split[0].".".$reckode;
+    //     }
 
-        $result = array(
-            "data" => $nextkode,
-            "success" => true,
-          );
-          toJson($result);
-    }
+    //     $result = array(
+    //         "data" => $nextkode,
+    //         "success" => true,
+    //       );
+    //       toJson($result);
+    // }
 
     public function getRekomendasiKodeKecamatan($idkab) {
         $query = $this->db->query("select max(id_kecamatan) as kode from mt_wil_kecamatan where id_kabupaten = '".$idkab."'")->row();

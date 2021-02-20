@@ -10,12 +10,21 @@ class Uplodan
 
     //--------------------------------------------- Punya Kegiatan Keagamaan
     public function doupload_ktp_kegiatan()
+<<<<<<< HEAD
     {   $user['tampil'] = $this->bm->get_identitas();
+=======
+    {   
+        // $user['tampil'] = $this->CI->binsyar_m->get_identitas();
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
         $type = explode('.', $_FILES["ktp"]["name"]);
         $type = $type[count($type)-1];
 
         $file_name = $_FILES["ktp"]["name"];
+<<<<<<< HEAD
         $url = "./assets/uploads/binsyar/".date('d-m-Y')."_".$user['tampil']->fullname."_".$file_name;
+=======
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 
         if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
             if(is_uploaded_file($_FILES["ktp"]["tmp_name"]))
@@ -24,14 +33,24 @@ class Uplodan
         return "";
     }
 
+<<<<<<< HEAD
     private function doupload_proposal_kegiatan()
     {   
         $user['tampil'] = $this->bm->get_identitas();
+=======
+    public function doupload_proposal_kegiatan()
+    {   
+        // $user['tampil'] = $this->CI->binsyar_m->get_identitas();
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
         $type = explode('.', $_FILES["proposal_keg"]["name"]);
         $type = $type[count($type)-1];
 
         $file_name = $_FILES["proposal_keg"]["name"];
+<<<<<<< HEAD
         $url = "./assets/uploads/binsyar/".date('dy')."_".$user['tampil']->fullname."_"."_".$file_name;
+=======
+        $url = "./assets/uploads/binsyar/".date('dy').$file_name;
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 
         if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
             if(is_uploaded_file($_FILES["proposal_keg"]["tmp_name"]))
@@ -40,14 +59,24 @@ class Uplodan
         return "";
     }
 
+<<<<<<< HEAD
     private function doupload_permohonan_kegiatan()
     {   
         $user['tampil'] = $this->bm->get_identitas();
+=======
+    public function doupload_permohonan_kegiatan()
+    {   
+        // $user['tampil'] = $this->CI->binsyar_m->get_identitas();
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
         $type = explode('.', $_FILES["surat_permohonan_keg"]["name"]);
         $type = $type[count($type)-1];
 
         $file_name = $_FILES["surat_permohonan_keg"]["name"];
+<<<<<<< HEAD
         $url = "./assets/uploads/binsyar/".date('dy')."_".$user['tampil']->fullname."_"."_".$file_name;
+=======
+        $url = "./assets/uploads/binsyar/".date('dy').$file_name;
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 
         if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
             if(is_uploaded_file($_FILES["surat_permohonan_keg"]["tmp_name"]))
@@ -238,6 +267,115 @@ class Uplodan
         return "";
     }
 
+<<<<<<< HEAD
+=======
+    //--------------------------------------------- Punya Safari Dakwah Dalam Negeri
+    public function doupload_sp_safari()
+    {
+        $type = explode('.', $_FILES["surat_permohonan_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["surat_permohonan_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["surat_permohonan_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["surat_permohonan_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_proposal_safari()
+    {
+        $type = explode('.', $_FILES["proposal_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["proposal_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["proposal_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["proposal_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_cv_safari()
+    {
+        $type = explode('.', $_FILES["cv_crmh_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["cv_crmh_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["cv_crmh_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["cv_crmh_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_paspor_safari()
+    {
+        $type = explode('.', $_FILES["pasp_crmh_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["pasp_crmh_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["pasp_crmh_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["pasp_crmh_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_ktp_safari()
+    {
+        $type = explode('.', $_FILES["ktp_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["ktp_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["ktp_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["ktp_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_foto_safari()
+    {
+        $type = explode('.', $_FILES["pas_foto_crmh_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["pas_foto_crmh_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["pas_foto_crmh_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["pas_foto_crmh_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+    public function doupload_crt_safari()
+    {
+        $type = explode('.', $_FILES["crt_crmh_safari"]["name"]);
+        $type = $type[count($type)-1];
+
+        $file_name = $_FILES["crt_crmh_safari"]["name"];
+        $url = "./assets/uploads/binsyar/".date('d-m-Y').$file_name;
+
+        if(in_array($type, array("jpg", "jpeg", "gif", "png", "bmp", "doc", "docx", "xls", "xlsx", "pdf" )))
+            if(is_uploaded_file($_FILES["crt_crmh_safari"]["tmp_name"]))
+                if(move_uploaded_file($_FILES["crt_crmh_safari"]["tmp_name"], $url))
+                    return $url;
+        return "";
+    }
+
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
 }
 
 /* End of file Uplodan.php */

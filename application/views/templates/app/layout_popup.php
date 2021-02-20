@@ -126,7 +126,8 @@
     <script src="<?php echo base_url(); ?>assets/app/js/plugins/popper.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/plugins/bootstrap-util.js"></script>
-    <script src="<?php echo base_url(); ?>assets/app/js/libs/knockout-3.4.2.js"></script>
+    <!-- <script src="<?php //echo base_url(); ?>assets/app/js/libs/knockout-3.4.2.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/libs/jquery.perfect-scrollbar/0.7.0/js/perfect-scrollbar.jquery.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/plugins/metisMenu.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/plugins/swal/sweetalert2.min.js"></script>
@@ -171,11 +172,19 @@
                     $('#kelurahan').load(url);
                     return true;
             });
+<<<<<<< HEAD
             $("#kelurahan").change(function () {
                     var url = "<?php echo site_url('users/binsyar/add_ajax_des'); ?>/" + $(this).val();
                     $('#desa').load(url);
                     return true;
             });
+=======
+            // $("#kelurahan").change(function () {
+            //         var url = "<?php //echo site_url('users/binsyar/add_ajax_des'); ?>/" + $(this).val();
+            //         $('#desa').load(url);
+            //         return true;
+            // });
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
     </script>
 
     <script>
@@ -216,7 +225,11 @@
             $("#insert-form-pddk").append("<br><b>Pendidikan Formal ke - " + nextform + " :</b>" +
                 "<table>" +
                 "<tr>" +
+<<<<<<< HEAD
                 "<td><input type='text' name='pddk[]' class='form-control' aria-describedby='basic-addon1' placeholder='Masukkan Pendidikan Formal . .' style='width:400px; border:1px solid #ccc;'></td>" +
+=======
+                "<td><select class='form-control' id='exampleFormControlSelect1' name='pddk[]' style='width:300px;'><option value='1'>S1</option>+<option value='2'>D3</option>+<option value='3'>SMK / SMA</option>+<option value='4'>SLTP</option>+<option value='5'>SD</option>+</select></td>" +
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                 "</tr>" +
                 "</table>" +
                 "<br><br>");

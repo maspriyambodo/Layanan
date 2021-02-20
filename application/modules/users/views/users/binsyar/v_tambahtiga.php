@@ -99,6 +99,7 @@
                   <label>Negara Asal</label>
                   <select class="form-control" id="exampleFormControlSelect1" name="negara_asl">
                     <option>Pilih . .</option>
+<<<<<<< HEAD
                     <option value="1">Indonesia</option>
                     <option value="2">Malaysia</option>
                     <option value="3">Singapura</option>
@@ -109,6 +110,11 @@
                     <option value="8">Inggris</option>
                     <option value="9">Amerika Serikat</option>
                     <option value="10">Rusia</option>
+=======
+                    <?php foreach($dt_negara as $negara){?>
+                    <option value="<?php echo $negara->id;?>"><?php echo $negara->country;?></option>
+                    <?php }?>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                   </select>
                   <?php echo form_error('negara_asl',"<div style='color:red'>","</div>");?>
                 </div>
@@ -229,6 +235,7 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 </form>
 
 {JS START}
@@ -362,3 +369,6 @@ $(function() {
 });
 </script>
 {JS END}
+=======
+</form>
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44

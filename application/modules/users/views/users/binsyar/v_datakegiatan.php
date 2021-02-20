@@ -99,7 +99,16 @@ echo $js_inlines;
                     }
                 },{
                     index: 'fullname',
+<<<<<<< HEAD
                     title: 'Nama Pemohon',
+=======
+                    title: 'Pemohon',
+                    width: 110,
+                    // locked: true,
+                },{
+                    index: 'kategori',
+                    title: 'Kategori',
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                     width: 150,
                     // locked: true,
                 },{
@@ -109,14 +118,24 @@ echo $js_inlines;
                     // locked: true,
                 },{
                     index: 'tgl_awal_keg',
+<<<<<<< HEAD
                     title: 'Tanggal Awal Kegiatan',
                     width: 150,
+=======
+                    title: 'Awal Kegiatan',
+                    width: 100,
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                     // locked: true,
                 },
                 {
                     index: 'esti_keg',
+<<<<<<< HEAD
                     title: 'Estimasi Jumlah Jamaah',
                     width: 150,
+=======
+                    title: 'Estimasi Jamaah',
+                    width: 120,
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                     // locked: true,
                 },
                 {
@@ -128,7 +147,11 @@ echo $js_inlines;
                 {
                     index: 'jumlah_penceramah',
                     title: 'Jumlah Penceramah',
+<<<<<<< HEAD
                     width: 150,
+=======
+                    width: 130,
+>>>>>>> 89c42021394fa964f82606712b8e449ebea12f44
                     // locked: true,
                 }, {
                     index: 'id',
