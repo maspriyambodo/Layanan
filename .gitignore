@@ -26,6 +26,6 @@ Temporary Items
 /application/config
 /application/logs
 /nbproject/
-
+/assets/uploads
 .editorconfig
 .htaccess
