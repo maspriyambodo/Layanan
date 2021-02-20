@@ -441,9 +441,6 @@
         } else {
             $('#nm_lemb').show('slow');
         }
-        $('.datepicker').datepicker({
-            format: 'yyyy-mm-dd'
-        });
     };
     function Save() {
         var a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r;
@@ -845,13 +842,13 @@
     }
     function Awal() {
         const today = moment();
-        const todays = today.format("DD/MM/YYYY");
+        const todays = today.format("YYYY-MM-DD");
         const kegiatan = $('input[name="tgl_awal_keg"]').val();
         if (kegiatan < todays) {
             toastr.warning("Masukkan Tanggal Awal Kegiatan dengan benar!");
             $('input[name="tgl_awal_keg"]').val("");
         } else {
-
+            return true;
         }
     }
     function Tgl() {

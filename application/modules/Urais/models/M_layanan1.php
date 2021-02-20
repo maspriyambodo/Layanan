@@ -20,17 +20,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class M_layanan1 extends CI_Model {
 
     public function index($data) {
+        $role = $_SESSION['DX_role_id'];
         if ($data['id_stat'] == "null") {
-            $where = [
+            $p1 = [
                 '`admin_izin_kegiatan_keagamaan`.`status_aktif`' => 1 + false,
                 '`admin_izin_kegiatan_keagamaan`.`jenis_layanan`' => $data['jenis_layanan'] + false
             ];
         } else {
-            $where = [
+            $p1 = [
                 '`admin_izin_kegiatan_keagamaan`.`status_aktif`' => 1 + false,
                 '`admin_izin_kegiatan_keagamaan`.`id_stat`' => $data['id_stat'] + false,
                 '`admin_izin_kegiatan_keagamaan`.`jenis_layanan`' => $data['jenis_layanan'] + false
             ];
+        }
+        if ($role != 1) {
+            $p2 = [
+                '`admin_izin_kegiatan_keagamaan`.`id_user`' => $_SESSION['DX_user_id'] + false,
+            ];
+            $where = array_merge($p1, $p2);
+        } else {
+            $where = $p1;
         }
         $exec = $this->db->select()
                 ->from('`admin_izin_kegiatan_keagamaan`')
