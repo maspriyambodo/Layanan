@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo site_url('users/binsyar/simpan_forma');?>" enctype="multipart/form-data">
+<form method="post" action="<?php echo site_url('users/binsyar/simpan_editA');?>" enctype="multipart/form-data">
 <!-- Kumpulan inputan di hidden -->
 <!-- <input type="hidden" name="id_stat" value="1" />
 <input type="hidden" name="jenis_layanan" value="<?php echo $jenis_layanan[0]->id;?>" />
@@ -52,7 +52,7 @@
                   if(empty($dataku[1]->narsum)){
                     echo "<input type='text' class='form-control' readonly>";
                   }else{
-                    echo "<input type='text' class='form-control' name='nm_keg' value='".$dataku[1]->narsum."'>";
+                    echo "<input type='text' class='form-control' name='narsum[]' value='".$dataku[1]->narsum."'>";
                   }
                   ?>
                 </div>
@@ -63,7 +63,7 @@
                   if(empty($dataku[2]->narsum)){
                     echo "<input type='text' class='form-control' readonly>";
                   }else{
-                    echo "<input type='text' class='form-control' name='nm_keg' value='".$dataku[2]->narsum."'>";
+                    echo "<input type='text' class='form-control' name='narsum[]' value='".$dataku[2]->narsum."'>";
                   }
                   ?>
                 </div>
@@ -74,7 +74,7 @@
                   if(empty($dataku[3]->narsum)){
                     echo "<input type='text' class='form-control' readonly>";
                   }else{
-                    echo "<input type='text' class='form-control' name='nm_keg' value='".$dataku[3]->narsum."'>";
+                    echo "<input type='text' class='form-control' name='narsum[]' value='".$dataku[3]->narsum."'>";
                   }
                   ?>
                 </div>
@@ -85,7 +85,7 @@
                   if(empty($dataku[4]->narsum)){
                     echo "<input type='text' class='form-control' readonly>";
                   }else{
-                    echo "<input type='text' class='form-control' name='nm_keg' value='".$dataku[4]->narsum."'>";
+                    echo "<input type='text' class='form-control' name='narsum[]' value='".$dataku[4]->narsum."'>";
                   }
                   ?>
                 </div>
@@ -163,36 +163,26 @@
               <div class="form-row">
                 <div class="form-group col-md-4">
                   <label style="margin-bottom: 10px;">Dokumen Pendukung KTP</label>
-                  <!-- <input type="hidden" name="id_layanan" value="<?php //echo $id_dtlayanan->id+1;?>" /> -->
-                  <?php //for ($i=1; $i <=3 ; $i++) :?>
-                  <?php //echo $dataku[5]->nama_file;?>
                   <div style="width:100px; height: 100px; background-color: #ccc;">
-                    <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $dataku[4]->nama_file;?>" alt="">
+                    <img src="<?php echo base_url().$dataku[3]->ktp;?>">
                   </div><br>
-                  <input type="file" class="form-control-file" name="nama_file" value="">
-                  <?php //endfor;?>
+                  <input type="file" class="form-control-file" name="ktp">
                 </div>
 
                 <div class="form-group col-md-4">
                   <label style="margin-bottom: 10px;">Dokumen Pendukung Proposal Kegiatan</label>
-                  <!-- <input type="hidden" name="id_layanan" value="<?php //echo $id_dtlayanan->id+1;?>" /> -->
-                  <?php //for ($i=1; $i <=3 ; $i++) :?>
                   <div style="width:100px; height: 100px; background-color: #ccc;">
-                    <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $dataku[5]->nama_file;?>" alt="">
+                    <img src="<?php echo base_url().$dataku[3]->proposal_keg;?>">
                   </div><br>
-                  <input type="file" class="form-control-file" name="nama_file" value="<?php //echo $dataku[5]->nama_file;?>">
-                  <?php //endfor;?>
+                  <input type="file" class="form-control-file" name="proposal_keg">
                 </div>
 
                 <div class="form-group col-md-4">
                   <label style="margin-bottom: 10px;">Dokumen Pendukung Surat Permohonan Rekomendasi</label>
-                  <!-- <input type="hidden" name="id_layanan" value="<?php //echo $id_dtlayanan->id+1;?>" /> -->
-                  <?php //for ($i=1; $i <=3 ; $i++) :?>
                   <div style="width:100px; height: 100px; background-color: #ccc;">
-                    <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $dataku[6]->nama_file;?>" alt="">
+                    <img src="<?php echo base_url().$dataku[3]->surat_permohonan_keg;?>">
                   </div><br>
-                  <input type="file" class="form-control-file" name="nama_file" value="<?php //echo $dataku[5]->nama_file;?>">
-                  <?php //endfor;?>
+                  <input type="file" class="form-control-file" name="surat_permohonan_keg">
                 </div>
               </div>
           </fieldset><br>

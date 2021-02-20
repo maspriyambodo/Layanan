@@ -40,6 +40,9 @@
 
     <link href="<?php echo base_url(); ?>assets/app/css/loader.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/app/css/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Date picker bagus -->
+    <link href="<?php echo base_url(); ?>assets/app/css/daterangepicker.css" rel="stylesheet" type="text/css" />
     
     <?php
         if(isset($cssFiles)) {
@@ -211,7 +214,117 @@
     <script src="<?php echo base_url(); ?>assets/app/js/theme.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/custom.js"></script>
     <script src="<?php echo base_url(); ?>assets/app/js/app.js"></script>
-    
+
+
+    <!-- Date picker bagus -->
+    <script src="<?php echo base_url(); ?>assets/app/js/daterangepicker.js"></script>
+
+    <!-- Onchange provinsi bagus -->
+    <script>
+            $("#provinsi").change(function () {
+                    var url = "<?php echo site_url('users/binsyar/add_ajax_kab'); ?>/" + $(this).val();
+                    $('#kabupaten').load(url);
+                    return true;
+            });
+            $("#kabupaten").change(function () {
+                    var url = "<?php echo site_url('users/binsyar/add_ajax_kec'); ?>/" + $(this).val();
+                    $('#kecamatan').load(url);
+                    return true;
+            });
+            $("#kecamatan").change(function () {
+                    var url = "<?php echo site_url('users/binsyar/add_ajax_kel'); ?>/" + $(this).val();
+                    $('#kelurahan').load(url);
+                    return true;
+            });
+            $("#kelurahan").change(function () {
+                    var url = "<?php echo site_url('users/binsyar/add_ajax_des'); ?>/" + $(this).val();
+                    $('#desa').load(url);
+                    return true;
+            });
+    </script>
+
+    <script>
+    $(document).ready(function(){ // Ketika halaman sudah diload dan siap
+        $("#btn-tambah-form").click(function(){ // Ketika tombol Tambah Data Form di klik
+            var jumlah = parseInt($("#jumlah-form").val()); // Ambil jumlah data form pada textbox jumlah-form
+            var nextform = jumlah + 1; // Tambah 1 untuk jumlah form nya
+            
+            // Kita akan menambahkan form dengan menggunakan append
+            // pada sebuah tag div yg kita beri id insert-form
+            $("#insert-form").append("<b>Nama Penceramah ke - " + nextform + " :</b>" +
+                "<table>" +
+                "<tr>" +
+                "<td><input type='text' name='narsum[]' class='form-control' aria-describedby='basic-addon1' placeholder='Masukkan Nama Penceramah . .' style='width:400px; border:1px solid #ccc;'></td>" +
+                "</tr>" +
+                "</table>" +
+                "<br><br>");
+            
+            $("#jumlah-form").val(nextform); // Ubah value textbox jumlah-form dengan variabel nextform
+        });
+        
+        // Buat fungsi untuk mereset form ke semula
+        $("#btn-reset-form").click(function(){
+            $("#insert-form").html(""); // Kita kosongkan isi dari div insert-form
+            $("#jumlah-form").val("1"); // Ubah kembali value jumlah form menjadi 1
+        });
+    });
+    </script>
+
+    <script>
+    $(document).ready(function(){ // Ketika halaman sudah diload dan siap
+        $("#btn-tambah-form-pddk").click(function(){ // Ketika tombol Tambah Data Form di klik
+            var jumlah = parseInt($("#jumlah-form-pddk").val()); // Ambil jumlah data form pada textbox jumlah-form
+            var nextform = jumlah + 1; // Tambah 1 untuk jumlah form nya
+            
+            // Kita akan menambahkan form dengan menggunakan append
+            // pada sebuah tag div yg kita beri id insert-form
+            $("#insert-form-pddk").append("<br><b>Pendidikan Formal ke - " + nextform + " :</b>" +
+                "<table>" +
+                "<tr>" +
+                "<td><input type='text' name='pddk[]' class='form-control' aria-describedby='basic-addon1' placeholder='Masukkan Pendidikan Formal . .' style='width:400px; border:1px solid #ccc;'></td>" +
+                "</tr>" +
+                "</table>" +
+                "<br><br>");
+            
+            $("#jumlah-form-pddk").val(nextform); // Ubah value textbox jumlah-form dengan variabel nextform
+        });
+        
+        // Buat fungsi untuk mereset form ke semula
+        $("#btn-reset-form-pddk").click(function(){
+            $("#insert-form-pddk").html(""); // Kita kosongkan isi dari div insert-form
+            $("#jumlah-form-pddk").val("1"); // Ubah kembali value jumlah form menjadi 1
+        });
+    });
+    </script>
+
+    <script>
+    $(document).ready(function(){ // Ketika halaman sudah diload dan siap
+        $("#btn-tambah-form-pddk-non").click(function(){ // Ketika tombol Tambah Data Form di klik
+            var jumlah = parseInt($("#jumlah-form-pddk-non").val()); // Ambil jumlah data form pada textbox jumlah-form
+            var nextform = jumlah + 1; // Tambah 1 untuk jumlah form nya
+            
+            // Kita akan menambahkan form dengan menggunakan append
+            // pada sebuah tag div yg kita beri id insert-form
+            $("#insert-form-pddk-non").append("<br><b>Pendidikan Non Formal ke - " + nextform + " :</b>" +
+                "<table>" +
+                "<tr>" +
+                "<td><input type='text' name='pddk_non[]' class='form-control' aria-describedby='basic-addon1' placeholder='Masukkan Pendidikan Non Formal . .' style='width:400px; border:1px solid #ccc;'></td>" +
+                "</tr>" +
+                "</table>" +
+                "<br><br>");
+            
+            $("#jumlah-form-pddk-non").val(nextform); // Ubah value textbox jumlah-form dengan variabel nextform
+        });
+        
+        // Buat fungsi untuk mereset form ke semula
+        $("#btn-reset-form-pddk-non").click(function(){
+            $("#insert-form-pddk-non").html(""); // Kita kosongkan isi dari div insert-form
+            $("#jumlah-form-pddk-non").val("1"); // Ubah kembali value jumlah form menjadi 1
+        });
+    });
+    </script>
+
+
     <script type="text/javascript">
         var App = {};
         App.IsLoading = ko.observable(false);
