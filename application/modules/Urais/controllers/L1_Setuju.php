@@ -32,7 +32,7 @@ class L1_Setuju extends MX_Controller {
         $view = "layanan1/v_setuju";
         $breadcrumbs = [
             [
-                "title" => "Izin Kegiatan Keagamaan",
+                "title" => "Permohonan",
                 "link" => "",
                 "is_actived" => true
             ]
@@ -79,12 +79,12 @@ class L1_Setuju extends MX_Controller {
         if (empty($data['detil'])) {
             redirect(base_url(''), 'refresh');
         } else {
-            $sitetitle = "IZIN KEGIATAN KEAGAMAAN";
-            $pagetitle = "<span class='text-success'>Permohonan Telah di Setujui</span>";
+            $sitetitle = $data['detil'][0]->nm_keg;
+            $pagetitle = "<span class='text-success'>Permohonan Telah direkomendasikan</span>";
             $view = "layanan1/v_detail_setuju";
             $breadcrumbs = [
                 [
-                    "title" => "Izin Kegiatan Keagamaan",
+                    "title" => "Permohonan",
                     "link" => base_url('Urais/L1_Setuju/index/'),
                     "is_actived" => false
                 ],

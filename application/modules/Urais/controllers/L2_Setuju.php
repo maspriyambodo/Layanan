@@ -13,11 +13,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 
 /**
- * Description of L1_Tolak
- * LAYANAN IZIN KEGIATAN KEAGAMAAN YANG TELAH DITOLAK!
+ * Description of L1_Setuju
+ * LAYANAN IZIN KEGIATAN KEAGAMAAN YANG TELAH DISETUJUI!
  * @author centos
  */
-class L1_Tolak extends MX_Controller {
+class L2_Setuju extends MX_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -25,11 +25,11 @@ class L1_Tolak extends MX_Controller {
     }
 
     public function index() {
-        $this->template->setPageId("DITOLAK_IKK");
+        $this->template->setPageId("DISETUJUI_IDKLN");
         $data = [];
-        $sitetitle = "Permohonan yang tidak direkomendasikan";
-        $pagetitle = "Permohonan tidak direkomendasikan";
-        $view = "layanan1/v_tolak";
+        $sitetitle = "Permohonan yang telah direkomendasikan";
+        $pagetitle = "Permohonan direkomendasikan";
+        $view = "layanan2/v_setuju";
         $breadcrumbs = [
             [
                 "title" => "Permohonan",
@@ -54,24 +54,38 @@ class L1_Tolak extends MX_Controller {
         $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
     }
 
+    public function Get_data() {
+        $data = [
+            'id_stat' => $this->input->get('id')/* input get id_stat */,
+            'jenis_layanan' => $this->input->get('jenis_layanan')/* input get jenis_layanan */
+        ];
+        $result = ["data" => $this->M_layanan1->index($data), "success" => true];
+        $this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json', 'utf-8')
+                ->set_output(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+                ->_display();
+        exit;
+    }
+
     public function Detail($id) {
-        $this->template->setPageId("DITOLAK_IKK");
+        $this->template->setPageId("DISETUJUI_IDKLN");
         $data = [];
         $detil_param = [
             'id_layanan' => $id,
-            'stat_id' => 4
+            'stat_id' => 3
         ];
         $data['detil'] = $this->M_layanan1->Detail($detil_param);
         if (empty($data['detil'])) {
             redirect(base_url(''), 'refresh');
         } else {
-            $sitetitle = "IZIN KEGIATAN KEAGAMAAN";
-            $pagetitle = "<span class='text-danger'>Permohonan tidak direkomendasikan</span>";
-            $view = "layanan1/v_detail_setuju";
+            $sitetitle = $data['detil'][0]->nm_keg;
+            $pagetitle = "<span class='text-success'>Permohonan Telah direkomendasikan</span>";
+            $view = "layanan2/v_detail_setuju";
             $breadcrumbs = [
                 [
                     "title" => "Permohonan",
-                    "link" => base_url('Urais/L1_Tolak/index/'),
+                    "link" => base_url('Urais/L2_Setuju/index/'),
                     "is_actived" => false
                 ],
                 [

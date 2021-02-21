@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * LAYANAN IZIN KEGIATAN KEAGAMAAN YANG TELAH DITOLAK!
  * @author centos
  */
-class L1_Tolak extends MX_Controller {
+class L2_Tolak extends MX_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -25,11 +25,11 @@ class L1_Tolak extends MX_Controller {
     }
 
     public function index() {
-        $this->template->setPageId("DITOLAK_IKK");
+        $this->template->setPageId("DITOLAK_IDKLN");
         $data = [];
         $sitetitle = "Permohonan yang tidak direkomendasikan";
         $pagetitle = "Permohonan tidak direkomendasikan";
-        $view = "layanan1/v_tolak";
+        $view = "layanan2/v_tolak";
         $breadcrumbs = [
             [
                 "title" => "Permohonan",
@@ -55,7 +55,7 @@ class L1_Tolak extends MX_Controller {
     }
 
     public function Detail($id) {
-        $this->template->setPageId("DITOLAK_IKK");
+        $this->template->setPageId("DITOLAK_IDKLN");
         $data = [];
         $detil_param = [
             'id_layanan' => $id,
@@ -67,7 +67,7 @@ class L1_Tolak extends MX_Controller {
         } else {
             $sitetitle = "IZIN KEGIATAN KEAGAMAAN";
             $pagetitle = "<span class='text-danger'>Permohonan tidak direkomendasikan</span>";
-            $view = "layanan1/v_detail_setuju";
+            $view = "layanan2/v_detail_setuju";
             $breadcrumbs = [
                 [
                     "title" => "Permohonan",

@@ -167,6 +167,14 @@ class M_layanan2 extends CI_Model {
         return $exec;
     }
 
+    public function Stat() {
+        $exec = $this->db->select()
+                ->from('`admin_IKK_persetujuan`')
+                ->get()
+                ->result();
+        return $exec;
+    }
+
     public function Get_narsum($data) {
         $exec = $this->db->select()
                 ->from('Get_penceramah')
@@ -320,6 +328,20 @@ class M_layanan2 extends CI_Model {
             ];
         } else {
             mysqli_next_result($this->db->conn_id);
+            $result['status'] = true;
+        }
+        return $result;
+    }
+
+    public function Proses_verif($param) {
+        $exec = $this->db->query('CALL verif_IKK(' . $param['e'] . ',' . $param['a'] . ',' . $param['b'] . ',' . $param['c'] . ',"' . $param['d'] . '")');
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', APPPATH . 'modules/Urais/models/M_layanan2 -> function Proses_verif' . 'error ketika verifikasi permohonan');
+            $result = [
+                'status' => false,
+                'pesan' => 'kesalahan saat verifikasi permohonan!'
+            ];
+        } else {
             $result['status'] = true;
         }
         return $result;

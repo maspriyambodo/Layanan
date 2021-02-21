@@ -148,7 +148,7 @@ if ($detil[0]->status_aktif == 1 and $_SESSION['DX_role_id'] == 1 and $detil[0]-
     . '<div class="card-title">Hasil Verifikasi'
     . '</div>'
     . '</div>'
-    . '<form action="' . base_url('Urais/Layanan_1/Proses_verif/') . '" method="post">'
+    . '<form action="' . base_url('Urais/Layanan_2/Proses_verif/') . '" method="post">'
     . '<input type="hidden" name="id_layanan" value="' . $detil[0]->id_layanan . '"/>'
     . '<div class="card-body">'
     . '<div class="row">'
