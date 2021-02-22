@@ -197,7 +197,7 @@
         </div>
     </div>
     <?php
-    if ($detil[0]->status_aktif == 1 and $_SESSION['DX_role_id'] == 1 and $detil[0]->stat_id == 1) {
+    if ($detil[0]->status_aktif == 1 and $detil[0]->stat_id == 1) {
         echo '<div class="card-footer">'
         . '<div class="text-right">'
         . '<button type="button" class="btn btn-success" onclick="Page.Terima(' . $detil[0]->id_layanan . ');" style="margin:0px 10px;"><i class="fas fa-check"></i> Terima</button>'
@@ -319,6 +319,6 @@
         });
     };
     Page.Direct = function () {
-        window.location.href = '<?php echo base_url('Urais/Layanan_1/index/'); ?>';
+        window.location.href = '<?php echo base_url('Urais/Layanan_2/index/'); ?>';
     };
 </script>

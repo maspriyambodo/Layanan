@@ -318,6 +318,10 @@
 <div style="clear: both;margin:5% 0px;"></div>
 <input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
 <input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
+<?php
+unset($_SESSION['gagal']);
+unset($_SESSION['sukses']);
+?>
 <script>
     window.onload = function () {
         toastr.options = {
@@ -387,71 +391,71 @@
         af = $('input[name="foto_narsum"]').val();
         ag = $('input[name="sp_keg"]').val();
         ah = $('input[name="proposal"]').val();
-        if (a == "") {
+        if (!a) {
             toastr.warning("Harap masukkan nama pemohon!");
-        } else if (b == "" | !validateEmail(b)) {
+        } else if (!b | !validateEmail(b)) {
             toastr.warning("Harap masukkan email pemohon!");
-        } else if (c == "") {
+        } else if (!c) {
             toastr.warning("Harap masukkan nomor ktp pemohon!");
-        } else if (d == "") {
+        } else if (!d) {
             toastr.warning("Harap masukkan nomor ktp pemohon!");
-        } else if (e == "") {
+        } else if (!e) {
             toastr.warning("Harap masukkan tanggal lahir pemohon!");
-        } else if (f == "") {
+        } else if (!f) {
             toastr.warning("Harap masukkan nomor telepon pemohon!");
-        } else if (g == "") {
+        } else if (!g) {
             toastr.warning("Harap masukkan provinsi pemohon!");
-        } else if (h == "") {
+        } else if (!h) {
             toastr.warning("Harap masukkan kabupaten pemohon!");
-        } else if (i == "") {
+        } else if (!i) {
             toastr.warning("Harap masukkan kecamatan pemohon!");
-        } else if (j == "") {
+        } else if (!j) {
             toastr.warning("Harap masukkan kelurahan pemohon!");
-        } else if (k == "") {
+        } else if (!j) {
             toastr.warning("Harap masukkan nama kegiatan!");
-        } else if (l == "") {
+        } else if (!l) {
             toastr.warning("Harap masukkan tanggal kegiatan!");
-        } else if (m == "") {
+        } else if (!m) {
             toastr.warning("Harap masukkan tanggal kegiatan!");
-        } else if (n == "") {
+        } else if (!n) {
             toastr.warning("Harap masukkan estimasi peserta kegiatan!");
-        } else if (o == "") {
+        } else if (!o) {
             toastr.warning("Harap memilih jenis lembaga!");
-        } else if (p == "") {
+        } else if (!p) {
             toastr.warning("Harap masukkan nama lembaga kegiatan!");
-        } else if (q == "") {
+        } else if (!q) {
             toastr.warning("Harap masukkan alamat atau lokasi kegiatan!");
-        } else if (r == "") {
+        } else if (!r) {
             toastr.warning("Harap memilih negara tujuan kegiatan!");
-        } else if (s == "") {
+        } else if (!s) {
             toastr.warning("Harap masukkan keterangan kegiatan!");
-        } else if (t == "") {
+        } else if (!t) {
             toastr.warning("Harap masukkan nomor passport penceramah!");
-        } else if (u == "") {
+        } else if (!u) {
             toastr.warning("Harap masukkan nama lengkap penceramah!");
-        } else if (v == "") {
+        } else if (!v) {
             toastr.warning("Harap pilih jenis kelamin penceramah!");
-        } else if (w == "") {
+        } else if (!w) {
             toastr.warning("Harap masukkan tempat lahir penceramah!");
-        } else if (x == "") {
+        } else if (!x) {
             toastr.warning("Harap masukkan provinsi penceramah!");
-        } else if (y == "") {
+        } else if (!y) {
             toastr.warning("Harap masukkan kabupaten penceramah!");
-        } else if (z == "") {
+        } else if (!z) {
             toastr.warning("Harap masukkan kecamatan penceramah!");
-        } else if (ab == "") {
+        } else if (!ab) {
             toastr.warning("Harap masukkan kelurahan penceramah!");
-        } else if (ac == "") {
+        } else if (!ac) {
             toastr.warning("Harap masukkan tanggal lahir penceramah!");
-        } else if (ad == "") {
+        } else if (!ad) {
             toastr.warning("Harap masukkan cv atau resume penceramah!");
-        } else if (ae == "") {
+        } else if (!ae) {
             toastr.warning("Harap masukkan fotocopy passport penceramah!");
-        } else if (af == "") {
+        } else if (!af) {
             toastr.warning("Harap masukkan pas foto penceramah!");
-        } else if (ag == "") {
+        } else if (!ag) {
             toastr.warning("Harap masukkan surat permohonan kegiatan!");
-        } else if (ah == "") {
+        } else if (!ah) {
             toastr.warning("Harap masukkan proposal kegiatan!");
         } else {
             return true;
@@ -526,7 +530,7 @@
     }
     function Awal() {
         const today = moment();
-        const todays = today.format("DD/MM/YYYY");
+        const todays = today.format("YYYY-MM-DD");
         const kegiatan = $('input[name="tgl_awal_keg"]').val();
         if (kegiatan < todays) {
             toastr.warning("Masukkan Tanggal Awal Kegiatan dengan benar!");

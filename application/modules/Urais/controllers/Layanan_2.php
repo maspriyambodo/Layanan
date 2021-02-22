@@ -467,7 +467,7 @@ class Layanan_2 extends CI_Controller {
     public function S_proposal() {
         $data = ['id_layanan' => $this->input->post('id_layanan'), 'proposal' => $this->Upload_dokmohon('proposal')];
         if ($data['proposal'] == false) {
-            log_message('error', APPPATH . 'modules/Urais/Layanan_1/S_proposal/ ' . ' Gagal ketika unggah Proposal Kegiatan');
+            log_message('error', APPPATH . 'modules/Urais/Layanan_2/S_proposal/ ' . ' Gagal ketika unggah Proposal Kegiatan');
             $respon = ['status' => 0, 'pesan' => 'error ketika unggah proposal!'];
         } else {
             $exec = $this->M_layanan2->S_proposal($data);
@@ -563,7 +563,7 @@ class Layanan_2 extends CI_Controller {
             $sitetitle = "Detil Permohonan | " . $data['detil'][0]->nm_keg;
             $pagetitle = "Detil Data Permohonan";
             $view = "layanan2/v_prosesdetail";
-            $breadcrumbs = [["title" => "Proses Permohonan", "link" => base_url('Urais/Layanan_1/Proses/'), "is_actived" => false,], ["title" => "Detail", "link" => "", "is_actived" => true,]];
+            $breadcrumbs = [["title" => "Proses Permohonan", "link" => base_url('Urais/Layanan_2/Proses/'), "is_actived" => false,], ["title" => "Detail", "link" => "", "is_actived" => true,]];
             $sql = "";
             $mejo = new Mejo();
             $mejo->setQuery($sql);

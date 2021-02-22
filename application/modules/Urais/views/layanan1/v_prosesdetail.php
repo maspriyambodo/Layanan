@@ -142,7 +142,7 @@
     </div>
 </div>
 <?php
-if ($detil[0]->status_aktif == 1 and $_SESSION['DX_role_id'] == 1 and $detil[0]->stat_id == 2) {
+if ($detil[0]->status_aktif == 1 and $detil[0]->stat_id == 2) {
     echo '<div class="card card-custom" style="margin-top:1.32857em;">'
     . '<div class="card-header">'
     . '<div class="card-title">Hasil Verifikasi'
@@ -208,6 +208,10 @@ if ($detil[0]->status_aktif == 1 and $_SESSION['DX_role_id'] == 1 and $detil[0]-
 <div style="clear: both;margin: 5% 0px;"></div>
 <input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
 <input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
+<?php
+unset($_SESSION['gagal']);
+unset($_SESSION['sukses']);
+?>
 <script>
     window.onload = function () {
         $('#alasan').hide('slow');

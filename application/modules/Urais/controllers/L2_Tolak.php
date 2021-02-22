@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 
 /**
- * Description of L1_Tolak
+ * Description of L2_Tolak
  * LAYANAN IZIN KEGIATAN KEAGAMAAN YANG TELAH DITOLAK!
  * @author centos
  */
@@ -71,7 +71,7 @@ class L2_Tolak extends MX_Controller {
             $breadcrumbs = [
                 [
                     "title" => "Permohonan",
-                    "link" => base_url('Urais/L1_Tolak/index/'),
+                    "link" => base_url('Urais/L2_Tolak/index/'),
                     "is_actived" => false
                 ],
                 [

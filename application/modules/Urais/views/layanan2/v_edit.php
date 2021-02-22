@@ -407,6 +407,10 @@
 <div style="clear: both;margin:10px 0px;"></div>
 <input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
 <input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
+<?php
+unset($_SESSION['gagal']);
+unset($_SESSION['sukses']);
+?>
 <script>
     window.onload = function () {
         Provinsi_user($('select[name="provinsi"]').val(), <?php echo $detil[0]->kabupaten_id_layanan; ?>);

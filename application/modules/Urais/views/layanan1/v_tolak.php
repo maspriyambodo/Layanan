@@ -79,7 +79,7 @@ echo $js_inlines;
             columns: [
             {
             index: 'id_layanan',
-                    title: 'NO FORM',
+                    title: 'NO PERMOHONAN',
                     width: 150,
                     render: function(o) {
                     o.style['text-align'] = 'center';
@@ -87,7 +87,7 @@ echo $js_inlines;
                     a = o.data.no_direktorat;
                     b = o.data.no_layanan;
                     c = o.data.tgl_input;
-                    o.value = a + '.' + b + '.' + c + '.' + o.data.no_urut;
+                    o.value = '<a href="<?php echo base_url('Urais/Layanan_1/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
                     return o;
                     }
             },

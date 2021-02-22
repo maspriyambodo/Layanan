@@ -1,6 +1,6 @@
 <h4>No. Form: <?php echo $detil[0]->no_direktorat . '.' . $detil[0]->no_layanan . '.' . $detil[0]->tgl_input . '.' . $detil[0]->no_urut; ?></h4>
 <?php
-if ($detil[0]->alasan_tolak) {
+if ($detil[0]->stat_id == 4) {
     echo '<div class="card card-custom" style="margin-top:1.32857em;">'
     . '<div class="card-body">'
     . '<p>Terimakasih telah mengajukan permohonan kepada kami.</p>'

@@ -5,6 +5,10 @@
 </div>
 <input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
 <input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
+<?php
+unset($_SESSION['gagal']);
+unset($_SESSION['sukses']);
+?>
 {JS START}
 <?php
 echo $js_inlines;
@@ -98,7 +102,7 @@ echo $js_inlines;
             columns: [
             {
             index: 'id_layanan',
-                    title: 'NO FORM',
+                    title: 'NO PERMOHONAN',
                     width: 150,
                     render: function(o) {
                     o.style['text-align'] = 'center';
@@ -106,7 +110,7 @@ echo $js_inlines;
                     a = o.data.no_direktorat;
                     b = o.data.no_layanan;
                     c = o.data.tgl_input;
-                    o.value = a + '.' + b + '.' + c + '.' + o.data.no_urut;
+                    o.value = '<a href="<?php echo base_url('Urais/Layanan_1/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
                     return o;
                     }
             },
@@ -180,7 +184,7 @@ echo $js_inlines;
                         + ''
 <?php endif; ?>
 <?php if ($this->izin->edit): ?>
-                        + ('<a class="text-dark" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Detail" style="margin-right:10px;"><i class="far fa-eye"></i></a>');
+                        + ('<a class="text-success" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Approve permohonan" style="margin-right:10px;"><i class="fas fa-check"></i></a>');
 <?php endif; ?>
 <?php if ($this->izin->gapunya): ?>
                         + ''
