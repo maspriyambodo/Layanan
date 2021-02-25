@@ -25,7 +25,7 @@ class LKSPWU extends CI_Controller {
     }
 
     private function Upload_dokmohon($param) {
-        $config['upload_path'] = FCPATH . 'assets/uploads/zakat/';
+        $config['upload_path'] = FCPATH . 'assets/uploads/zakat/lkspwu/';
         $config['file_name'] = date("YmdHis");
         $config['allowed_types'] = 'gif|jpg|png|jpeg|gif|bmp|doc|docx|xls|xlsx|pdf';
         $config['max_size'] = 2048;
@@ -46,11 +46,11 @@ class LKSPWU extends CI_Controller {
     }
 
     private function Remove_residual($data) {
-        unlink(FCPATH . 'assets/uploads/zakat/' . $data['dok1']['file_name']);
-        unlink(FCPATH . 'assets/uploads/zakat/' . $data['dok2']['file_name']);
-        unlink(FCPATH . 'assets/uploads/zakat/' . $data['dok3']['file_name']);
-        unlink(FCPATH . 'assets/uploads/zakat/' . $data['dok4']['file_name']);
-        unlink(FCPATH . 'assets/uploads/zakat/' . $data['dok5']['file_name']);
+        unlink(FCPATH . 'assets/uploads/zakat/lkspwu/' . $data['dok1']['file_name']);
+        unlink(FCPATH . 'assets/uploads/zakat/lkspwu/' . $data['dok2']['file_name']);
+        unlink(FCPATH . 'assets/uploads/zakat/lkspwu/' . $data['dok3']['file_name']);
+        unlink(FCPATH . 'assets/uploads/zakat/lkspwu/' . $data['dok4']['file_name']);
+        unlink(FCPATH . 'assets/uploads/zakat/lkspwu/' . $data['dok5']['file_name']);
         return true;
     }
 
@@ -211,8 +211,8 @@ class LKSPWU extends CI_Controller {
         } else {
             $data['msg'] = ['gagal' => $this->session->flashdata('gagal'), 'sukses' => $this->session->flashdata('sukses')];
             $data['provinsi'] = $this->M_lkspwu->Provinsi();
-            $sitetitle = $data['detil'][0]->nm_keg;
-            $pagetitle = "Izin Kegiatan Keagamaan";
+            $sitetitle = $data['detil']['nm_instansi'];
+            $pagetitle = "LKSPWU";
             $view = "lkspwu/edit";
             $breadcrumbs = [
                 [
@@ -242,6 +242,28 @@ class LKSPWU extends CI_Controller {
             $this->template->setBreadcrumbs($breadcrumbs);
             $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
         }
+    }
+
+    public function S_sp() {
+        $data = [
+            'id_layanan' => $this->input->post('id_layanan'),
+            'id_dokmohon' => $this->input->post('id_dokmohon'),
+            'sptxt' => $this->Upload_dokmohon("sptxt")
+        ];
+        if ($data['sptxt'] == false) {
+            log_message('error', APPPATH . 'modules/Zakat/LKSPWU/S_sp ' . ' gagal ketika unggah dokumen');
+            $respon = ['status' => 0, 'pesan' => 'error ketika unggah dokumen permohonan!'];
+        } else {
+            $exec = $this->M_lkspwu->S_sp($data);
+            if ($exec == 0) {
+                unlink(FCPATH . 'assets/uploads/zakat/lkspwu/' . $data['sptxt']['file_name']);
+                $respon = ['status' => 0, 'pesan' => 'gagal ketika menyimpan data Surat Permohonan!'];
+            } else {
+                $respon = ['status' => 1, 'pesan' => 'surat permohonan berhasil diubah!', 'file_name' => $data['sptxt']['file_name']];
+            }
+        }
+        $this->output->set_status_header(200)->set_content_type('application/json', 'utf-8')->set_output(json_encode($respon, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))->_display();
+        exit;
     }
 
 }

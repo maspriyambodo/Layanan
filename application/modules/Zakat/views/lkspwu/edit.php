@@ -219,34 +219,55 @@
                         <div class="col-md">
                             <div class="form-group">
                                 <label data-toggle="popover" data-trigger="click" title="" data-content="surat permohonan tertulis kepada menteri agama" data-original-title="Surat Permohonan">Surat Permohonan <i class="far fa-question-circle text-info"></i></label>
-                                <input type="file" name="sp_1" class="form-control" required=""/>
                             </div>
+                            <div class="form-group" id="o_sp">
+                                <button id="spbtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_sp()"><i class="far fa-edit"></i> Ubah</button>
+                                <a id="view_sp" href="<?php echo base_url('assets/uploads/binsyar/' . $detil['srt_prmhn_kementri_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
+                            </div>
+                            <div class="form-group" id="edit_sp"></div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Anggaran Dasar</label>
-                                <input type="file" name="anggaran" class="form-control" required=""/>
                             </div>
+                            <div class="form-group" id="o_ad">
+                                <button id="adbtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_anggaran()"><i class="far fa-edit"></i> Ubah</button>
+                                <a id="view_ad" href="<?php echo base_url('assets/uploads/binsyar/' . $detil['agrn_dsr_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
+                            </div>
+                            <div class="form-group" id="edit_ad"></div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label>SK Badan Hukum</label>
-                                <input type="file" name="sk_hukum" class="form-control" required=""/>
                             </div>
+                            <div class="form-group" id="o_skhukum">
+                                <button id="skhukumbtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_skhukum()"><i class="far fa-edit"></i> Ubah</button>
+                                <a id="view_skhukum" href="<?php echo base_url('assets/uploads/binsyar/' . $detil['sk_hkm_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
+                            </div>
+                            <div class="form-group" id="edit_skhukum"></div>
                         </div>
                     </div>
+                    <div style="clear: both;margin:10px 0px;"></div>
                     <div class="row">
                         <div class="col-md">
                             <div class="form-group">
                                 <label data-toggle="popover" data-trigger="click" title="" data-content="Surat Keterangan Domisili Usaha" data-original-title="SKDU">SKDU <i class="far fa-question-circle text-info"></i></label>
-                                <input type="file" name="skdu" class="form-control" required=""/>
                             </div>
+                            <div class="form-group" id="o_skdu">
+                                <button id="skdubtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_skhukum()"><i class="far fa-edit"></i> Ubah</button>
+                                <a id="view_skdu" href="<?php echo base_url('assets/uploads/binsyar/' . $detil['skdu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
+                            </div>
+                            <div class="form-group" id="edit_skdu"></div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label data-toggle="popover" data-trigger="click" title="" data-content="Bersedia menyampaikan laporan keuangan wakaf uang  meliputi jumlah, nilai dan hasil wakaf" data-original-title="LAPKEU">Laporan Keuangan <i class="far fa-question-circle text-info"></i></label>
-                                <input type="file" name="lapkeu" class="form-control" required=""/>
                             </div>
+                            <div class="form-group" id="o_lapkeu">
+                                <button id="lapkeubtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_lapkeu()"><i class="far fa-edit"></i> Ubah</button>
+                                <a id="view_lapkeu" href="<?php echo base_url('assets/uploads/binsyar/' . $detil['lapkeu_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
+                            </div>
+                            <div class="form-group" id="edit_lapkeu"></div>
                         </div>
                         <div class="col-md"></div>
                     </div>
@@ -285,9 +306,6 @@ unset($_SESSION['sukses']);
 ?>
 <script>
     window.onload = function () {
-        $(function () {
-            $('[data-toggle="popover"]').popover();
-        });
         toastr.options = {
             closeButton: true,
             debug: false,
@@ -305,6 +323,9 @@ unset($_SESSION['sukses']);
             showMethod: "fadeIn",
             hideMethod: "fadeOut"
         };
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+        });
         var a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q;
         a = $('input[name="err_msg"]').val();
         b = $('input[name="succ_msg"]').val();
@@ -527,5 +548,56 @@ unset($_SESSION['sukses']);
 
         }
 
+    }
+    function Ganti_sp() {
+        $('#o_sp').hide('slow');
+        $('#edit_sp').append(
+                '<div class="input-group">'
+                + '<input id="sptxt" class="form-control" type="file" name="sptxt" required="">'
+                + '</div>'
+                + '<div style="clear:both;margin:5px 0px;"></div>'
+                + '<button type="button" class="btn btn-danger btn-xs" onclick="C_sp()" title="Batal ubah"><i class="fas fa-times-circle"></i> Batal</button>'
+                + '<button type="button" class="btn btn-success btn-xs" onclick="S_sp()" title="Simpan perubahan" style="margin:0px 5px;"><i class="fas fa-save"></i> Simpan</button>'
+                );
+    }
+    function C_sp() {
+        $('#o_sp').show('slow');
+        $('#edit_sp').empty();
+    }
+    function S_sp() {
+        var a, b, c, d, e;
+        e = $('input[name="sptxt"]').val();
+        if (e) {
+            a = new FormData();
+            b = $('input[name="id_layanan"]').val();
+            c = $('input[name="id_dokmohon"]').val();
+            d = $('#sptxt')[0].files[0];
+            a.append('id_layanan', b);
+            a.append('id_dokmohon', c);
+            a.append('sptxt', d);
+            $.ajax({
+                type: 'POST',
+                url: "<?php echo base_url('Zakat/LKSPWU/S_sp/'); ?>",
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: "multipart/form-data",
+                data: a,
+                success: function (data) {
+                    if (data.status == 0) {
+                        toastr.error(data.pesan);
+                    } else {
+                        toastr.success(data.pesan);
+                        $('#view_sp').attr('href', '<?php echo base_url('assets/uploads/zakat/lkspwu/'); ?>' + data.file_name);
+                        C_sp();
+                    }
+                },
+                error: function () {
+                    toastr.error('terjadi kesalahan saat menyimpan dokumen!');
+                }
+            });
+        } else {
+            toastr.warning('Anda belum memilih dokumen untuk diubah!');
+        }
     }
 </script>

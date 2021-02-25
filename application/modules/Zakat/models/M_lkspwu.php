@@ -168,4 +168,22 @@ class M_lkspwu extends CI_Model {
         return $exec;
     }
 
+    public function S_sp($data) {
+        $this->db->trans_begin();
+        $this->db->set('dt_layanan_dokumen.srt_prmhn_kementri_lkspwu', $data['sptxt']['file_name'])
+                ->where([
+                    '`dt_layanan_dokumen`.`id`' => $data['id_dokmohon'] + false,
+                    'dt_layanan_dokumen.id_layanan' => $data['id_layanan'] + false
+                ])
+                ->update('dt_layanan_dokumen');
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            $status = 0;
+        } else {
+            $this->db->trans_commit();
+            $status = 1;
+        }
+        return $status;
+    }
+
 }
