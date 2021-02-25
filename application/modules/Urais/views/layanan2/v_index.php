@@ -118,7 +118,7 @@ unset($_SESSION['sukses']);
                     a = o.data.no_direktorat;
                     b = o.data.no_layanan;
                     c = o.data.tgl_input;
-                    o.value = '<a href="<?php echo base_url('Urais/Layanan_1/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
+                    o.value = '<a href="<?php echo base_url('Urais/Layanan_2/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
                     return o;
                     }
             },
