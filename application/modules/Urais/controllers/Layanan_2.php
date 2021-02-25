@@ -599,5 +599,4 @@ class Layanan_2 extends CI_Controller {
         }
         return $result;
     }
-
 }
