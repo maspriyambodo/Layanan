@@ -369,13 +369,13 @@ unset($_SESSION['sukses']);
         i = $('select[name="kectxt_pemohon"]').val();
         j = $('select[name="keltxt_pemohon"]').val();
         k = $('input[name="nm_keg"]').val();
-        // l = $('input[name="tgl_awal_keg"]').val();
+        l = $('input[name="tgl_awal_keg"]').val();
         m = $('input[name="tgl_akhir_keg"]').val();
         n = $('input[name="esti_keg"]').val();
         o = $('select[name="lembaga"]').val();
         p = $('input[name="lemb_keg"]').val();
         q = $('input[name="alamat_kegiatan"]').val();
-        r = $('select[name="negara"]').val();
+        r = $('input[name="negara"]').val();
         s = $('textarea[name="keterangan_kegiatan"]').val();
         t = $('input[name="pasport"]').val();
         u = $('input[name="ceramah"]').val();
@@ -411,18 +411,12 @@ unset($_SESSION['sukses']);
             toastr.warning("Harap masukkan kecamatan pemohon!");
         } else if (!j) {
             toastr.warning("Harap masukkan kelurahan pemohon!");
-        } else if (!j) {
+        } else if (!k) {
             toastr.warning("Harap masukkan nama kegiatan!");
-// <<<<<<< HEAD
-//         // } else if (l == "") {
-//         //     toastr.warning("Harap masukkan tanggal kegiatan!");
-//         } else if (m == "") {
-// =======
-//         } else if (!l) {
-//             toastr.warning("Harap masukkan tanggal kegiatan!");
-//         } else if (!m) {
-// >>>>>>> 475628b860a9e732138fb05170c3fc6564e271c3
-            // toastr.warning("Harap masukkan tanggal kegiatan!");
+        } else if (!l) {
+            toastr.warning("Harap masukkan tanggal kegiatan!");
+        } else if (!m) {
+            toastr.warning("Harap masukkan tanggal kegiatan!");
         } else if (!n) {
             toastr.warning("Harap masukkan estimasi peserta kegiatan!");
         } else if (!o) {
