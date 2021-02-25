@@ -33,7 +33,7 @@ echo $js_inlines;
                     remoteFilter: false,
                     remoteSort: false,
                     proxy: {
-                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=4&jenis_layanan=1'); ?>',
+                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=3&jenis_layanan=2'); ?>',
                             params: {}
                     }
             },
@@ -50,16 +50,7 @@ echo $js_inlines;
                     paramsMenu: true,
                     paramsText: 'Columns'
             },
-<?php if ($this->izin->add): ?>{
-                type: 'button',
-                        text: '<i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Tambah Baru',
-                        cls: 'mejo-btn mejo-btn-blue',
-                        width: 120,
-                        handler: function () {
-                        // alert("add")
-                        window.location.href = '<?php echo base_url(); ?>';
-                        }
-                },<?php endif; ?>
+<?php if ($this->izin->add): ?>{},<?php endif; ?>
 <?php if ($this->izin->publish): ?>{
                 type: 'button',
                         text: '<i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Export Data',
@@ -87,7 +78,7 @@ echo $js_inlines;
                     a = o.data.no_direktorat;
                     b = o.data.no_layanan;
                     c = o.data.tgl_input;
-                    o.value = '<a href="<?php echo base_url('Urais/Layanan_1/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
+                    o.value = '<a href="<?php echo base_url('Urais/Layanan_2/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
                     return o;
                     }
             },
@@ -97,8 +88,8 @@ echo $js_inlines;
                     width: 350
             },
             {
-            index: 'alasan_tolak',
-                    title: 'ALASAN',
+            index: 'keterangan',
+                    title: 'KETERANGAN',
                     width: 400
             },
             {
@@ -114,6 +105,7 @@ echo $js_inlines;
             index: 'tgl_awal_keg',
                     title: 'TMT PELAKSANAAN',
                     width: 150,
+                    rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
                     return o;
@@ -144,7 +136,7 @@ echo $js_inlines;
                     rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
-                    o.value = '<span class="badge bg-danger">tidak disetujui</span>';
+                    o.value = '<span class="badge bg-success">Terverifikasi</span>';
                     return o;
                     }
             },
@@ -160,7 +152,7 @@ echo $js_inlines;
                         + ''
 <?php endif; ?>
 <?php if ($this->izin->edit): ?>
-                        + ('<a class="text-dark" href="javascript:void(0);" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Detail" style="margin-right:10px;"><i class="far fa-eye"></i></a>');
+                        + ('<a class="text-dark" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Detail" style="margin-right:10px;"><i class="far fa-eye"></i></a>');
 <?php endif; ?>
 <?php if ($this->izin->gapunya): ?>
                         + ''
@@ -172,7 +164,7 @@ echo $js_inlines;
     });
     };
     Page.Detail = function (id) {
-    window.location.href = '<?php echo base_url('Urais/L1_Tolak/Detail/'); ?>' + id;
+    window.location.href = '<?php echo base_url('Urais/L2_Setuju/Detail/'); ?>' + id;
     };
     $(function () {
     Page.InitGrid();

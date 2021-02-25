@@ -1,4 +1,22 @@
 <h4>No. Form: <?php echo $detil[0]->no_direktorat . '.' . $detil[0]->no_layanan . '.' . $detil[0]->tgl_input . '.' . $detil[0]->no_urut; ?></h4>
+<?php
+if ($detil[0]->stat_id == 4) {
+    echo '<div class="card card-custom" style="margin-top:1.32857em;">'
+    . '<div class="card-body">'
+    . '<p>Terimakasih telah mengajukan permohonan kepada kami.</p>'
+    . '<p>Sayangnya, setelah meninjau permohonan Anda, kami tidak dapat menerima permohonan Anda saat ini, dengan alasan:</p>'
+    . '<p>'
+    . '<mark>'
+    . $detil[0]->alasan_tolak
+    . '</mark>'
+    . '</p>'
+    . '<p>Anda juga dapat memperbarui dan mengirimkan aplikasi Anda. Pakar akan meninjau akun Anda untuk mengetahui kepatuhannya terhadap kebijakan program kami, jadi pastikan untuk menyelesaikan semua masalah.</p>'
+    . '</div>'
+    . '</div>';
+} else {
+    null;
+}
+?>
 <div class="card card-custom" style="margin-top:1.32857em;">
     <div class="card-header">
         <div class="card-title">
@@ -141,7 +159,7 @@
         </div>
     </div>
     <?php
-    if ($detil[0]->status_aktif == 1) {
+    if ($detil[0]->status_aktif == 1 and $detil[0]->stat_id == 1) {
         echo '<div class="card-footer">'
         . '<div class="text-right">'
         . '<button type="button" class="btn btn-success" onclick="Page.Terima(' . $detil[0]->id_layanan . ');" style="margin:0px 10px;"><i class="fas fa-check"></i> Terima</button>'

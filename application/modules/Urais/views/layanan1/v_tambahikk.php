@@ -217,6 +217,10 @@
 <div style="clear: both;margin:5% 0px;"></div>
 <input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
 <input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
+<?php
+unset($_SESSION['gagal']);
+unset($_SESSION['sukses']);
+?>
 <script>
     window.onload = function () {
         toastr.options = {

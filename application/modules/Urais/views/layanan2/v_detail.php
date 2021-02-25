@@ -34,6 +34,26 @@
                         <td><b>Email</b></td>
                         <td>: <?php echo $detil[0]->mail; ?></td>
                     </tr>
+                    <tr>
+                        <td><b>Provinsi</b></td>
+                        <td>
+                            <?php echo $detil[0]->provinsi_layanan; ?>
+                        </td>
+                        <td><b>Kota/Kabupaten</b></td>
+                        <td>
+                            <?php echo $detil[0]->kabupaten_layanan; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Kecamatan</b></td>
+                        <td>
+                            <?php echo $detil[0]->kecamatan_layanan; ?>
+                        </td>
+                        <td><b>Kelurahan</b></td>
+                        <td>
+                            <?php echo $detil[0]->kelurahan_layanan; ?>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -70,12 +90,10 @@
                         <td>: <?php echo $detil[0]->esti_keg; ?> Peserta</td>
                     </tr>
                     <tr>
+                        <td><b>Negara Tujuan</b></td>
+                        <td>: <?php echo $detil[0]->negara_tujuan; ?></td>
                         <td><b>Lokasi</b></td>
-                        <td colspan="3">: <?php echo $detil[0]->alamat_keg; ?></td>
-                    </tr>
-                    <tr>
-                        <td><b>Alamat</b></td>
-                        <td colspan="3">: <?php echo 'Provinsi ' . $detil[0]->provinsi . ', ' . $detil[0]->kabupaten . '<br>&nbsp;&nbsp;Kec. ' . $detil[0]->kecamatan . ', Kel. ' . $detil[0]->kelurahan; ?></td>
+                        <td>: <?php echo $detil[0]->alamat_keg; ?></td>
                     </tr>
                     <tr>
                         <td><b>Keterangan</b></td>
@@ -134,8 +152,8 @@
                             <td class="text-center text-capitalize"><?php echo $narsum->jns_kelamin; ?></td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-xs btn-default" title="lihat cv <?php echo $narsum->narsum; ?>"><i class="far fa-file-word"></i></button>
-                                    <button type="button" class="btn btn-xs btn-default" title="lihat passport <?php echo $narsum->narsum; ?>"><i class="fas fa-passport"></i></button>
-                                    <button type="button" class="btn btn-xs btn-default" title="lihat foto <?php echo $narsum->narsum; ?>"><i class="fas fa-user"></i></button>
+                                <button type="button" class="btn btn-xs btn-default" title="lihat passport <?php echo $narsum->narsum; ?>"><i class="fas fa-passport"></i></button>
+                                <button type="button" class="btn btn-xs btn-default" title="lihat foto <?php echo $narsum->narsum; ?>"><i class="fas fa-user"></i></button>
                             </td>
                         </tr>
                     <?php } ?>
@@ -179,7 +197,7 @@
         </div>
     </div>
     <?php
-    if ($detil[0]->status_aktif == 1) {
+    if ($detil[0]->status_aktif == 1 and $detil[0]->stat_id == 1) {
         echo '<div class="card-footer">'
         . '<div class="text-right">'
         . '<button type="button" class="btn btn-success" onclick="Page.Terima(' . $detil[0]->id_layanan . ');" style="margin:0px 10px;"><i class="fas fa-check"></i> Terima</button>'
@@ -301,6 +319,6 @@
         });
     };
     Page.Direct = function () {
-        window.location.href = '<?php echo base_url('Urais/Layanan_1/index/'); ?>';
+        window.location.href = '<?php echo base_url('Urais/Layanan_2/index/'); ?>';
     };
 </script>

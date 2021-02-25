@@ -33,7 +33,7 @@ echo $js_inlines;
                     remoteFilter: false,
                     remoteSort: false,
                     proxy: {
-                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=4&jenis_layanan=1'); ?>',
+                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=4&jenis_layanan=2'); ?>',
                             params: {}
                     }
             },
@@ -87,7 +87,7 @@ echo $js_inlines;
                     a = o.data.no_direktorat;
                     b = o.data.no_layanan;
                     c = o.data.tgl_input;
-                    o.value = '<a href="<?php echo base_url('Urais/Layanan_1/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
+                    o.value = '<a href="<?php echo base_url('Urais/Layanan_2/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
                     return o;
                     }
             },
@@ -172,7 +172,7 @@ echo $js_inlines;
     });
     };
     Page.Detail = function (id) {
-    window.location.href = '<?php echo base_url('Urais/L1_Tolak/Detail/'); ?>' + id;
+    window.location.href = '<?php echo base_url('Urais/L2_Tolak/Detail/'); ?>' + id;
     };
     $(function () {
     Page.InitGrid();

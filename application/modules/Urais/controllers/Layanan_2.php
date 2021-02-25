@@ -329,4 +329,274 @@ class Layanan_2 extends CI_Controller {
         }
     }
 
+    public function Get_narsum() {
+        $data = [
+            'id_layanan' => $this->input->post('id_layanan'),
+            'id_penceramah' => $this->input->post('id_penceramah')
+        ];
+        $exec = $this->M_layanan2->Get_narsum($data);
+        if (empty($exec)) {
+            $result = [
+                'status' => false,
+                'msg' => 'kesalahan saat mengambil data penceramah!'
+            ];
+        } else {
+            $result = [
+                'status' => true,
+                'data' => $exec
+            ];
+        }
+        $this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json', 'utf-8')
+                ->set_output(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+                ->_display();
+        exit;
+    }
+
+    public function S_Cv() {
+        $data = ['layanan_id' => $this->input->post('id_layanan'), 'penceramah_id' => $this->input->post('id_penceramah'), 'cv_penceramah' => $this->Upload_dokmohon('cv_penceramah')];
+        if ($data['cv_penceramah'] == false) {
+            log_message('error', APPPATH . 'modules/Urais/Layanan_2/S_Cv/ ' . ' Gagal ketika unggah cv_penceramah');
+            $respon = ['status' => 0, 'pesan' => 'kesalahan ketika unggah cv_penceramah!'];
+        } else {
+            $exec = $this->M_layanan2->S_Cv($data);
+            if ($exec == 0) {
+                unlink(FCPATH . 'assets/uploads/binsyar/' . $data['cv_penceramah']['file_name']);
+                $respon = ['status' => 0, 'pesan' => 'kesalahan ketika menyimpan data cv_penceramah!'];
+            } else {
+                unlink(FCPATH . 'assets/uploads/binsyar/' . $exec['old_cv']); //hapus berkas lama, agar tidak menjadi residu file dalam serper
+                $respon = ['status' => 1, 'pesan' => 'cv penceramah berhasil diubah!', 'file_name' => $data['cv_penceramah']['file_name']];
+            }
+        }
+        $this->output->set_status_header(200)->set_content_type('application/json', 'utf-8')->set_output(json_encode($respon, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))->_display();
+        exit;
+    }
+
+    public function S_paspor() {
+        $data = ['layanan_id' => $this->input->post('id_layanan'), 'penceramah_id' => $this->input->post('id_penceramah'), 'paspor_penceramah' => $this->Upload_dokmohon('paspor_penceramah')];
+        if ($data['paspor_penceramah'] == false) {
+            log_message('error', APPPATH . 'modules/Urais/Layanan_2/S_paspor/ ' . ' Gagal ketika unggah paspor_penceramah');
+            $respon = ['status' => 0, 'pesan' => 'kesalahan ketika unggah passport penceramah!'];
+        } else {
+            $exec = $this->M_layanan2->S_paspor($data);
+            if ($exec == 0) {
+                unlink(FCPATH . 'assets/uploads/binsyar/' . $data['paspor_penceramah']['file_name']);
+                $respon = ['status' => 0, 'pesan' => 'kesalahan ketika menyimpan data paspor_penceramah!'];
+            } else {
+                unlink(FCPATH . 'assets/uploads/binsyar/' . $exec['old_cv']); //hapus berkas lama, agar tidak menjadi residu file dalam serper
+                $respon = ['status' => 1, 'pesan' => 'passport penceramah berhasil diubah!', 'file_name' => $data['paspor_penceramah']['file_name']];
+            }
+        }
+        $this->output->set_status_header(200)->set_content_type('application/json', 'utf-8')->set_output(json_encode($respon, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))->_display();
+        exit;
+    }
+
+    public function S_foto() {
+        $data = ['layanan_id' => $this->input->post('id_layanan'), 'penceramah_id' => $this->input->post('id_penceramah'), 'foto_penceramah' => $this->Upload_dokmohon('foto_penceramah')];
+        if ($data['foto_penceramah'] == false) {
+            log_message('error', APPPATH . 'modules/Urais/Layanan_2/S_foto/ ' . ' Gagal ketika unggah foto_penceramah');
+            $respon = ['status' => 0, 'pesan' => 'kesalahan ketika unggah pas foto penceramah!'];
+        } else {
+            $exec = $this->M_layanan2->S_foto($data);
+            if ($exec == 0) {
+                unlink(FCPATH . 'assets/uploads/binsyar/' . $data['foto_penceramah']['file_name']);
+                $respon = ['status' => 0, 'pesan' => 'kesalahan ketika menyimpan data foto_penceramah!'];
+            } else {
+                unlink(FCPATH . 'assets/uploads/binsyar/' . $exec['old_cv']); //hapus berkas lama, agar tidak menjadi residu file dalam serper
+                $respon = ['status' => 1, 'pesan' => 'pas foto penceramah berhasil diubah!', 'file_name' => $data['foto_penceramah']['file_name']];
+            }
+        }
+        $this->output->set_status_header(200)->set_content_type('application/json', 'utf-8')->set_output(json_encode($respon, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))->_display();
+        exit;
+    }
+
+    public function Update_narsum() {
+        $data = [
+            'nomor_passport' => $this->input->post('nomor_passport'),
+            'nama_penceramah' => $this->input->post('nama_penceramah'),
+            'jenis_kelamin' => $this->input->post('jenis_kelamin'),
+            'tempat_lahir' => $this->input->post('tempat_lahir'),
+            'id_prov' => $this->input->post('id_prov'),
+            'id_kab' => $this->input->post('id_kab'),
+            'id_kec' => $this->input->post('id_kec'),
+            'id_kel' => $this->input->post('id_kel'),
+            'tanggal_lahir' => $this->input->post('tanggal_lahir'),
+            'alamat_rumah' => $this->input->post('alamat_rumah'),
+            'id_narsum' => $this->input->post('id_narsum'),
+            'layanan_id' => $this->input->post('layanan_id'),
+        ];
+        $exec = $this->M_layanan2->Update_narsum($data);
+        if (empty($exec) or $exec['status'] == false) {
+            $result = [
+                'status' => false,
+                'msg' => $exec['pesan']
+            ];
+        } else {
+            $result = [
+                'status' => true,
+                'msg' => 'data penceramah berhasil diperbarui'
+            ];
+        }
+        $this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json', 'utf-8')
+                ->set_output(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+                ->_display();
+        exit;
+    }
+
+    public function S_spk() {
+        $data = ['id_layanan' => $this->input->post('id_layanan'), 'sp_keg' => $this->Upload_dokmohon('sp_keg')];
+        if ($data['sp_keg'] == false) {
+            log_message('error', APPPATH . 'modules/Urais/Layanan_2/S_spk/ ' . ' Gagal ketika unggah Surat Permohonan Kegiatan');
+            $respon = ['status' => 0, 'pesan' => 'error ketika unggah Surat Permohonan Kegiatan!'];
+        } else {
+            $exec = $this->M_layanan2->S_spk($data);
+            if ($exec == 0) {
+                unlink(FCPATH . 'assets/uploads/binsyar/' . $data['sp_keg']['file_name']);
+                $respon = ['status' => 0, 'pesan' => 'gagal ketika menyimpan data Surat Permohonan Kegiatan!'];
+            } else {
+                $respon = ['status' => 1, 'pesan' => 'Surat Permohonan Kegiatan berhasil diubah!', 'file_name' => $data['sp_keg']['file_name']];
+            }
+        }
+        $this->output->set_status_header(200)->set_content_type('application/json', 'utf-8')->set_output(json_encode($respon, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))->_display();
+        exit;
+    }
+
+    public function S_proposal() {
+        $data = ['id_layanan' => $this->input->post('id_layanan'), 'proposal' => $this->Upload_dokmohon('proposal')];
+        if ($data['proposal'] == false) {
+            log_message('error', APPPATH . 'modules/Urais/Layanan_2/S_proposal/ ' . ' Gagal ketika unggah Proposal Kegiatan');
+            $respon = ['status' => 0, 'pesan' => 'error ketika unggah proposal!'];
+        } else {
+            $exec = $this->M_layanan2->S_proposal($data);
+            if ($exec == 0) {
+                unlink(FCPATH . 'assets/uploads/binsyar/' . $data['proposal']['file_name']);
+                $respon = ['status' => 0, 'pesan' => 'error ketika menyimpan data proposal!'];
+            } else {
+                $respon = ['status' => 1, 'pesan' => 'proposal berhasil diubah!', 'file_name' => $data['proposal']['file_name']];
+            }
+        }
+        $this->output->set_status_header(200)->set_content_type('application/json', 'utf-8')->set_output(json_encode($respon, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))->_display();
+        exit;
+    }
+
+    public function Change() {
+        $data = [
+            'p1' => $this->input->post('id_layanan'),
+            'p2' => $this->input->post('id_user'),
+            'sys_users' => [
+                'no_ktp' => $this->input->post('ktp'),
+                'tanggal_lahir' => $this->input->post('tgl_lahir'),
+                'nama_lengkap' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('nama')),
+                'mail_user' => $this->input->post('mali'),
+                'telepon' => $this->input->post('telpon')
+            ],
+            'dt_layanan' => [
+                'provinsi' => $this->input->post('provinsi'),
+                'kabupaten' => $this->input->post('kabupaten'),
+                'kecamatan' => $this->input->post('kectxt'),
+                'kelurahan' => $this->input->post('keltxt'),
+                'keterangan_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('keterangan_kegiatan')),
+            ],
+            'dt_kegiatan' => [
+                'nama_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('nm_keg')),
+                'jumlah_peserta' => $this->input->post('esti_keg'),
+                'lembaga' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('lemb_keg')),
+                'tmt_awal' => $this->input->post('tgl_awal_keg'),
+                'tmt_akhir' => $this->input->post('tgl_akhir_keg'),
+                'alamat_kegiatan' => str_replace(['"', "'", '‘', '’', '“', '”', '′', '″'], ['&quot;', '&apos;', '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&prime;', '&Prime;'], $this->input->post('alamat_kegiatan'))
+            ]
+        ];
+        $exec = $this->M_layanan2->Change($data);
+        if ($exec['status'] == true) {
+            redirect(base_url('Urais/Layanan_2/index/'), $this->session->set_flashdata('sukses', 'data permohonan berhasil diperbarui!'));
+        } else {
+            redirect(base_url('Urais/Layanan_2/Edit/' . $data['p1']), $this->session->set_flashdata('gagal', $exec['pesan']));
+        }
+    }
+
+    public function Proses() {
+        $this->template->setPageId("DIPROSES_IDKLN");
+        $data = [];
+        $data['msg'] = ['gagal' => $this->session->flashdata('gagal'), 'sukses' => $this->session->flashdata('sukses')];
+        $sitetitle = "IZIN PENGIRIMAN DA`I ke LUAR NEGERI";
+        $pagetitle = "Izin Pengiriman Da`i ke Luar Negeri";
+        $view = "layanan2/v_proses";
+        $breadcrumbs = [
+            [
+                "title" => "Proses Permohonan",
+                "link" => "",
+                "is_actived" => true
+            ]
+        ];
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data["js_inlines"] = $js_inlines;
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
+    public function Detail_Proses($id) {
+        $this->template->setPageId("DIPROSES_IDKLN");
+        $data = [];
+        $detil_param = [
+            'id_layanan' => $id,
+            'stat_id' => 2
+        ];
+        $data['detil'] = $this->M_layanan2->Detail($detil_param);
+        if (empty($data['detil'])) {
+            redirect(base_url(''), 'refresh');
+        } else {
+            $data['stat'] = $this->M_layanan2->Stat($id);
+            $sitetitle = "Detil Permohonan | " . $data['detil'][0]->nm_keg;
+            $pagetitle = "Detil Data Permohonan";
+            $view = "layanan2/v_prosesdetail";
+            $breadcrumbs = [["title" => "Proses Permohonan", "link" => base_url('Urais/Layanan_2/Proses/'), "is_actived" => false,], ["title" => "Detail", "link" => "", "is_actived" => true,]];
+            $sql = "";
+            $mejo = new Mejo();
+            $mejo->setQuery($sql);
+            $tampilan = $mejo->metungul();
+            $metune = $tampilan->metune;
+            $js_lib_files = $tampilan->js_lib_files;
+            $css_lib_files = $tampilan->css_lib_files;
+            $js_inlines = $tampilan->js_inlines;
+            $this->template->setCssFiles($css_lib_files);
+            $this->template->setJsFiles($js_lib_files);
+            $data["js_inlines"] = $js_inlines;
+            $this->template->setSiteTitle($sitetitle);
+            $this->template->setPageTitle($pagetitle);
+            $this->template->setBreadcrumbs($breadcrumbs);
+            $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+        }
+    }
+
+    public function Proses_verif() {
+        if (empty($this->input->post('alasan'))) {
+            $alasan = "NULL";
+        } else {
+            $alasan = '"' . $this->input->post('alasan') . '"';
+        }
+        $data = ['a' => $this->input->post('hasil'), 'b' => $alasan, 'c' => $this->session->userdata('DX_user_id'), 'd' => date("Y-m-d H:i:s"), 'e' => $this->input->post('id_layanan')];
+        $exec = $this->M_layanan2->Proses_verif($data);
+        //$mail = $this->M_layanan1->Detail($this->input->post('id_layanan'));
+        //$this->Mail($mail);
+        if ($exec['status'] == true) {
+            $result = redirect(base_url('Urais/Layanan_2/Proses/'), $this->session->set_flashdata('sukses', 'Berhasil verifikasi permohonan!'));
+        } else {
+            $result = redirect(base_url('Urais/Layanan_2/Detail_Proses/' . $this->input->post('id_layanan')), $this->session->set_flashdata('gagal', $exec['pesan']));
+        }
+        return $result;
+    }
 }

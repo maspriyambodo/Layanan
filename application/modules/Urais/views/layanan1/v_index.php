@@ -9,6 +9,10 @@ echo $js_inlines;
 ?>
 <input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
 <input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
+<?php
+unset($_SESSION['gagal']);
+unset($_SESSION['sukses']);
+?>
 <script type="text/javascript">
     window.onload = function () {
     toastr.options = {
@@ -106,7 +110,7 @@ echo $js_inlines;
             columns: [
             {
             index: 'id_layanan',
-                    title: 'NO FORM',
+                    title: 'NO PERMOHONAN',
                     width: 150,
                     render: function(o) {
                     o.style['text-align'] = 'center';
@@ -114,7 +118,7 @@ echo $js_inlines;
                     a = o.data.no_direktorat;
                     b = o.data.no_layanan;
                     c = o.data.tgl_input;
-                    o.value = a + '.' + b + '.' + c + '.' + o.data.no_urut;
+                    o.value = '<a href="<?php echo base_url('Urais/Layanan_1/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
                     return o;
                     }
             },
@@ -130,7 +134,7 @@ echo $js_inlines;
             },
             {
             index: 'tgl_daftar',
-                    title: 'TMT PENGAJUAN',
+                    title: 'TANGGAL PENGAJUAN',
                     width: 200,
                     render: function (o) {
                     o.style['text-align'] = 'center';
@@ -139,7 +143,7 @@ echo $js_inlines;
             },
             {
             index: 'tgl_awal_keg',
-                    title: 'TMT PELAKSANAAN',
+                    title: 'TANGGAL PELAKSANAAN',
                     width: 200,
                     rightLocked: true,
                     render: function (o) {
@@ -173,16 +177,21 @@ echo $js_inlines;
                     rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
+                    if (o.data.id_stat == 1){
                     o.value = ''
-<?php if ($this->izin->delete): ?>
-                        + ('<a class="text-danger" href="javascript:;" onclick="Page.Hapus(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Hapus Permohonan" style="margin:0px 10px;"><i class="fas fa-trash"></i></a>')
-<?php endif; ?>
 <?php if ($this->izin->edit): ?>
-                        + ('<a class="text-warning" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit Permohonan" style="margin:0px 10px;"><i class="far fa-edit"></i></a>' + '<a class="text-dark" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Detail Permohonan"><i class="far fa-eye"></i></a>');
+                        + '<a class="text-success" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Approve permohonan"><i class="fas fa-check"></i></a>'
+                                + '<a class="text-warning" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit Permohonan" style="margin:0px 10px;"><i class="far fa-edit"></i></a>'
+<?php endif; ?>
+<?php if ($this->izin->delete): ?>
+                        + '<a class="text-danger" href="javascript:;" onclick="Page.Hapus(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Hapus Permohonan"><i class="far fa-trash-alt"></i></a>'
 <?php endif; ?>
 <?php if ($this->izin->gapunya): ?>
                         + ''
 <?php endif; ?>
+                    } else {
+                    o.value = '';
+                    }
                     return o;
                     }
             }

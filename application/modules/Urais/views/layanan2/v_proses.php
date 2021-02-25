@@ -1,14 +1,46 @@
-<div class="card" style="margin-top:1.32857em;">
+<div class="card mt-4">
     <div class="card-body">
         {CONTENT BLOCK}
     </div>
 </div>
-
+<input type="hidden" name="err_msg" value="<?php echo $msg['gagal']; ?>"/>
+<input type="hidden" name="succ_msg" value="<?php echo $msg['sukses']; ?>"/>
+<?php
+unset($_SESSION['gagal']);
+unset($_SESSION['sukses']);
+?>
 {JS START}
 <?php
 echo $js_inlines;
 ?>
 <script type="text/javascript">
+    window.onload = function() {
+    toastr.options = {
+    closeButton: true,
+            debug: false,
+            newestOnTop: false,
+            progressBar: false,
+            positionClass: "toast-top-right",
+            preventDuplicates: true,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "2000",
+            timeOut: false,
+            extendedTimeOut: "2000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+    };
+    var a, b;
+    a = $('input[name="err_msg"]').val();
+    b = $('input[name="succ_msg"]').val();
+    if (a !== "") {
+    toastr.error(a);
+    } else if (b !== "") {
+    toastr.success(b);
+    }
+    };
     var Page = {};
     Page.RefreshGrid = function () {
     Page.InitGrid();
@@ -33,7 +65,7 @@ echo $js_inlines;
                     remoteFilter: false,
                     remoteSort: false,
                     proxy: {
-                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=4&jenis_layanan=1'); ?>',
+                    url: '<?php echo base_url('Urais/Layanan_1/Get_all?id=2&jenis_layanan=2'); ?>',
                             params: {}
                     }
             },
@@ -50,16 +82,7 @@ echo $js_inlines;
                     paramsMenu: true,
                     paramsText: 'Columns'
             },
-<?php if ($this->izin->add): ?>{
-                type: 'button',
-                        text: '<i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Tambah Baru',
-                        cls: 'mejo-btn mejo-btn-blue',
-                        width: 120,
-                        handler: function () {
-                        // alert("add")
-                        window.location.href = '<?php echo base_url(); ?>';
-                        }
-                },<?php endif; ?>
+<?php if ($this->izin->add): ?>{},<?php endif; ?>
 <?php if ($this->izin->publish): ?>{
                 type: 'button',
                         text: '<i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Export Data',
@@ -87,7 +110,7 @@ echo $js_inlines;
                     a = o.data.no_direktorat;
                     b = o.data.no_layanan;
                     c = o.data.tgl_input;
-                    o.value = '<a href="<?php echo base_url('Urais/Layanan_1/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
+                    o.value = '<a href="<?php echo base_url('Urais/Layanan_2/Detail/'); ?>' + o.value + '" title="detil permohonan">' + a + '.' + b + '.' + c + '.' + o.data.no_urut + '</a>';
                     return o;
                     }
             },
@@ -97,8 +120,8 @@ echo $js_inlines;
                     width: 350
             },
             {
-            index: 'alasan_tolak',
-                    title: 'ALASAN',
+            index: 'keterangan',
+                    title: 'KETERANGAN',
                     width: 400
             },
             {
@@ -114,6 +137,7 @@ echo $js_inlines;
             index: 'tgl_awal_keg',
                     title: 'TMT PELAKSANAAN',
                     width: 150,
+                    rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
                     return o;
@@ -144,7 +168,7 @@ echo $js_inlines;
                     rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
-                    o.value = '<span class="badge bg-danger">tidak disetujui</span>';
+                    o.value = '<span class="badge badge-orange">Dalam proses</span>';
                     return o;
                     }
             },
@@ -160,7 +184,7 @@ echo $js_inlines;
                         + ''
 <?php endif; ?>
 <?php if ($this->izin->edit): ?>
-                        + ('<a class="text-dark" href="javascript:void(0);" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Detail" style="margin-right:10px;"><i class="far fa-eye"></i></a>');
+                        + ('<a class="text-success" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Approve permohonan" style="margin-right:10px;"><i class="fas fa-check"></i></a>');
 <?php endif; ?>
 <?php if ($this->izin->gapunya): ?>
                         + ''
@@ -172,7 +196,7 @@ echo $js_inlines;
     });
     };
     Page.Detail = function (id) {
-    window.location.href = '<?php echo base_url('Urais/L1_Tolak/Detail/'); ?>' + id;
+    window.location.href = '<?php echo base_url('Urais/Layanan_2/Detail_Proses/'); ?>' + id;
     };
     $(function () {
     Page.InitGrid();
