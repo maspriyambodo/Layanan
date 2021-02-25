@@ -244,7 +244,7 @@ var Page = {};
     window.location.href = '<?php echo base_url('Urais/Layanan_2/Detail/'); ?>' + id;
     };
     Page.Edit = function (id) {
-    window.location.href = '<?php echo base_url('Urais/Layanan_1/Edit/'); ?>' + id;
+    window.location.href = '<?php echo base_url('Urais/Layanan_2/Edit/'); ?>' + id;
     };
     $(function () {
     Page.InitGrid();

@@ -282,4 +282,51 @@ class Layanan_2 extends CI_Controller {
         }
     }
 
+    public function Edit($id) {
+        $this->template->setPageId("DITERIMA_IDKLN");
+        $data = [];
+        $detil_param = [
+            'id_layanan' => $id,
+            'stat_id' => null
+        ];
+        $data['detil'] = $this->M_layanan2->Detail($detil_param);
+        if (empty($data['detil'])) {
+            redirect(base_url('Urais/Layanan_2/index/'), 'refresh');
+        } else {
+            $data['msg'] = ['gagal' => $this->session->flashdata('gagal'), 'sukses' => $this->session->flashdata('sukses')];
+            $data['negara'] = $this->M_layanan2->Get_negara();
+            $data['provinsi'] = $this->M_layanan2->Provinsi();
+            $sitetitle = $data['detil'][0]->nm_keg;
+            $pagetitle = "Izin Kegiatan Keagamaan";
+            $view = "layanan2/v_edit";
+            $breadcrumbs = [
+                [
+                    "title" => "Permohonan Masuk",
+                    "link" => base_url('Urais/Layanan_2/index/'),
+                    "is_actived" => false
+                ],
+                [
+                    "title" => "Edit",
+                    "link" => "",
+                    "is_actived" => true
+                ]
+            ];
+            $sql = "";
+            $mejo = new Mejo();
+            $mejo->setQuery($sql);
+            $tampilan = $mejo->metungul();
+            $metune = $tampilan->metune;
+            $js_lib_files = $tampilan->js_lib_files;
+            $css_lib_files = $tampilan->css_lib_files;
+            $js_inlines = $tampilan->js_inlines;
+            $this->template->setCssFiles($css_lib_files);
+            $this->template->setJsFiles($js_lib_files);
+            $data["js_inlines"] = $js_inlines;
+            $this->template->setSiteTitle($sitetitle);
+            $this->template->setPageTitle($pagetitle);
+            $this->template->setBreadcrumbs($breadcrumbs);
+            $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+        }
+    }
+
 }
