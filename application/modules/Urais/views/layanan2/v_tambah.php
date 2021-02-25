@@ -375,7 +375,7 @@ unset($_SESSION['sukses']);
         o = $('select[name="lembaga"]').val();
         p = $('input[name="lemb_keg"]').val();
         q = $('input[name="alamat_kegiatan"]').val();
-        r = $('input[name="negara"]').val();
+        r = $('select[name="negara"]').val();
         s = $('textarea[name="keterangan_kegiatan"]').val();
         t = $('input[name="pasport"]').val();
         u = $('input[name="ceramah"]').val();
