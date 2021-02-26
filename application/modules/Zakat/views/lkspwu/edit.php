@@ -309,7 +309,7 @@ unset($_SESSION['sukses']);
         toastr.options = {
             closeButton: true,
             debug: false,
-            newestOnTop: false,
+            newestOnTop: true,
             progressBar: false,
             positionClass: "toast-top-right",
             preventDuplicates: true,
@@ -574,10 +574,10 @@ unset($_SESSION['sukses']);
             d = $('#sptxt')[0].files[0];
             a.append('id_layanan', b);
             a.append('id_dokmohon', c);
-            a.append('sptxt', d);
+            a.append('surat_permohonan', d);
             $.ajax({
                 type: 'POST',
-                url: "<?php echo base_url('Zakat/LKSPWU/S_sp/'); ?>",
+                url: "<?php echo base_url('Zakat/LKSPWU/Update_dokmohon?dokmohon=surat_permohonan&field=srt_prmhn_kementri_lkspwu'); ?>",
                 cache: false,
                 contentType: false,
                 processData: false,
@@ -628,7 +628,7 @@ unset($_SESSION['sukses']);
             a.append('anggaran_dasar', d);
             $.ajax({
                 type: 'POST',
-                url: "<?php echo base_url('Zakat/LKSPWU/S_ad/'); ?>",
+                url: "<?php echo base_url('Zakat/LKSPWU/Update_dokmohon?dokmohon=anggaran_dasar&field=agrn_dsr_lkspwu'); ?>",
                 cache: false,
                 contentType: false,
                 processData: false,
@@ -641,6 +641,57 @@ unset($_SESSION['sukses']);
                         toastr.success(data.pesan);
                         $('#view_ad').attr('href', '<?php echo base_url('assets/uploads/zakat/lkspwu/'); ?>' + data.file_name);
                         C_ad();
+                    }
+                },
+                error: function () {
+                    toastr.error('terjadi kesalahan saat menyimpan dokumen!');
+                }
+            });
+        } else {
+            toastr.warning('Anda belum memilih dokumen untuk diubah!');
+        }
+    }
+    function Ganti_skhukum() {
+        $('#o_skhukum').hide('slow');
+        $('#edit_skhukum').append(
+                '<div class="input-group">'
+                + '<input id="sk_hukum" class="form-control" type="file" name="sk_hukum" required=""/>'
+                + '</div>'
+                + '<div style="clear:both;margin:5px 0px;"></div>'
+                + '<button type="button" class="btn btn-danger btn-xs" onclick="C_skhukum()" title="Batal ubah"><i class="fas fa-times-circle"></i> Batal</button>'
+                + '<button type="button" class="btn btn-success btn-xs" onclick="S_skhukum()" title="Simpan perubahan" style="margin:0px 5px;"><i class="fas fa-save"></i> Simpan</button>'
+                );
+    }
+    function C_skhukum() {
+        $('#o_skhukum').show('slow');
+        $('#edit_skhukum').empty();
+    }
+    function S_skhukum() {
+        var a, b, c, d, e;
+        e = $('input[name="sk_hukum"]').val();
+        if (e) {
+            a = new FormData();
+            b = $('input[name="id_layanan"]').val();
+            c = $('input[name="id_dokmohon"]').val();
+            d = $('#sk_hukum')[0].files[0];
+            a.append('id_layanan', b);
+            a.append('id_dokmohon', c);
+            a.append('sk_hukum', d);
+            $.ajax({
+                type: 'POST',
+                url: "<?php echo base_url('Zakat/LKSPWU/Update_dokmohon?dokmohon=sk_hukum&field=sk_hkm_lkspwu'); ?>",
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: "multipart/form-data",
+                data: a,
+                success: function (data) {
+                    if (data.status == 0) {
+                        toastr.error(data.pesan);
+                    } else {
+                        toastr.success(data.pesan);
+                        $('#view_skhukum').attr('href', '<?php echo base_url('assets/uploads/zakat/lkspwu/'); ?>' + data.file_name);
+                        C_skhukum();
                     }
                 },
                 error: function () {

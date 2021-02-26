@@ -170,7 +170,7 @@ class M_lkspwu extends CI_Model {
 
     public function Update_dokmohon($data, $field) {
         $this->db->trans_begin();
-        $this->db->set('dt_layanan_dokumen.' . $field['field'], $data[$field['dokmohon']]['file_name'])
+        $this->db->set('dt_layanan_dokumen.' . $field, $data['file']['file_name'])
                 ->where([
                     '`dt_layanan_dokumen`.`id`' => $data['id_dokmohon'] + false,
                     'dt_layanan_dokumen.id_layanan' => $data['id_layanan'] + false
