@@ -244,26 +244,69 @@ class LKSPWU extends CI_Controller {
         }
     }
 
-    public function S_sp() {
+    public function Update_dokmohon() {
         $data = [
             'id_layanan' => $this->input->post('id_layanan'),
             'id_dokmohon' => $this->input->post('id_dokmohon'),
-            'sptxt' => $this->Upload_dokmohon("sptxt")
+            'file' => $this->Upload_dokmohon($this->input->post_get('dokmohon'))
         ];
-        if ($data['sptxt'] == false) {
-            log_message('error', APPPATH . 'modules/Zakat/LKSPWU/S_sp ' . ' gagal ketika unggah dokumen');
-            $respon = ['status' => 0, 'pesan' => 'error ketika unggah dokumen permohonan!'];
+        $field = $this->input->post_get('field');
+        if ($data['file'] == false) {
+            log_message('error', APPPATH . 'modules/Zakat/LKSPWU/Update_dokmohon ' . ' gagal ketika unggah dokumen anggaran_dasar');
+            $respon = ['status' => 0, 'pesan' => 'error ketika unggah ' . str_replace('_', ' ', $this->input->post_get('dokmohon')) . '!'];
         } else {
-            $exec = $this->M_lkspwu->S_sp($data);
+            $exec = $this->M_lkspwu->Update_dokmohon($data, $field);
             if ($exec == 0) {
-                unlink(FCPATH . 'assets/uploads/zakat/lkspwu/' . $data['sptxt']['file_name']);
-                $respon = ['status' => 0, 'pesan' => 'gagal ketika menyimpan data Surat Permohonan!'];
+                unlink(FCPATH . 'assets/uploads/zakat/lkspwu/' . $data['file']['file_name']);
+                $respon = ['status' => 0, 'pesan' => 'gagal ketika menyimpan data ' . str_replace('_', ' ', $this->input->post_get('dokmohon')) . '!'];
             } else {
-                $respon = ['status' => 1, 'pesan' => 'surat permohonan berhasil diubah!', 'file_name' => $data['sptxt']['file_name']];
+                $respon = ['status' => 1, 'pesan' => str_replace('_', ' ', $this->input->post_get('dokmohon')) . ' berhasil diubah!', 'file_name' => $data['file']['file_name']];
             }
         }
         $this->output->set_status_header(200)->set_content_type('application/json', 'utf-8')->set_output(json_encode($respon, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))->_display();
         exit;
+    }
+
+    public function Update() {
+        $data = [
+            'user_login' => $this->session->userdata('DX_user_id'),
+            'id_layanan' => $this->input->post('id_layanan'),
+            'id_user' => $this->input->post('id_user'),
+            'id_instansi' => $this->input->post('id_instansi'),
+            'id_dokmohon' => $this->input->post('id_dokmohon'),
+            'sys_user' => [
+                'satu' => $this->input->post('ktp'),
+                'dua' => $this->input->post('lahir_pemohon'),
+                'empat' => $this->input->post('nama'),
+                'lima' => $this->input->post('mali'),
+                'enam' => $this->input->post('telpon')
+            ],
+            'dt_layanan' => [
+                'tujuh' => $this->input->post('provinsi_pemohon'),
+                'delapan' => $this->input->post('kabupaten_pemohon'),
+                'sembilan' => $this->input->post('kectxt_pemohon'),
+                'sepuluh' => $this->input->post('keltxt_pemohon'),
+                'keterangan_kegiatan' => null
+            ],
+            'dt_instansi' => [
+                'sebelas' => $this->input->post('instansi'),
+                'duabelas' => $this->input->post('prov_instansi'),
+                'tigabelas' => $this->input->post('kabupaten_instansi'),
+                'empatbelas' => $this->input->post('kec_instansi'),
+                'limabelas' => $this->input->post('kel_instansi'),
+                'enambelas' => $this->input->post('alamat_instansi'),
+                'tujuhbelas' => $this->input->post('tlepon_instansi'),
+                'delapanbelas' => $this->input->post('mali_instansi'),
+                'sembilanbelas' => $this->input->post('sk_keu'),
+                'duapuluh' => $this->input->post('titipan')
+            ]
+        ];
+        $exec = $this->M_lkspwu->Update($data);
+        if ($exec['status'] == true) {
+            redirect(base_url('Zakat/LKSPWU/index/'), $this->session->set_flashdata('sukses', 'data permohonan berhasil diperbarui!'));
+        } else {
+            redirect(base_url('Zakat/LKSPWU/Edit/' . $data['id_layanan']), $this->session->set_flashdata('gagal', $exec['pesan']));
+        }
     }
 
 }
