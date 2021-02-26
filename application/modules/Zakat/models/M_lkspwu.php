@@ -168,9 +168,9 @@ class M_lkspwu extends CI_Model {
         return $exec;
     }
 
-    public function S_sp($data) {
+    public function Update_dokmohon($data, $field) {
         $this->db->trans_begin();
-        $this->db->set('dt_layanan_dokumen.srt_prmhn_kementri_lkspwu', $data['sptxt']['file_name'])
+        $this->db->set('dt_layanan_dokumen.' . $field['field'], $data[$field['dokmohon']]['file_name'])
                 ->where([
                     '`dt_layanan_dokumen`.`id`' => $data['id_dokmohon'] + false,
                     'dt_layanan_dokumen.id_layanan' => $data['id_layanan'] + false

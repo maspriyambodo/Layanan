@@ -250,16 +250,46 @@ class LKSPWU extends CI_Controller {
             'id_dokmohon' => $this->input->post('id_dokmohon'),
             'sptxt' => $this->Upload_dokmohon("sptxt")
         ];
+        $field = [
+            'field' => 'srt_prmhn_kementri_lkspwu',
+            'dokmohon' => 'sptxt'
+        ];
         if ($data['sptxt'] == false) {
             log_message('error', APPPATH . 'modules/Zakat/LKSPWU/S_sp ' . ' gagal ketika unggah dokumen');
             $respon = ['status' => 0, 'pesan' => 'error ketika unggah dokumen permohonan!'];
         } else {
-            $exec = $this->M_lkspwu->S_sp($data);
+            $exec = $this->M_lkspwu->Update_dokmohon($data, $field);
             if ($exec == 0) {
                 unlink(FCPATH . 'assets/uploads/zakat/lkspwu/' . $data['sptxt']['file_name']);
                 $respon = ['status' => 0, 'pesan' => 'gagal ketika menyimpan data Surat Permohonan!'];
             } else {
                 $respon = ['status' => 1, 'pesan' => 'surat permohonan berhasil diubah!', 'file_name' => $data['sptxt']['file_name']];
+            }
+        }
+        $this->output->set_status_header(200)->set_content_type('application/json', 'utf-8')->set_output(json_encode($respon, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))->_display();
+        exit;
+    }
+
+    public function S_ad() {
+        $data = [
+            'id_layanan' => $this->input->post('id_layanan'),
+            'id_dokmohon' => $this->input->post('id_dokmohon'),
+            'anggaran_dasar' => $this->Upload_dokmohon("anggaran_dasar")
+        ];
+        $field = [
+            'field' => 'agrn_dsr_lkspwu',
+            'dokmohon' => 'anggaran_dasar'
+        ];
+        if ($data['anggaran_dasar'] == false) {
+            log_message('error', APPPATH . 'modules/Zakat/LKSPWU/S_ad ' . ' gagal ketika unggah dokumen anggaran_dasar');
+            $respon = ['status' => 0, 'pesan' => 'error ketika unggah dokumen anggaran dasar!'];
+        } else {
+            $exec = $this->M_lkspwu->Update_dokmohon($data, $field);
+            if ($exec == 0) {
+                unlink(FCPATH . 'assets/uploads/zakat/lkspwu/' . $data['anggaran_dasar']['file_name']);
+                $respon = ['status' => 0, 'pesan' => 'gagal ketika menyimpan data anggaran dasar!'];
+            } else {
+                $respon = ['status' => 1, 'pesan' => 'dokumen anggaran dasar berhasil diubah!', 'file_name' => $data['anggaran_dasar']['file_name']];
             }
         }
         $this->output->set_status_header(200)->set_content_type('application/json', 'utf-8')->set_output(json_encode($respon, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))->_display();

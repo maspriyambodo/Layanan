@@ -5,7 +5,7 @@
     }
 </style>
 <div style="clear: both;margin:2% 0px;"></div>
-<form action="<?php echo base_url(); ?>" method="post" enctype="multipart/form-data">
+<form action="<?php echo base_url('Zakat/LKSPWU/Update/'); ?>" method="post" enctype="multipart/form-data">
     <div class="card card-custom">
         <div class="card-body">
             <ul class="nav nav-pills nav-justified" id="myTab" role="tablist">
@@ -590,6 +590,57 @@ unset($_SESSION['sukses']);
                         toastr.success(data.pesan);
                         $('#view_sp').attr('href', '<?php echo base_url('assets/uploads/zakat/lkspwu/'); ?>' + data.file_name);
                         C_sp();
+                    }
+                },
+                error: function () {
+                    toastr.error('terjadi kesalahan saat menyimpan dokumen!');
+                }
+            });
+        } else {
+            toastr.warning('Anda belum memilih dokumen untuk diubah!');
+        }
+    }
+    function Ganti_anggaran() {
+        $('#o_ad').hide('slow');
+        $('#edit_ad').append(
+                '<div class="input-group">'
+                + '<input id="anggaran_dasar" class="form-control" type="file" name="anggaran_dasar" required=""/>'
+                + '</div>'
+                + '<div style="clear:both;margin:5px 0px;"></div>'
+                + '<button type="button" class="btn btn-danger btn-xs" onclick="C_ad()" title="Batal ubah"><i class="fas fa-times-circle"></i> Batal</button>'
+                + '<button type="button" class="btn btn-success btn-xs" onclick="S_ad()" title="Simpan perubahan" style="margin:0px 5px;"><i class="fas fa-save"></i> Simpan</button>'
+                );
+    }
+    function C_ad() {
+        $('#o_ad').show('slow');
+        $('#edit_ad').empty();
+    }
+    function S_ad() {
+        var a, b, c, d, e;
+        e = $('input[name="anggaran_dasar"]').val();
+        if (e) {
+            a = new FormData();
+            b = $('input[name="id_layanan"]').val();
+            c = $('input[name="id_dokmohon"]').val();
+            d = $('#anggaran_dasar')[0].files[0];
+            a.append('id_layanan', b);
+            a.append('id_dokmohon', c);
+            a.append('anggaran_dasar', d);
+            $.ajax({
+                type: 'POST',
+                url: "<?php echo base_url('Zakat/LKSPWU/S_ad/'); ?>",
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: "multipart/form-data",
+                data: a,
+                success: function (data) {
+                    if (data.status == 0) {
+                        toastr.error(data.pesan);
+                    } else {
+                        toastr.success(data.pesan);
+                        $('#view_ad').attr('href', '<?php echo base_url('assets/uploads/zakat/lkspwu/'); ?>' + data.file_name);
+                        C_ad();
                     }
                 },
                 error: function () {
