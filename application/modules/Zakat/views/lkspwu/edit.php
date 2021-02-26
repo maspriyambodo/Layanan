@@ -222,7 +222,7 @@
                             </div>
                             <div class="form-group" id="o_sp">
                                 <button id="spbtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_sp()"><i class="far fa-edit"></i> Ubah</button>
-                                <a id="view_sp" href="<?php echo base_url('assets/uploads/binsyar/' . $detil['srt_prmhn_kementri_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
+                                <a id="view_sp" href="<?php echo base_url('assets/uploads/zakat/lkspwu/' . $detil['srt_prmhn_kementri_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
                             </div>
                             <div class="form-group" id="edit_sp"></div>
                         </div>
@@ -232,7 +232,7 @@
                             </div>
                             <div class="form-group" id="o_ad">
                                 <button id="adbtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_anggaran()"><i class="far fa-edit"></i> Ubah</button>
-                                <a id="view_ad" href="<?php echo base_url('assets/uploads/binsyar/' . $detil['agrn_dsr_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
+                                <a id="view_ad" href="<?php echo base_url('assets/uploads/zakat/lkspwu/' . $detil['agrn_dsr_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
                             </div>
                             <div class="form-group" id="edit_ad"></div>
                         </div>
@@ -242,7 +242,7 @@
                             </div>
                             <div class="form-group" id="o_skhukum">
                                 <button id="skhukumbtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_skhukum()"><i class="far fa-edit"></i> Ubah</button>
-                                <a id="view_skhukum" href="<?php echo base_url('assets/uploads/binsyar/' . $detil['sk_hkm_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
+                                <a id="view_skhukum" href="<?php echo base_url('assets/uploads/zakat/lkspwu//' . $detil['sk_hkm_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
                             </div>
                             <div class="form-group" id="edit_skhukum"></div>
                         </div>
@@ -254,8 +254,8 @@
                                 <label data-toggle="popover" data-trigger="click" title="" data-content="Surat Keterangan Domisili Usaha" data-original-title="SKDU">SKDU <i class="far fa-question-circle text-info"></i></label>
                             </div>
                             <div class="form-group" id="o_skdu">
-                                <button id="skdubtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_skhukum()"><i class="far fa-edit"></i> Ubah</button>
-                                <a id="view_skdu" href="<?php echo base_url('assets/uploads/binsyar/' . $detil['skdu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
+                                <button id="skdubtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_skdu()"><i class="far fa-edit"></i> Ubah</button>
+                                <a id="view_skdu" href="<?php echo base_url('assets/uploads/zakat/lkspwu//' . $detil['skdu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
                             </div>
                             <div class="form-group" id="edit_skdu"></div>
                         </div>
@@ -265,7 +265,7 @@
                             </div>
                             <div class="form-group" id="o_lapkeu">
                                 <button id="lapkeubtn" type="button" class="btn btn-warning btn-xs" onclick="Ganti_lapkeu()"><i class="far fa-edit"></i> Ubah</button>
-                                <a id="view_lapkeu" href="<?php echo base_url('assets/uploads/binsyar/' . $detil['lapkeu_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
+                                <a id="view_lapkeu" href="<?php echo base_url('assets/uploads/zakat/lkspwu//' . $detil['lapkeu_lkspwu']); ?>" class="btn btn-info btn-xs" target="_new"><i class="fas fa-eye"></i> Lihat</a>
                             </div>
                             <div class="form-group" id="edit_lapkeu"></div>
                         </div>
@@ -275,9 +275,25 @@
                     <div class="text-right">
                         <div class="form-group">
                             <a href="<?php echo base_url('Zakat/LKSPWU/index/'); ?>" class="btn btn-danger"><i class="fas fa-times-circle"></i> Batal</a>
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_save" onclick="Modal()"><i class="fas fa-save"></i> Simpan</button>
+                            <button type="button" class="btn btn-success" onclick="Save()"><i class="fas fa-save"></i> Simpan</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_save" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Simpan Perubahan</h4>
+                </div>
+                <div class="modal-body">
+                    Anda yakin ingin merubah data permohonan?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak!</button>
+                    <button id="svbtn" type="submit" class="btn btn-info">Ya!</button>
                 </div>
             </div>
         </div>
@@ -361,6 +377,9 @@ unset($_SESSION['sukses']);
             kecamatan: l,
             kelurahan: m
         };
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
         Provinsi_pemohon(wil_pemohon);
         Kecshow_pemohon(wil_pemohon);
         Kelshow_pemohon(wil_pemohon);
@@ -532,7 +551,7 @@ unset($_SESSION['sukses']);
         });
     }
     function Save() {
-        var a, b, c, d, e, f, g, h, i;
+        var a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s;
         a = $('input[name="mali"]').val();
         b = $('input[name="ktp"]').val();
         c = $('input[name="nama"]').val();
@@ -542,12 +561,57 @@ unset($_SESSION['sukses']);
         g = $('select[name="kabupaten_pemohon"]').val();
         h = $('select[name="kectxt_pemohon"]').val();
         i = $('select[name="keltxt_pemohon"]').val();
-        if (!a) {
+        j = $('input[name="sk_keu"]').val();
+        k = $('input[name="titipan"]').val();
+        l = $('input[name="instansi"]').val();
+        m = $('input[name="mali_instansi"]').val();
+        n = $('select[name="prov_instansi"]').val();
+        o = $('select[name="kabupaten_instansi"]').val();
+        p = $('input[name="tlepon_instansi"]').val();
+        q = $('input[name="alamat_instansi"]').val();
+        r = $('select[name="kec_instansi"]').val();
+        s = $('select[name="kel_instansi"]').val();
+        if (!a | !validateEmail(a)) {
             toastr.warning('Harap masukkan email pemohon!');
-        } else if (!b | !validateEmail(b)) {
-
+        } else if (!b) {
+            toastr.warning('Harap masukkan nomor ktp pemohon!');
+        } else if (!c) {
+            toastr.warning('Harap masukkan nama pemohon!');
+        } else if (!d) {
+            toastr.warning('Harap masukkan tanggal lahir pemohon!');
+        } else if (!e) {
+            toastr.warning('Harap masukkan nomor telepon pemohon!');
+        } else if (!f) {
+            toastr.warning('Harap masukkan provinsi pemohon!');
+        } else if (!g) {
+            toastr.warning('Harap masukkan kabupaten pemohon!');
+        } else if (!h) {
+            toastr.warning('Harap masukkan kecamatan pemohon!');
+        } else if (!i) {
+            toastr.warning('Harap masukkan kelurahan pemohon!');
+        } else if (!j) {
+            toastr.warning('Harap pilih sk keuangan syariah!');
+        } else if (!k) {
+            toastr.warning('Harap pilih fungsi titipan!');
+        } else if (!l) {
+            toastr.warning('Harap masukkan nama instansi!');
+        } else if (!m) {
+            toastr.warning('Harap masukkan email instansi!');
+        } else if (!n) {
+            toastr.warning('Harap masukkan provinsi instansi!');
+        } else if (!o) {
+            toastr.warning('Harap masukkan kabupaten instansi!');
+        } else if (!p) {
+            toastr.warning('Harap masukkan nomor telepon instansi!');
+        } else if (!q) {
+            toastr.warning('Harap masukkan alamat instansi!');
+        } else if (!r) {
+            toastr.warning('Harap masukkan kecamatan instansi!');
+        } else if (!s) {
+            toastr.warning('Harap masukkan kelurahan instansi!');
+        } else {
+            $('#modal_save').modal({show: true, backdrop: 'static', keyboard: false});
         }
-
     }
     function Ganti_sp() {
         $('#o_sp').hide('slow');
@@ -692,6 +756,109 @@ unset($_SESSION['sukses']);
                         toastr.success(data.pesan);
                         $('#view_skhukum').attr('href', '<?php echo base_url('assets/uploads/zakat/lkspwu/'); ?>' + data.file_name);
                         C_skhukum();
+                    }
+                },
+                error: function () {
+                    toastr.error('terjadi kesalahan saat menyimpan dokumen!');
+                }
+            });
+        } else {
+            toastr.warning('Anda belum memilih dokumen untuk diubah!');
+        }
+    }
+    function Ganti_skdu() {
+        $('#o_skdu').hide('slow');
+        $('#edit_skdu').append(
+                '<div class="input-group">'
+                + '<input id="skdu" class="form-control" type="file" name="skdu" required=""/>'
+                + '</div>'
+                + '<div style="clear:both;margin:5px 0px;"></div>'
+                + '<button type="button" class="btn btn-danger btn-xs" onclick="C_skdu()" title="Batal ubah"><i class="fas fa-times-circle"></i> Batal</button>'
+                + '<button type="button" class="btn btn-success btn-xs" onclick="S_skdu()" title="Simpan perubahan" style="margin:0px 5px;"><i class="fas fa-save"></i> Simpan</button>'
+                );
+    }
+    function C_skdu() {
+        $('#o_skdu').show('slow');
+        $('#edit_skdu').empty();
+    }
+    function S_skdu() {
+        var a, b, c, d, e;
+        e = $('input[name="skdu"]').val();
+        if (e) {
+            a = new FormData();
+            b = $('input[name="id_layanan"]').val();
+            c = $('input[name="id_dokmohon"]').val();
+            d = $('#skdu')[0].files[0];
+            a.append('id_layanan', b);
+            a.append('id_dokmohon', c);
+            a.append('skdu', d);
+            $.ajax({
+                type: 'POST',
+                url: "<?php echo base_url('Zakat/LKSPWU/Update_dokmohon?dokmohon=skdu&field=skdu'); ?>",
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: "multipart/form-data",
+                data: a,
+                success: function (data) {
+                    if (data.status == 0) {
+                        toastr.error(data.pesan);
+                    } else {
+                        toastr.success(data.pesan);
+                        $('#view_skdu').attr('href', '<?php echo base_url('assets/uploads/zakat/lkspwu/'); ?>' + data.file_name);
+                        C_skdu();
+                    }
+                },
+                error: function () {
+                    toastr.error('terjadi kesalahan saat menyimpan dokumen!');
+                }
+            });
+        } else {
+            toastr.warning('Anda belum memilih dokumen untuk diubah!');
+        }
+    }
+
+    function Ganti_lapkeu() {
+        $('#o_lapkeu').hide('slow');
+        $('#edit_lapkeu').append(
+                '<div class="input-group">'
+                + '<input id="lapkeu" class="form-control" type="file" name="lapkeu" required=""/>'
+                + '</div>'
+                + '<div style="clear:both;margin:5px 0px;"></div>'
+                + '<button type="button" class="btn btn-danger btn-xs" onclick="C_lapkeu()" title="Batal ubah"><i class="fas fa-times-circle"></i> Batal</button>'
+                + '<button type="button" class="btn btn-success btn-xs" onclick="S_lapkeu()" title="Simpan perubahan" style="margin:0px 5px;"><i class="fas fa-save"></i> Simpan</button>'
+                );
+    }
+    function C_lapkeu() {
+        $('#o_lapkeu').show('slow');
+        $('#edit_lapkeu').empty();
+    }
+    function S_lapkeu() {
+        var a, b, c, d, e;
+        e = $('input[name="lapkeu"]').val();
+        if (e) {
+            a = new FormData();
+            b = $('input[name="id_layanan"]').val();
+            c = $('input[name="id_dokmohon"]').val();
+            d = $('#lapkeu')[0].files[0];
+            a.append('id_layanan', b);
+            a.append('id_dokmohon', c);
+            a.append('lapkeu', d);
+            $.ajax({
+                type: 'POST',
+                url: "<?php echo base_url('Zakat/LKSPWU/Update_dokmohon?dokmohon=lapkeu&field=lapkeu_lkspwu'); ?>",
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: "multipart/form-data",
+                data: a,
+                success: function (data) {
+                    if (data.status == 0) {
+                        toastr.error(data.pesan);
+                    } else {
+                        toastr.success(data.pesan);
+                        $('#view_skdu').attr('href', '<?php echo base_url('assets/uploads/zakat/lkspwu/'); ?>' + data.file_name);
+                        C_lapkeu();
                     }
                 },
                 error: function () {

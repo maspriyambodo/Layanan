@@ -267,4 +267,46 @@ class LKSPWU extends CI_Controller {
         exit;
     }
 
+    public function Update() {
+        $data = [
+            'user_login' => $this->session->userdata('DX_user_id'),
+            'id_layanan' => $this->input->post('id_layanan'),
+            'id_user' => $this->input->post('id_user'),
+            'id_instansi' => $this->input->post('id_instansi'),
+            'id_dokmohon' => $this->input->post('id_dokmohon'),
+            'sys_user' => [
+                'satu' => $this->input->post('ktp'),
+                'dua' => $this->input->post('lahir_pemohon'),
+                'empat' => $this->input->post('nama'),
+                'lima' => $this->input->post('mali'),
+                'enam' => $this->input->post('telpon')
+            ],
+            'dt_layanan' => [
+                'tujuh' => $this->input->post('provinsi_pemohon'),
+                'delapan' => $this->input->post('kabupaten_pemohon'),
+                'sembilan' => $this->input->post('kectxt_pemohon'),
+                'sepuluh' => $this->input->post('keltxt_pemohon'),
+                'keterangan_kegiatan' => null
+            ],
+            'dt_instansi' => [
+                'sebelas' => $this->input->post('instansi'),
+                'duabelas' => $this->input->post('prov_instansi'),
+                'tigabelas' => $this->input->post('kabupaten_instansi'),
+                'empatbelas' => $this->input->post('kec_instansi'),
+                'limabelas' => $this->input->post('kel_instansi'),
+                'enambelas' => $this->input->post('alamat_instansi'),
+                'tujuhbelas' => $this->input->post('tlepon_instansi'),
+                'delapanbelas' => $this->input->post('mali_instansi'),
+                'sembilanbelas' => $this->input->post('sk_keu'),
+                'duapuluh' => $this->input->post('titipan')
+            ]
+        ];
+        $exec = $this->M_lkspwu->Update($data);
+        if ($exec['status'] == true) {
+            redirect(base_url('Zakat/LKSPWU/index/'), $this->session->set_flashdata('sukses', 'data permohonan berhasil diperbarui!'));
+        } else {
+            redirect(base_url('Zakat/LKSPWU/Edit/' . $data['id_layanan']), $this->session->set_flashdata('gagal', $exec['pesan']));
+        }
+    }
+
 }

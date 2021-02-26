@@ -186,4 +186,20 @@ class M_lkspwu extends CI_Model {
         return $status;
     }
 
+    public function Update($data) {
+        $exec = $this->db->query('CALL update_user_lkspwu(' . $data['sys_user']['satu'] . ',"' . $data['sys_user']['dua'] . '","' . $data['sys_user']['lima'] . '","' . $data['sys_user']['enam'] . '","' . $data['sys_user']['empat'] . '",' . $data['user_login'] . ',' . $data['id_user'] . ');');
+        if ($exec->result()[0]->track_no != 3) {
+            log_message('error', APPPATH . 'modules/Zakat/models/M_lkspwu/Update ->' . 'error ketika update sys_users');
+            log_message('error', $exec->result()[0]->track_no . '->' . $exec->result()[0]->pesan_eror);
+            $result = [
+                'status' => false,
+                'pesan' => 'gagal ketika mengubah data pemohon'
+            ];
+        } else {
+            mysqli_next_result($this->db->conn_id);
+            $result['status'] = true;
+        }
+        return $result;
+    }
+
 }
