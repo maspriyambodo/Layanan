@@ -53,7 +53,7 @@ echo $js_inlines;
                 remoteFilter: false,
                 remoteSort: false,
                 proxy: {
-                    url: '<?php echo base_url(); ?>Urais/L3_Tolak/Joinan_binsyar',
+                    url: '<?php echo base_url(); ?>Urais/L4_Tolak/Joinan_binsyar',
                     params: {}
                 },
             },
@@ -98,7 +98,7 @@ echo $js_inlines;
                         return o;
                     }
                 },{
-                    index: 'kode',
+                    index: 'id_formulir',
                     title: 'ID Formulir',
                     ellipsis: false,
                     width: 118,
@@ -153,16 +153,9 @@ echo $js_inlines;
                     cellAlign: 'center',
                 },
                 {
-                    index: 'jumlah',
-                    title: 'Penceramah',
-                    width: 80,
-                    cellAlign: 'center',
-                    rightLocked: true,
-                },
-                {
                     index: 'nama_stat',
                     title: 'Status',
-                    width: 130,
+                    width: 150,
                     rightLocked: true,
                 },
                 {
@@ -177,7 +170,7 @@ echo $js_inlines;
                     o.value = ''
 <?php if ($this->izin->delete) : ?>
                         +
-                                ('<a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Proses Permohonan"><i class="fa fa-eye text-danger"></i></a></div>')
+                                ('<a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Rekomendasi(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Proses Rekomendasi"><i class="fa fa-backward text-danger"></i></a></div>')
 <?php endif; ?>
 <?php if ($this->izin->edit) : ?>
                         +
@@ -196,7 +189,43 @@ echo $js_inlines;
     };
     Page.Detail = function (id){
         // console.log(id);
-    window.location.href = '<?php echo base_url('Urais/L3_Tolak/Detail/'); ?>' + id;
+    window.location.href = '<?php echo base_url('Urais/L4_Tolak/Detail/'); ?>' + id;
+    };
+    Page.Rekomendasi = function(id) {
+        // swal("Delete function is still under development!")
+        // console.log(id);
+        swal({
+            title: 'Ingin Merubah Status Ini?',
+            text: "Status Ditolak Menjadi Rekomendasi!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(function(result) {
+            if (result) {
+                App.IsLoading(true);
+                var data = {
+                    id: id,
+                };
+                var url = '<?php echo base_url(); ?>Urais/L4_Tolak/Hapuss';
+                ajaxPost(url, data, function(data) {
+                    App.IsLoading(false);
+                    swal(
+                        'Berhasil!',
+                        'Status berhasil diperbaharui.',
+                        'success'
+                    ).then(function(result) {
+                        Page.InitGrid();
+                    });
+                }, function(data) {
+                    // do nothing for unsuccess transaction
+                    App.IsLoading(false);
+                });
+            }
+        }, function(dismiss) {
+            // do nothing for dismiss modal
+        });
     };
     $(function() {
         Page.InitGrid();

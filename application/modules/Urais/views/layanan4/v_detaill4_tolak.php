@@ -3,6 +3,18 @@
 <div class="card card-custom" style="margin-top:1.32857em;">
     <div class="card-header" style="background-color: #545d73;">
         <div class="card-title" style="color: white;">
+            Detail Alasan Penolakan
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-danger" role="alert">
+          <?php echo $detail->alasan_tolak; ?>
+        </div>
+    </div>
+</div>
+<div class="card card-custom" style="margin-top:1.32857em;">
+    <div class="card-header" style="background-color: #545d73;">
+        <div class="card-title" style="color: white;">
             Detail Data Pemohon
         </div>
     </div>
@@ -109,36 +121,54 @@
                 <tbody>
                     <footer class="blockquote-footer" style="font-size:12px; font-weight: bold;">Penceramah Ke <?php echo $no++;?></footer>
                     <tr>
-                        <td><b>No. Passport</b></td>
-                        <td>: <?php echo $data->no_paspor; ?></td>
-                    </tr>
-                    <tr>
                         <td><b>Nama Penceramah</b></td>
                         <td>: <?php echo $data->narsum; ?></td>
-                        <td><b>Tempat Lahir</b></td>
-                        <td>: <?php echo $data->tmp_lhr; ?></td>
                     </tr>
                     <tr>
-                        <td><b>Tanggal Lahir</b></td>
-                        <td>: <?php echo date('d-m-Y', strtotime($data->tgl_lhr)); ?></td>
+                        <td><b>Tempat Lahir</b></td>
+                        <td>: <?php echo $data->tmp_lahir; ?></td>
+                        <td><b>Tempat Lahir</b></td>
+                        <td>: <?php echo date('d-m-Y', strtotime($data->lhr_narsum)); ?></td>
+                    </tr>
+                    <tr>
                         <td><b>Jenis Kelamin</b></td>
                         <td>: <?php echo $data->jns_kelamin; ?></td>
                     </tr>
                     <tr>
-                        <td><b>Alamat Lengkap</b></td>
-                        <td>: <?php echo $data->almt_penceramah; ?></td>
+                        <td><b>Pendidikan Formal</b></td>
+                        <td>: <?php echo $data->pddk_formal; ?></td>
+                        <td><b>Pendidikan Non Formal</b></td>
+                        <td>: <?php echo $data->pddk_non; ?></td>
                     </tr>
                     <tr>
+                        <td><b>Provinsi</b></td>
+                        <td>: <?php echo $data->pddk_formal; ?></td>
+                        <td><b>Kecamatan</b></td>
+                        <td>: <?php echo $data->pddk_non; ?></td>
+                    </tr>
+                    <tr>
+                        <td><b>Kabupaten</b></td>
+                        <td>: <?php echo $data->pddk_non; ?></td>
+                        <td><b>Kelurahan</b></td>
+                        <td>: <?php echo $data->pddk_non; ?></td>
+                    </tr>
+                    <tr>
+                        <td><b>Alamat Lengkap</b></td>
+                        <td>: <?php echo $data->pddk_non; ?></td>
                         <td><b>CV</b></td>
                         <td>: <a href="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $data->cv;?>" target="_blank"><button class="btn btn-dark"><i class="fa fa-eye"></i> Lihat</button></a></td>
-                        <td><b>Passport</b></td>
-                        <td>: <a href="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $data->fc_passport;?>" target="_blank"><button class="btn btn-dark"><i class="fa fa-eye"></i> Lihat</button></a></td>
                     </tr>
                     <tr>
-                                                <td><b>KTP</b></td>
+                        <td><b>Passport</b></td>
+                        <td>: <a href="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $data->fc_passport;?>" target="_blank"><button class="btn btn-dark"><i class="fa fa-eye"></i> Lihat</button></a></td>
+                        <td><b>KTP</b></td>
                         <td>: <a href="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $data->sc_ktp;?>" target="_blank"><button class="btn btn-dark"><i class="fa fa-eye"></i> Lihat</button></a></td>
+                    </tr>
+                    <tr>
                         <td><b>Foto</b></td>
                         <td>: <a href="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $data->pas_foto;?>" target="_blank"><button class="btn btn-dark"><i class="fa fa-eye"></i> Lihat</button></a></td>
+                        <td><b>Sertifikat</b></td>
+                        <td>: <a href="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $data->sc_sertifikat;?>" target="_blank"><button class="btn btn-dark"><i class="fa fa-eye"></i> Lihat</button></a></td>
                     </tr>
                 </tbody>
                 </table>
@@ -156,25 +186,25 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md" style="margin: 10px 0px;">
-                <a href="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $detail->surat_permohonan_dalam;?>" target="_blank" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b">
+                <a href="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $detail->surat_permohonan_safari;?>" target="_blank" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b">
                     <div class="card-body">
                         <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                             <i class="fas fa-file" style="font-size: 48px;"></i>
                         </span>
                         <div class="font-weight-bold text-inverse-danger" style="margin: 5px 0px; font-size: 20px;">
-                            Surat Permohonan
+                            Surat Permohonan Safari
                         </div>
                     </div>
                 </a>
             </div>
             <div class="col-md" style="margin: 10px 0px;">
-                <a href="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $detail->proposal_dalam;?>" target="_blank" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b">
+                <a href="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $detail->proposal_safari;?>" target="_blank" class="card card-custom bg-secondary bg-hover-state-light card-stretch gutter-b">
                     <div class="card-body">
                         <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                             <i class="fas fa-file" style="font-size: 48px;"></i>
                         </span>
                         <div class="font-weight-bold text-inverse-danger" style="margin: 5px 0px; font-size: 20px;">
-                            Proposal
+                            Proposal Safari
                         </div>
                     </div>
                 </a>

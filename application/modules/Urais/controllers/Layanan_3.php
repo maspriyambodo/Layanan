@@ -30,7 +30,7 @@ class Layanan_3 extends CI_Controller {
         $data = [];
         $data['msg'] = ['gagal' => $this->session->flashdata('gagal'), 'sukses' => $this->session->flashdata('sukses')];
         $sitetitle = "Data Izin Pengiriman Da'i Dari Luar Negeri";
-        $pagetitle = "Data Izin Pengiriman Da'i Dari Luar Negeri";
+        $pagetitle = "Permohonan Masuk";
         $view = "layanan3/v_index";
         $breadcrumbs = [
             [
@@ -222,21 +222,6 @@ class Layanan_3 extends CI_Controller {
         }
     }
 
-    public function Hapus() {
-        $data = [
-            'id_layanan' => $this->input->post('id'),
-            'user_id' => $this->session->userdata('DX_user_id'),
-            'status_id' => 3
-        ];
-        $exec = $this->M_layanan3->Delete_layanan($data);
-        if (empty($exec) or $exec->conn_id->sqlstate != 00000) {
-            $direct = toJSON(resultError("Error", 0));
-        } else {
-            $direct = toJSON(resultSuccess("OK", 1));
-        }
-        return $direct;
-    }
-
     public function Detail($id) {
         $this->template->setPageId("DITERIMA_IDDLN");
         $data = [];
@@ -289,6 +274,50 @@ class Layanan_3 extends CI_Controller {
         }
     }
 
+    public function Detail_Masuk($id) 
+    {
+        $this->template->setPageId("DITERIMA_IDDLN");
+        $data = array();
+
+        $sitetitle = "Detail Ijin Penceramah Dari Luar Negeri";
+        $pagetitle = "Permohonan Masuk";
+        $view = "layanan3/v_details";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Urais & Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+        
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data['detail'] = $this->M_layanan3->detail_permohonan($id);
+        $data['penceramah'] = $this->M_layanan3->detail_penceramah($id);
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
     public function Edit($id) {
         $this->template->setPageId("DITERIMA_IDDLN");
         $data = array();
@@ -322,9 +351,9 @@ class Layanan_3 extends CI_Controller {
 
         $this->template->setCssFiles($css_lib_files);
         $this->template->setJsFiles($js_lib_files);
-        $data["pemohon"] = $this->M_layanan3->get_edit_pemohon($id);
-        $data['provinsi'] = $this->M_layanan3->get_edit_provinsi();
-        $data['kegiatan'] = $this->M_layanan3->get_edit_kegiatan($id);
+        $data['pro'] = $this->M_layanan3->get_provinsi();
+        $data['detil'] = $this->M_layanan3->Detail($id);
+        $data['penceramah'] = $this->M_layanan3->Penceramah($id);
         $data["js_inlines"] = $js_inlines;
 
         $this->template->setSiteTitle($sitetitle);
@@ -341,7 +370,7 @@ class Layanan_3 extends CI_Controller {
         $data = array();
 
         $sitetitle = "Data Ijin Penceramah Dari Luar Negeri";
-        $pagetitle = "Data Ijin Penceramah Dari Luar Negeri";
+        $pagetitle = "Permohonan Diproses";
         $view = "layanan3/v_prosess";
         $breadcrumbs = array(
                 array(
@@ -383,30 +412,12 @@ class Layanan_3 extends CI_Controller {
     function Status_Diproses()
     {
         $kondisi = array(
-            "a.stat" => 1,
-            "a.id_stat" => 2,
-            "a.jenis_layanan" => 3,
-            // "b.role_id" => 6,
-            "f.id" => 2
+            "id_stat" => 2
         );
 
-        $query = $this->db->select("a.id, a.id_stat, concat(LPAD(f.id, 2, 0),'.',LPAD(c.id, 2, 0),'.',LPAD(MONTH(a.syscreatedate), 2, 0),'.',YEAR(a.syscreatedate),'.',LPAD(a.id, 4, 0)) as kode, b.fullname, b.nik, c.nama_layanan, d.nm_keg, d.tgl_awal_keg, d.tgl_akhir_keg, d.esti_keg, count(e.id) as jumlah,
-            case
-            when g.id = 1 then '<b><span class=text-info>permohonan masuk</span></b>'
-            when g.id = 2 then '<b><span class=text-warning>permohonan diproses</span></b>'
-            when g.id = 3 then '<b><span class=text-success>direkomendasi</span></b>'
-            when g.id = 4 then '<b><span class=text-danger>tidak direkomendasi</span></b>'
-            end as nama_stat
-            ")
-                ->from("dt_layanan a")
-                ->join("sys_users b", "a.id_user = b.id", "LEFT")
-                ->join("mt_layanan c", "a.jenis_layanan = c.id", "LEFT")
-                ->join("dt_kegiatan d", "a.id = d.id_layanan", "LEFT")
-                ->join("dt_penceramah e", "a.id = e.id_layanan", "LEFT")
-                ->join("mt_direktorat f", "c.jenis_layanan = f.id", "LEFT")
-                ->join("mt_status_layanan g","a.id_stat = g.id","LEFT")
-                ->where($kondisi)
-                ->group_by("a.id");
+        $query = $this->db->select("*")
+                ->from("v_dai_kedalam")
+                ->where($kondisi);
 
         $get = $this->db->get();
         $data = $get->result();
@@ -420,29 +431,12 @@ class Layanan_3 extends CI_Controller {
     public function Joinan_binsyar()
     {
         $kondisi = array(
-            "a.stat" => 1,
-            "a.jenis_layanan" => 3,
-            "b.role_id" => 6,
-            "f.id" => 2
+            "id_stat !=" => 0
         );
 
-        $query = $this->db->select("a.id, a.id_stat, concat(LPAD(f.id, 2, 0),'.',LPAD(c.id, 2, 0),'.',LPAD(MONTH(a.syscreatedate), 2, 0),'.',YEAR(a.syscreatedate),'.',LPAD(a.id, 4, 0)) as kode, b.fullname, b.nik, c.nama_layanan, d.nm_keg, d.tgl_awal_keg, d.tgl_akhir_keg, d.esti_keg, count(e.id) as jumlah,
-            case
-            when g.id = 1 then '<b><span class=text-info>permohonan masuk</span></b>'
-            when g.id = 2 then '<b><span class=text-warning>permohonan diproses</span></b>'
-            when g.id = 3 then '<b><span class=text-success>direkomendasi</span></b>'
-            when g.id = 4 then '<b><span class=text-danger>tidak direkomendasi</span></b>'
-            end as nama_stat
-            ")
-                ->from("dt_layanan a")
-                ->join("sys_users b", "a.id_user = b.id", "LEFT")
-                ->join("mt_layanan c", "a.jenis_layanan = c.id", "LEFT")
-                ->join("dt_kegiatan d", "a.id = d.id_layanan", "LEFT")
-                ->join("dt_penceramah e", "a.id = e.id_layanan", "LEFT")
-                ->join("mt_direktorat f", "c.jenis_layanan = f.id", "LEFT")
-                ->join("mt_status_layanan g","a.id_stat = g.id","LEFT")
-                ->where($kondisi)
-                ->group_by("a.id");
+        $query = $this->db->select("*")
+                ->from("v_dai_kedalam")
+                ->where($kondisi);
 
         $get = $this->db->get();
         $data = $get->result();
@@ -469,7 +463,39 @@ class Layanan_3 extends CI_Controller {
         echo toJSON(resultSuccess("OK",1));
     }
 
-    public function Hapuss()
+    public function Rekomendasi()
+    {
+        $id = $this->input->post("id");
+        $kondisi = array(
+            'id_stat' => 3,
+            'sysupdateuser' => $this->session->userdata('DX_user_id'),
+            'sysupdatedate' => date('Y-m-d h:i:s')
+        );
+
+        $this->db->set($kondisi);
+        $this->db->where('id', $id);
+        $this->db->update('dt_layanan');
+
+        echo toJSON(resultSuccess("OK",1));
+    }
+
+    public function Norekomendasi()
+    {
+        $id = $this->input->post("id");
+        $kondisi = array(
+            'id_stat' => 4,
+            'sysupdateuser' => $this->session->userdata('DX_user_id'),
+            'sysupdatedate' => date('Y-m-d h:i:s')
+        );
+
+        $this->db->set($kondisi);
+        $this->db->where('id', $id);
+        $this->db->update('dt_layanan');
+
+        echo toJSON(resultSuccess("OK",1));
+    }
+
+    public function Hapus()
     {
         $id = $this->input->post("id");
         $kondisi = array(
@@ -606,5 +632,192 @@ class Layanan_3 extends CI_Controller {
             
         $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
         }
+
+        public function Detail_Proses($id) 
+    {
+        $this->template->setPageId("DIPROSES_IDDLN");
+        $data = array();
+
+        $sitetitle = "Detail Ijin Penceramah Dari Luar Negeri";
+        $pagetitle = "Permohonan Diproses";
+        $view = "layanan3/v_detailproses";
+        $breadcrumbs = array(
+                array(
+                    "title" => "",
+                    "link" => "",
+                    "is_actived" => false,
+                ),
+                array(
+                    "title" => "Urais & Binsyar",
+                    "link" => "",
+                    "is_actived" => true,
+                ),
+            );
+
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+        
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data['detail'] = $this->M_layanan3->detail_permohonan($id);
+        $data['penceramah'] = $this->M_layanan3->detail_penceramah($id);
+        $data["js_inlines"] = $js_inlines;
+
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+            
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
+    public function UpdatePemohon()
+    {
+        $id = $this->input->post("id");
+        $data = array(
+            "id_user" => $this->input->post("id_user"),
+            "id_provinsi" => $this->input->post("id_provinsi"),
+            "id_kabupaten" => $this->input->post("id_kabupaten"),
+            "id_kecamatan" => $this->input->post("id_kecamatan"),
+            "id_kelurahan" => $this->input->post("id_kelurahan"),
+            "id_stat" => 1,
+            "stat" => 1,
+            "sysupdateuser" => $this->input->post("id_user"),
+            "sysupdatedate" => date("Y-m-d H:i:s")
+        );
+
+        if(!empty($data)){
+            $this->M_layanan3->UpdateLayanan($id, $data);
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+        }else{
+            $this->Edit($id);
+        }
+    }
+
+    function UpdateKegiatan()
+    {
+        $id = $this->input->post("id");
+        $data = array(
+            "id_layanan" => $this->input->post("id_layanan"),
+            "nm_keg" => $this->input->post("nm_keg"),
+            "tgl_awal_keg" => $this->input->post("tgl_awal_keg"),
+            "tgl_akhir_keg" => $this->input->post("tgl_akhir_keg"),
+            "esti_keg" => $this->input->post("esti_keg"),
+            "lemb_keg" => $this->input->post("lemb_keg"),
+            "alamat_keg" => $this->input->post("alamat_keg"),
+            "ket_keg" => $this->input->post("ket_keg"),
+            "code_negara" => 101
+        );
+
+        // print_array($data);
+        // die();
+
+        if(!empty($data)){
+            $this->M_layanan3->UpdateAcara($id, $data);
+            echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+        }else{
+            $this->Edit($id);
+        }
+    }
+
+    public function UpdatePenceramah()
+    {
+        $id = $this->input->post("id");
+
+        $data = array(
+            "id_layanan" => $this->input->post("id_layanan"),
+            "narsum" => $this->input->post("narsum"),
+            "tmp_lhr" => $this->input->post("tmp_lhr"),
+            "tgl_lhr" => $this->input->post("tgl_lhr"),
+            "jns_kelamin" => $this->input->post("jns_kelamin"),
+            "almt_penceramah" => $this->input->post("almt_penceramah")
+        );
+
+        if (!empty($_FILES['cv']['name']))
+        {
+            $this->load->library('CommonMethods');
+            $cv = $this->commonmethods->do_upload_cv();
+            $upload = $this->M_layanan3->cek_gambar($id);
+            if (file_exists('assets/uploads/binsyar/'.$upload->cv) && $upload->cv) {
+                unlink('assets/uploads/binsyar/'.$upload->cv);
+            }
+            $data['cv'] = $cv;
+        }
+
+        if (!empty($_FILES['fc_passport']['name']))
+        {
+            $this->load->library('CommonMethods');
+            $pp = $this->commonmethods->passport();
+            $upload = $this->M_layanan3->cek_gambar($id);
+            if (file_exists('assets/uploads/binsyar/'.$upload->fc_passport) && $upload->fc_passport) {
+                unlink('assets/uploads/binsyar/'.$upload->fc_passport);
+            }
+            $data['fc_passport'] = $pp;
+        }
+
+        if (!empty($_FILES['sc_ktp']['name']))
+        {
+            $this->load->library('CommonMethods');
+            $ktp = $this->commonmethods->ktp();
+            $upload = $this->M_layanan3->cek_gambar($id);
+            if (file_exists('assets/uploads/binsyar/'.$upload->sc_ktp) && $upload->sc_ktp) {
+                unlink('assets/uploads/binsyar/'.$upload->sc_ktp);
+            }
+            $data['sc_ktp'] = $ktp;
+        }
+
+        if (!empty($_FILES['pas_foto']['name']))
+        {
+            $this->load->library('CommonMethods');
+            $pf = $this->commonmethods->poto();
+            $upload = $this->M_layanan3->cek_gambar($id);
+            if (file_exists('assets/uploads/binsyar/'.$upload->pas_foto) && $upload->pas_foto) {
+                unlink('assets/uploads/binsyar/'.$upload->pas_foto);
+            }
+            $data['pas_foto'] = $pf;
+        }
+
+        $this->M_layanan3->UpdateCeramah($id, $data);
+        echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+    }
+
+    public function UpdateDokumen()
+    {
+        $id = $this->input->post("id");
+        $data = array(
+            "id_layanan" => $this->input->post("id_layanan")
+        );
+
+        if (!empty($_FILES['surat_permohonan_dalam']['name']))
+        {
+            $this->load->library('CommonMethods');
+            $pf = $this->commonmethods->super_dalam();
+            $upload = $this->M_layanan3->cek_dokumen($id);
+            if (file_exists('assets/uploads/binsyar/'.$upload->surat_permohonan_dalam) && $upload->surat_permohonan_dalam) {
+                unlink('assets/uploads/binsyar/'.$upload->surat_permohonan_dalam);
+            }
+            $data['surat_permohonan_dalam'] = $pf;
+        }
+
+        if (!empty($_FILES['proposal_dalam']['name']))
+        {
+            $this->load->library('CommonMethods');
+            $pf = $this->commonmethods->prosal_dalam();
+            $upload = $this->M_layanan3->cek_dokumen($id);
+            if (file_exists('assets/uploads/binsyar/'.$upload->proposal_dalam) && $upload->proposal_dalam) {
+                unlink('assets/uploads/binsyar/'.$upload->proposal_dalam);
+            }
+            $data['proposal_dalam'] = $pf;
+        }
+
+        $this->M_layanan3->UpdateDokumens($id, $data);
+        echo "<script>alert('Data berhasil diperbaharui');window.location = history.go(-1);</script>";
+    }
 
 }

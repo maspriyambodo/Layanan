@@ -98,7 +98,7 @@ echo $js_inlines;
                         return o;
                     }
                 },{
-                    index: 'kode',
+                    index: 'id_formulir',
                     title: 'ID Formulir',
                     ellipsis: false,
                     width: 118,
@@ -114,7 +114,7 @@ echo $js_inlines;
                     index: 'fullname',
                     title: 'Nama Pemohon',
                     width: 110,
-                    // locked: true,
+                    locked: true,
                 },{
                     index: 'nik',
                     title: 'NIK Pemohon',
@@ -123,6 +123,7 @@ echo $js_inlines;
                 },{
                     index: 'nama_layanan',
                     title: 'Jenis Layanan',
+                    cellAlign: 'center',
                     width: 200,
                     // locked: true,
                 },{
@@ -153,15 +154,9 @@ echo $js_inlines;
                     cellAlign: 'center',
                 },
                 {
-                    index: 'jumlah',
-                    title: 'Penceramah',
-                    width: 80,
-                    cellAlign: 'center',
-                    rightLocked: true,
-                },
-                {
                     index: 'nama_stat',
                     title: 'Status',
+                    cellAlign: 'center',
                     width: 150,
                     rightLocked: true,
                 },
@@ -198,8 +193,8 @@ echo $js_inlines;
         // swal("Delete function is still under development!")
         // console.log(id);
         swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Ingin Menghapus Data Ini?',
+            text: "Data akan masuk status tidak aktif!",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -215,8 +210,8 @@ echo $js_inlines;
                 ajaxPost(url, data, function(data) {
                     App.IsLoading(false);
                     swal(
-                        'Deleted!',
-                        'Your data has been deleted.',
+                        'Dihapus!',
+                        'Data berhasil dihapus.',
                         'success'
                     ).then(function(result) {
                         Page.InitGrid();
@@ -238,14 +233,14 @@ echo $js_inlines;
     };
     Page.Detail = function (id){
         // console.log(id);
-    window.location.href = '<?php echo base_url('Urais/Layanan_4/Details/'); ?>' + id;
+    window.location.href = '<?php echo base_url('Urais/Layanan_4/Detail_Masuk/'); ?>' + id;
     };
     Page.Proses = function(id) {
         // swal("Delete function is still under development!")
         // console.log(id);
         swal({
             title: 'Yakin Ingin Merubah Status?',
-            text: "Permohonan Masuk Menjadi Diproses",
+            text: "Status Permohonan Masuk Menjadi Diproses",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

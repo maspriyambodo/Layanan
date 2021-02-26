@@ -53,7 +53,7 @@ echo $js_inlines;
                 remoteFilter: false,
                 remoteSort: false,
                 proxy: {
-                    url: '<?php echo base_url(); ?>Urais/Layanan_3/Status_Diproses',
+                    url: '<?php echo base_url(); ?>Urais/Layanan_4/Status_Diproses',
                     params: {}
                 },
             },
@@ -98,7 +98,7 @@ echo $js_inlines;
                         return o;
                     }
                 },{
-                    index: 'kode',
+                    index: 'id_formulir',
                     title: 'ID Formulir',
                     ellipsis: false,
                     width: 118,
@@ -114,7 +114,7 @@ echo $js_inlines;
                     index: 'fullname',
                     title: 'Nama Pemohon',
                     width: 110,
-                    // locked: true,
+                    locked: true,
                 },{
                     index: 'nik',
                     title: 'NIK Pemohon',
@@ -153,13 +153,6 @@ echo $js_inlines;
                     cellAlign: 'center',
                 },
                 {
-                    index: 'jumlah',
-                    title: 'Penceramah',
-                    width: 80,
-                    cellAlign: 'center',
-                    rightLocked: true,
-                },
-                {
                     index: 'nama_stat',
                     title: 'Status',
                     width: 140,
@@ -177,7 +170,7 @@ echo $js_inlines;
                     o.value = ''
 <?php if ($this->izin->delete) : ?>
                         +
-                                ('<a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Detail Permohonan"><i class="fa fa-check text-success"></i></a></div> <a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit Permohonan"><i class="fas fa-pencil-alt text-warning"></i></a></div>')
+                                ('<a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Rekomendasi(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Direkomendasikan"><i class="fa fa-check text-success"></i></a></div> <a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Norekomendasi(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Tidak Direkomendasikan"><i class="fas fa-times text-danger"></i></a></div>')
 <?php endif; ?>
 <?php if ($this->izin->edit) : ?>
                         +
@@ -194,10 +187,10 @@ echo $js_inlines;
             ],
         });
     };
-    Page.Delete = function(id) {
+    Page.Rekomendasi = function(id) {
         swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Yakin Ingin Merubah Status?',
+            text: "Status Diproses Menjadi Direkomendasi!",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -209,7 +202,41 @@ echo $js_inlines;
                 var data = {
                     id: id,
                 };
-                var url = '<?php echo base_url(); ?>Urais/Layanan_3/Hapuss';
+                var url = '<?php echo base_url(); ?>Urais/Layanan_4/Rekomendasi';
+                ajaxPost(url, data, function(data) {
+                    App.IsLoading(false);
+                    swal(
+                        'Selamat!',
+                        'Status Diperbaharui Menjadi Direkomendasi.',
+                        'success'
+                    ).then(function(result) {
+                        Page.InitGrid();
+                    });
+                }, function(data) {
+                    // do nothing for unsuccess transaction
+                    App.IsLoading(false);
+                });
+            }
+        }, function(dismiss) {
+            // do nothing for dismiss modal
+        });
+    };
+    Page.Norekomendasi = function(id) {
+        swal({
+            title: 'Yakin Permohonan Ditolak?',
+            text: "Status Diproses Menjadi Tidak Direkomendasikan!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(function(result) {
+            if (result) {
+                App.IsLoading(true);
+                var data = {
+                    id: id,
+                };
+                var url = '<?php echo base_url(); ?>Urais/Layanan_4/Norekomendasi';
                 ajaxPost(url, data, function(data) {
                     App.IsLoading(false);
                     swal(
@@ -228,15 +255,9 @@ echo $js_inlines;
             // do nothing for dismiss modal
         });
     };
-    Page.Edit = function(id){
-        // console.log(id);
-        if (id != '') {
-            window.location.href = '<?php echo base_url(); ?>Urais/Layanan_3/Edit/' + id;
-        }
-    };
     Page.Detail = function (id){
         // console.log(id);
-    window.location.href = '<?php echo base_url('Urais/Layanan_3/Verifikasi/'); ?>' + id;
+    window.location.href = '<?php echo base_url('Urais/Layanan_4/Detail_Proses/'); ?>' + id;
     };
     $(function() {
         Page.InitGrid();

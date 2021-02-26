@@ -32,19 +32,19 @@
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Nomor KTP:</label>
-                                <input type="text" name="ktp" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)" value="<?php echo $detil[0]->nik; ?>"/>
+                                <input type="text" name="ktp" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)" value="<?php echo $detil[0]->nik; ?>" readonly/>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Nama Lengkap:</label>
-                                <input type="text" name="nama" class="form-control" required="" autocomplete="off" value="<?php echo $detil[0]->fullname; ?>"/>
+                                <input type="text" name="nama" class="form-control" required="" autocomplete="off" value="<?php echo $detil[0]->fullname; ?>" readonly/>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Tanggal Lahir:</label>
-                                <input type="text" name="tgl_lahir" class="form-control datepicker" required="" autocomplete="off" value="<?php echo $detil[0]->tgl_lhr; ?>"/>
+                                <input type="text" name="tgl_lahir" class="form-control datepicker" required="" autocomplete="off" value="<?php echo $detil[0]->tgl_lhr; ?>" readonly/>
                             </div>
                         </div>
                     </div>
@@ -58,13 +58,13 @@
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Email:</label>
-                                <input type="email" name="mali" class="form-control" required="" autocomplete="off" value="<?php echo $detil[0]->email; ?>"/>
+                                <input type="email" name="mali" class="form-control" required="" autocomplete="off" value="<?php echo $detil[0]->email; ?>" readonly/>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Telepon:</label>
-                                <input type="text" name="telpon" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)" value="<?php echo $detil[0]->telp; ?>"/>
+                                <input type="text" name="telpon" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)" value="<?php echo $detil[0]->telp; ?>" readonly/>
                             </div>
                         </div>
                     </div>
@@ -189,131 +189,287 @@
                 </div>
 
                 <div class="tab-pane fade" id="narsum" role="tabpanel" aria-labelledby="narsum-tab">
-                    <form action="<?php echo base_url('Urais/Layanan_4/UpdatePenceramah/'); ?>" method="post" enctype="multipart/form-data">
-                    <?php $no = 1; foreach ($detil as $key => $narsum) { ?>
-                        <div class="text-center"> <b><u>Penceramah <?php echo $no++;?>:</u></b> </div> <div style="clear:both;margin:10px 0"></div>
-                        <div class="row">
-                            <input type="hidden" name="id[]" value="<?php echo $narsum->id_penceramah;?>"/>
-                            <input type="hidden" name="id_layanan[]" value="<?php echo $narsum->id_layanan_penceramah;?>"/>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="ceramah">Nama:</label>
-                                    <input id="ceramah" type="text" name="ceramah[]" autocomplete="off" class="form-control" value="<?php echo $narsum->narsum;?>" />
-                                </div>
-                            </div>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="tmp_lahir">Tempat Lahir:</label>
-                                    <input id="tmp_lahir" type="text" name="tmp_lahir[]" class="form-control" autocomplete="off" value="<?php echo $narsum->tmp_lahir;?>"/>
-                                </div>
-                            </div>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="lahir_narsum">Tanggal Lahir:</label>
-                                    <input id="lahir_narsum" type="text" name="lahir_narsum[]" class="form-control datepicker" autocomplete="off" onkeydown="return false;" value="<?php echo $narsum->lhr_narsum;?>" />
-                                </div>
-                            </div>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="jkel">Jenis Kelamin:</label>
-                                    <select id="jkel" name="jkel[]" class="form-control custom-select">
-                                        <option value="">Pilih Jenis Kelamin</option>
-                                        <option <?php if($narsum->jns_kelamin == 'laki-laki'){echo "selected"; } ?> value="1">Laki-laki</option>
-                                        <option <?php if($narsum->jns_kelamin == 'perempuan'){echo "selected"; } ?> value="2">Perempuan</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="pddk_formal">Pendidikan Formal:</label>
-                                    <select id="pddk_formal" name="pddk_formal[]" class="form-control custom-select">
-                                        <option value="">Pilih</option>
-                                        <option <?php if($narsum->pddk_formal == 'SD'){echo "selected"; } ?> value="1">SD</option>
-                                        <option <?php if($narsum->pddk_formal == 'SLTP/MTS'){echo "selected"; } ?> value="2">SLTP/MTS</option>
-                                        <option <?php if($narsum->pddk_formal == 'SMK/SMA'){echo "selected"; } ?> value="3">SMK/SMA</option>
-                                        <option <?php if($narsum->pddk_formal == 'D3'){echo "selected"; } ?> value="4">D3</option>
-                                        <option <?php if($narsum->pddk_formal == 'S1'){echo "selected"; } ?> value="5">S1</option>
-                                        <option <?php if($narsum->pddk_formal == 'S2'){echo "selected"; } ?> value="6">S2</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="pddk_non">Pendidikan Non Formal:</label>
-                                    <input id="pddk_non" type="text" name="pddk_non[]" autocomplete="off" class="form-control" value="<?php echo $narsum->pddk_non;?>" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>CV Penceramah:</label>
-                                    <input id="cv_narsum" class="form-control" type="file" name="cv_narsum[]">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="scan_doks">Scan Sertifikat:</label>
-                                    <input id="scan_doks" class="form-control" type="file" name="scan_doks[]">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="alamat">Alamat:</label>
-                                    <input type="text" name="alamat_ceramah[]" class="form-control" autocomplete="off" value="<?php echo $narsum->alamat;?>" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="paspor_narsum">Fotocopy Passport:</label>
-                                    <input id="paspor_narsum" class="form-control" type="file" name="paspor_narsum[]"/>
-                                </div>
-                            </div>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="ktp_docs">Scan KTP:</label>
-                                    <input id="ktp_docs" class="form-control" type="file" name="ktp_docs[]"/>
-                                </div>
-                            </div>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="foto_narsum">Pas Foto:</label>
-                                    <input id="foto_narsum" class="form-control" type="file" name="foto_narsum[]"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="repeat_narsum"></div>
-                    <?php } ?>
-                    <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Perbaharui</button>
-                    <button type="button" class="btn btn-danger"><i class="fa fa-times"></i> Batal</button>
-                    </form>
+                        <table class="table table-striped table-striped">
+                          <thead style="background-color: #545d73; color: white;">
+                            <tr>
+                              <th scope="col">No.</th>
+                              <th scope="col">Nama Penceramah</th>
+                              <th scope="col">Tempat Lahir</th>
+                              <th scope="col">Tanggal Lahir</th>
+                              <th scope="col">Jenis Kelamin</th>
+                              <th scope="col">Pendidikan Formal</th>
+                              <th scope="col">Pendidikan Non</th>
+                              <th scope="col">Aksi</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php $no = 1; foreach ($penceramah as $narsum) { ?>
+                            <tr>
+                              <th scope="row"><?php echo $no++;?></th>
+                              <td><?php echo $narsum->narsum;?></td>
+                              <td><?php echo $narsum->tmp_lahir;?></td>
+                              <td><?php echo $narsum->lhr_narsum;?></td>
+                              <td><?php echo $narsum->jns_kelamin;?></td>
+                              <td><?php echo $narsum->pddk_formal;?></td>
+                              <td><?php echo $narsum->pddk_non;?></td>
+                              <td>
+                                <a href="" data-toggle="modal" data-target="#Edit<?php echo $narsum->id;?>"><i class="fa fa-edit" style="color:orange; margin-right: 4px;"></i></a>
+                                <a href="" data-toggle="modal" data-target="#View<?php echo $narsum->id;?>"><i class="fa fa-eye" style="margin-left: 4px; margin-right: 4px;"></i></a>
+                            </td>
+                            </tr>
+                            <?php } ?>
+                          </tbody>
+                        </table>
                 </div>
 
+                <?php foreach($penceramah as $narsum){?>
+                    <div class="modal fade" id="Edit<?php echo $narsum->id;?>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="EditLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="Edit<?php echo $narsum->id_penceramah;?>">Edit Data Penceramah, <?php echo $narsum->narsum;?></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <form method="post" action="<?php echo site_url('Urais/Layanan_4/UpdatePenceramah/');?>" enctype="multipart/form-data">
+                                <div style="clear: both; margin:10px 0;"></div>
+                                    <div class="row">
+                                                <input type="hidden" name="id" value="<?php echo $narsum->id_penceramah;?>"/>
+                                                <input type="hidden" name="id_layanan" value="<?php echo $narsum->id_layanan_penceramah;?>"/>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="ceramah">Nama:</label>
+                                                        <input id="ceramah" type="text" name="ceramah" autocomplete="off" class="form-control" value="<?php echo $narsum->narsum;?>" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="tmp_lahir">Tempat Lahir:</label>
+                                                        <input id="tmp_lahir" type="text" name="tmp_lahir" class="form-control" autocomplete="off" value="<?php echo $narsum->tmp_lahir;?>"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="lahir_narsum">Tanggal Lahir:</label>
+                                                        <input id="lahir_narsum" type="text" name="lahir_narsum" class="form-control datepicker" autocomplete="off" onkeydown="return false;" value="<?php echo $narsum->lhr_narsum;?>" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="jkel">Jenis Kelamin:</label>
+                                                        <select id="jkel" name="jkel" class="form-control custom-select">
+                                                            <option value="">Pilih Jenis Kelamin</option>
+                                                            <option <?php if($narsum->jns_kelamin == 'laki-laki'){echo "selected"; } ?> value="1">Laki-laki</option>
+                                                            <option <?php if($narsum->jns_kelamin == 'perempuan'){echo "selected"; } ?> value="2">Perempuan</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="pddk_formal">Pendidikan Formal:</label>
+                                                        <select id="pddk_formal" name="pddk_formal" class="form-control custom-select">
+                                                            <option value="">Pilih</option>
+                                                            <option <?php if($narsum->pddk_formal == 'SD'){echo "selected"; } ?> value="1">SD</option>
+                                                            <option <?php if($narsum->pddk_formal == 'SLTP/MTS'){echo "selected"; } ?> value="2">SLTP/MTS</option>
+                                                            <option <?php if($narsum->pddk_formal == 'SMK/SMA'){echo "selected"; } ?> value="3">SMK/SMA</option>
+                                                            <option <?php if($narsum->pddk_formal == 'D3'){echo "selected"; } ?> value="4">D3</option>
+                                                            <option <?php if($narsum->pddk_formal == 'S1'){echo "selected"; } ?> value="5">S1</option>
+                                                            <option <?php if($narsum->pddk_formal == 'S2'){echo "selected"; } ?> value="6">S2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="pddk_non">Pendidikan Non Formal:</label>
+                                                        <input id="pddk_non" type="text" name="pddk_non" autocomplete="off" class="form-control" value="<?php echo $narsum->pddk_non;?>" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>CV Penceramah:</label>
+                                                        <input class="form-control" type="file" name="cv">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="scan_doks">Scan Sertifikat:</label>
+                                                        <input class="form-control" type="file" name="sc_sertifikat">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="alamat">Alamat:</label>
+                                                        <input type="text" name="alamat_ceramah" class="form-control" autocomplete="off" value="<?php echo $narsum->alamat;?>" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="paspor_narsum">Fotocopy Passport:</label>
+                                                        <input class="form-control" type="file" name="fc_passport"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="ktp_docs">Scan KTP:</label>
+                                                        <input class="form-control" type="file" name="sc_ktp"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="foto_narsum">Pas Foto:</label>
+                                                        <input class="form-control" type="file" name="pas_foto"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                <div id="repeat_narsum"></div><br>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+                                <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Perbaharui</button>
+                                </form>
+                              </div>
+                            </div>
+                      </div>
+                    </div>
+
+                    <div class="modal fade" id="View<?php echo $narsum->id;?>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="EditLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="View<?php echo $narsum->id_penceramah;?>">Data Penceramah, <?php echo $narsum->narsum;?></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div style="clear: both; margin:10px 0;"></div>
+                                    <div class="row">
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="ceramah">Nama:</label>
+                                                        <input id="ceramah" type="text" name="ceramah" autocomplete="off" class="form-control" value="<?php echo $narsum->narsum;?>" readonly />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="tmp_lahir">Tempat Lahir:</label>
+                                                        <input id="tmp_lahir" type="text" name="tmp_lahir" class="form-control" autocomplete="off" value="<?php echo $narsum->tmp_lahir;?>" readonly/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="lahir_narsum">Tanggal Lahir:</label>
+                                                        <input id="lahir_narsum" type="text" name="lahir_narsum" class="form-control datepicker" autocomplete="off" onkeydown="return false;" value="<?php echo $narsum->lhr_narsum;?>" readonly />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="jkel">Jenis Kelamin:</label>
+                                                        <input id="pddk_non" type="text" name="pddk_non" autocomplete="off" class="form-control" value="<?php echo $narsum->jns_kelamin;?>" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="pddk_formal">Pendidikan Formal:</label>
+                                                        <input id="pddk_non" type="text" name="pddk_non" autocomplete="off" class="form-control" value="<?php echo $narsum->pddk_formal;?>" readonly />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="pddk_non">Pendidikan Non Formal:</label>
+                                                        <input id="pddk_non" type="text" name="pddk_non" autocomplete="off" class="form-control" value="<?php echo $narsum->pddk_non;?>" readonly />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="alamat">Alamat:</label>
+                                                        <input type="text" name="alamat_ceramah" class="form-control" autocomplete="off" value="<?php echo $narsum->alamat;?>" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>CV Penceramah:</label><br>
+                                                        <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $narsum->cv;?>" width="200px" height="100px">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="scan_doks">Scan Sertifikat:</label><br>
+                                                        <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $narsum->sc_sertifikat;?>" width="200px" height="100px">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="paspor_narsum">Fotocopy Passport:</label><br>
+                                                        <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $narsum->fc_passport;?>" width="200px" height="100px">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md"></div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="ktp_docs">Scan KTP:</label><br>
+                                                        <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $narsum->sc_ktp;?>" width="220px" height="100px">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="foto_narsum">Pas Foto:</label><br>
+                                                        <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $narsum->pas_foto;?>" width="220px" height="100px">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md"></div>
+                                            </div>
+                              </div>
+                            </div>
+                      </div>
+                    </div>
+                <?php }?>
+
                 <div class="tab-pane fade" id="dokmohon" role="tabpanel" aria-labelledby="dokmohon-tab">
+                    <form method="post" action="<?php echo site_url('Urais/Layanan_4/UpdateDokumen/');?>" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md"></div>
+                        <input type="hidden" name="id" value="<?php echo $detil[0]->id_dokumen;?>"/>
+                            <input type="hidden" name="id_layanan" value="<?php echo $detil[0]->id;?>"/>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="ktp_keg" class="form-label">Surat Permohonan Safari:</label>
-                                <input class="form-control" type="file" id="sp_keg" name="sp_keg" required="" value="<?php echo $detil[0]->super_safari; ?>">
+                                <br>
+                                <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $detil[0]->surat_permohonan_safari;?>" width="220px" height="100px"><br>
+                                <input class="form-control" type="file" name="surat_permohonan_safari" value="<?php echo $detil[0]->super_safari; ?>">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="proposal" class="form-label">Proposal Safari:</label>
-                            <input class="form-control" type="file" id="proposal" name="proposal" required="" value="<?php echo $detil[0]->prosa; ?>">
+                                <br>
+                                <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $detil[0]->proposal_safari;?>" width="220px" height="100px"><br>
+                            <input class="form-control" type="file" name="proposal_safari" value="<?php echo $detil[0]->prosa; ?>">
                             </div>
                         </div>
                         <div class="col-md"></div>
                     </div>
+                    <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Perbaharui</button>
+                    <button type="button" class="btn btn-danger"><i class="fa fa-times"></i> Batal</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+
 
 <script>
     window.onload = function () {

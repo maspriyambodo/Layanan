@@ -172,27 +172,32 @@ class M_layanan4 extends CI_Model
         return $query;
     }
 
-    public function Detail($param) {
-        if ($param['stat_id'] == null) {
-            $where = [
-                '`view_safari`.`id`' => $param['id'] + false,
-                '`view_safari`.`stat`' => 1 + false
-            ];
-        } else {
-            $where = [
-                '`view_safari`.`id`' => $param['id'] + false,
-                '`view_safari`.`stat_id`' => $param['stat_id'] + false,
-                '`view_safari`.`stat`' => 1 + false
-            ];
-        }
-        $exec = $this->db->select()
-                ->from('`view_safari`')
-                ->where($where)
+    public function Detail($id)
+    {
+        $kondisi = array(
+            "id" => $id
+        );
+
+        $return = $this->db->select()
+                ->from("v_safari_data")
+                ->where($kondisi)
                 ->get()
                 ->result();
-        return $exec;
-        // print_r($this->db->last_query());
-        // die();
+        return $return;
+    }
+
+    public function Penceramah($id)
+    {
+        $kondisi = array(
+            "id_layanan" => $id
+        );
+
+        $return = $this->db->select()
+                ->from("v_safari_penceramah")
+                ->where($kondisi)
+                ->get()
+                ->result();
+        return $return;
     }
 
     public function get_userdemo()
@@ -212,18 +217,49 @@ class M_layanan4 extends CI_Model
     function data_diproses()
     {
         $kondisi = array(
-            "a.stat" => 1,
-            "a.id_stat" => 2,
-            "a.jenis_layanan" => 3,
-            "b.jenis_layanan" => 2
+            "id_stat" => 2
         );
 
-        $query = $this->db->select("a.id")
-                ->from("dt_layanan a")
-                ->join("mt_layanan b","a.jenis_layanan = b.id","LEFT")
+        $query = $this->db->select()
+                ->from("v_safari_data")
                 ->where($kondisi)
                 ->get()
                 ->result();
+        return $query;
+    }
+
+    function Narsum($id)
+    {
+        $kondisi = array(
+            "a.id_layanan_penceramah" => $id
+        );
+        $exec = $this->db->select("a.*")
+                ->from("view_safari_narsum a")
+                ->where($kondisi)
+                ->get()
+                ->result();
+        return $exec;
+    }
+
+    function cek_dokumen($id)
+    {
+        $kondisi = array(
+            "a.id" => $id
+        );
+
+        $query = $this->db->from("dt_layanan_dokumen a")
+                ->where($kondisi)->get()->row();
+        return $query;
+    }
+
+    function cek_gambar($id)
+    {
+        $kondisi = array(
+            "a.id" => $id
+        );
+
+        $query = $this->db->from("dt_penceramah a")
+                ->where($kondisi)->get()->row();
         return $query;
     }
 
@@ -237,6 +273,18 @@ class M_layanan4 extends CI_Model
     {
         $this->db->where("id_layanan", $id_layanan);
         $this->db->update("dt_kegiatan", $data);
+    }
+
+    function UpdateCeramah($id, $data)
+    {
+        $this->db->where("id", $id);
+        $this->db->update("dt_penceramah", $data);
+    }
+
+    function UpdateDokumens($id, $data)
+    {
+        $this->db->where("id", $id);
+        $this->db->update("dt_layanan_dokumen", $data);
     }
 
     function get_edit_lampiran($id)
@@ -255,23 +303,28 @@ class M_layanan4 extends CI_Model
     function detail_permohonan($id)
     {
         $kondisi = array(
-            "a.id" => $id,
-            "a.stat" => 1,
-            "b.jenis_layanan" => 2
+            "id" => $id
         );
 
-        $query = $this->db->select("a.id, c.nik, c.fullname, c.nik, c.telp, c.email, c.tgl_lhr, c.email, concat(LPAD(d.id, 2, 0),'.',LPAD(b.id, 2, 0),'.',LPAD(MONTH(a.syscreatedate), 2, 0),'.',YEAR(a.syscreatedate),'.',LPAD(a.id, 4, 0)) as kode, e.nama, f.nama as nama_kabupaten, g.nama as nama_kecamatan, h.nama as nama_kelurahan, a.keterangan")
-                ->from("dt_layanan a")
-                ->join("mt_layanan b","a.jenis_layanan = b.id","LEFT")
-                ->join("sys_users c","a.id_user = c.id","LEFT")
-                ->join("mt_direktorat d", "b.jenis_layanan = d.id", "LEFT")
-                ->join("mt_wil_provinsi e","a.id_provinsi = e.id_provinsi","LEFT")
-                ->join("mt_wil_kabupaten f","a.id_kabupaten = f.id_kabupaten","f.id_provinsi = e.id_provinsi","LEFT")
-                ->join("mt_wil_kecamatan g","a.id_kecamatan = g.id_kecamatan","g.id_kabupaten = f.id_kabupaten","LEFT")
-                ->join("mt_wil_kelurahan h","a.id_kelurahan = h.id_kelurahan","g.id_kecamatan = h.id_kecamatan","LEFT")
+        $query = $this->db->select()
+                ->from("v_safari_data")
                 ->where($kondisi)
                 ->get()
                 ->row();
+        return $query;
+    }
+
+    function detail_penceramah($id)
+    {
+        $kondisi = array(
+            "id_layanan" => $id
+        );
+
+        $query = $this->db->select()
+                ->from("v_safari_penceramah")
+                ->where($kondisi)
+                ->get()
+                ->result();
         return $query;
     }
 
@@ -314,9 +367,10 @@ class M_layanan4 extends CI_Model
             "b.id_layanan" => $id
         );
 
-        $query = $this->db->select("b.id, b.id_layanan, b.surat_permohonan_dalam, b.proposal_dalam, b.cv_crmh_dalam, b.pasp_crmh_dalam, b.ktp_dalam, b.pas_foto_crmh_dalam")
+        $query = $this->db->select("b.id, b.id_layanan, b.surat_permohonan_safari, b.proposal_safari, c.cv, c.fc_passport, c.sc_ktp, c.pas_foto, c.sc_sertifikat")
                 ->from("dt_layanan a")
                 ->join("dt_layanan_dokumen b","a.id = b.id_layanan","LEFT")
+                ->join("dt_penceramah c","a.id = c.id_layanan")
                 ->where($kondisi)
                 ->get()
                 ->result();

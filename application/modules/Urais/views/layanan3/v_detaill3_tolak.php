@@ -3,6 +3,18 @@
 <div class="card card-custom" style="margin-top:1.32857em;">
     <div class="card-header" style="background-color: #545d73;">
         <div class="card-title" style="color: white;">
+            Detail Alasan Penolakan
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-danger" role="alert">
+          <?php echo $detail->alasan_tolak; ?>
+        </div>
+    </div>
+</div>
+<div class="card card-custom" style="margin-top:1.32857em;">
+    <div class="card-header" style="background-color: #545d73;">
+        <div class="card-title" style="color: white;">
             Detail Data Pemohon
         </div>
     </div>

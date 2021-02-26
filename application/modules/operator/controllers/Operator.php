@@ -236,24 +236,27 @@ class Operator extends CI_Controller {
 
     public function editusers($id)
     {
-        $this->template->setPageId("DATA_USER");
+        // $this->template->setPageId("DATA_USER");
+        $this->template->setPageId("DITERIMA_SDDN");
         $data = array();
 
         $sitetitle = "Edit Data User";
-        $pagetitle = "Edit Data User";
-        $view = "/operator/users/v_edituser";
-        $breadcrumbs = array(
-                array(
-                    "title" => "",
+        // $pagetitle = "Edit Data User";
+        // $view = "/operator/users/v_edituser";
+        $pagetitle = "Edit Izin Safari Dakwah Dalam Negeri";
+        $view = "layanan4/v_edit";
+        $breadcrumbs = [
+                [
+                    "title" => "Permohonan Masuk",
+                    "link" => base_url('Urais/Layanan_4/index/'),
+                    "is_actived" => false
+                ],
+                [
+                    "title" => "Edit",
                     "link" => "",
-                    "is_actived" => false,
-                ),
-                array(
-                    "title" => "Edit User",
-                    "link" => "",
-                    "is_actived" => true,
-                ),
-            );
+                    "is_actived" => true
+                ]
+            ];
 
         $sql = "";
         $mejo = new Mejo();
@@ -267,13 +270,14 @@ class Operator extends CI_Controller {
 
         $this->template->setCssFiles($css_lib_files);
         $this->template->setJsFiles($js_lib_files);
-        $data['biodata'] = $this->om->get_biodata_login();
-        $data['role_user'] = $this->om->get_role_user();
-        $data['provinsi'] = $this->om->get_provinsi();
-        $data["kabupaten"] = $this->om->get_kabupaten();
-        $data["kecamatan"] = $this->om->get_kecamatan();
-        $data["kelurahan"] = $this->om->get_kelurahan();
-        $data["users"] = $this->om->get_edit_user($id);
+        // $data['biodata'] = $this->om->get_biodata_login();
+        // $data['role_user'] = $this->om->get_role_user();
+        // $data['provinsi'] = $this->om->get_provinsi();
+        // $data["kabupaten"] = $this->om->get_kabupaten();
+        // $data["kecamatan"] = $this->om->get_kecamatan();
+        // $data["kelurahan"] = $this->om->get_kelurahan();
+        // $data["users"] = $this->om->get_edit_user($id);
+        $data['detil'] = $this->M_layanan4->Detail($id);
         // var_dump(json_encode($data['dataku'][3]->proposal_keg));
         // die();
         $data["js_inlines"] = $js_inlines;

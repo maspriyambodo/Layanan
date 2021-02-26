@@ -4,9 +4,6 @@
         background-color: #5bc0de;
     }
 </style>
-<form action="<?php echo base_url('Urais/Layanan_3/Change/'); ?>" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="id_layanan" value="<?php echo $detil[0]->id_layanan; ?>"/>
-    <input type="hidden" name="id_user" value="<?php echo $detil[0]->id_user; ?>"/>
     <div style="clear: both;margin:2% 0px;"></div>
     <div class="card card-custom">
         <div class="card-body">
@@ -27,23 +24,26 @@
             <hr>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="pemohon" role="tabpanel" aria-labelledby="pemohon-tab">
+                    <form action="<?php echo base_url('Urais/Layanan_3/UpdatePemohon/'); ?>" method="post">
+                    <input type="hidden" name="id" value="<?php echo $detil->id;?>"/>
+                    <input type="hidden" name="id_user" value="<?php echo $detil->id_user;?>"/>
                     <div class="row">
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Nomor KTP:</label>
-                                <input type="text" name="ktp" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)" value="<?php echo $pemohon->nik; ?>"/>
+                                <input type="text" name="ktp" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)" value="<?php echo $detil->nik; ?>" readonly/>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Nama Lengkap:</label>
-                                <input type="text" name="nama" class="form-control" required="" autocomplete="off" value="<?php echo $pemohon->fullname; ?>"/>
+                                <input type="text" name="fullname" class="form-control" required="" autocomplete="off" value="<?php echo $detil->fullname; ?>" readonly/>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Tanggal Lahir:</label>
-                                <input type="text" name="tgl_lahir" class="form-control datepicker" required="" autocomplete="off" value="<?php echo $pemohon->tgl_lhr; ?>"/>
+                                <input type="text" name="tgl_lahir" class="form-control datepicker" required="" autocomplete="off" value="<?php echo $detil->tgl_lhr; ?>" readonly/>
                             </div>
                         </div>
                     </div>
@@ -51,19 +51,19 @@
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Username:</label>
-                                <input type="text" name="uname" class="form-control" required="" autocomplete="off" disabled=""/>
+                                <input type="text" name="username" class="form-control" required="" autocomplete="off" value="<?php echo $detil->username;?>" readonly/>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Email:</label>
-                                <input type="email" name="mali" class="form-control" required="" autocomplete="off" value="<?php echo $pemohon->email; ?>"/>
+                                <input type="email" name="email" class="form-control" required="" autocomplete="off" value="<?php echo $detil->email; ?>" readonly/>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label>Telepon:</label>
-                                <input type="text" name="telpon" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)" value="<?php echo $pemohon->telp; ?>"/>
+                                <input type="text" name="telp" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)" value="<?php echo $detil->telp; ?>" readonly/>
                             </div>
                         </div>
                     </div>
@@ -71,11 +71,11 @@
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="provinsi_narsum">Provinsi:</label>
-                                <select id="provinsi_narsum" name="provinsi_narsum[]" required="" class="form-control custom-select" onchange="Provinsi_narsum(this.value)">
+                                <select id="provinsi_narsum" name="id_provinsi" required="" class="form-control custom-select" onchange="Provinsi_narsum(this.value)">
                                     <option value="">Pilih Provinsi</option>
                                         <?php
-                                        foreach ($provinsi as $prov) {
-                                            if ($prov->id_provinsi == $pemohon->id_provinsi) {
+                                        foreach ($pro as $prov) {
+                                            if ($prov->id_provinsi == $detil->id_provinsi) {
                                                 $prov_selected = 'selected=""';
                                             } else {
                                                 $prov_selected = '';
@@ -89,48 +89,55 @@
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="kotkabtxt_narsum">Kabupaten:</label>
-                                    <select name="kabupaten_narsum[]" id="kotkabtxt_narsum" class="form-control custom-select" onchange="Kecshow_narsum(this.value)"></select>
+                                    <select name="id_kabupaten" id="kotkabtxt_narsum" class="form-control custom-select" onchange="Kecshow_narsum(this.value)"></select>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="kectxt_narsum">Kecamatan:</label>
-                                    <select id="kectxt_narsum" name="kectxt_narsum[]" class="form-control custom-select" onchange="Kelshow_narsum(this.value)"></select>
+                                    <select id="kectxt_narsum" name="id_kecamatan" class="form-control custom-select" onchange="Kelshow_narsum(this.value)"></select>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="keltxt_narsum">Kelurahan:</label>
-                                    <select name="keltxt_narsum[]" id="keltxt_narsum" class="form-control custom-select"></select>
+                                    <select name="id_kelurahan" id="keltxt_narsum" class="form-control custom-select"></select>
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Perbaharui</button>
+                    <button type="button" class="btn btn-danger"><i class="fa fa-times"></i> Batal</button>
+                    </form>
                 </div>
 
                 <div class="tab-pane fade" id="kegiatan" role="tabpanel" aria-labelledby="kegiatan-tab">
+                    <form action="<?php echo base_url('Urais/Layanan_3/UpdateKegiatan/'); ?>" method="post">
+                    <input type="hidden" name="id" value="<?php echo $detil->id_kegiatan;?>"/>
+                    <input type="hidden" name="id_layanan" value="<?php echo $detil->id_layanan_kegiatan;?>"/>
                     <div class="row">
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="nm_keg">Nama Kegiatan:</label>
-                                <input id="nm_keg" type="text" name="nm_keg" class="form-control" required="" autocomplete="off" value="<?php echo $kegiatan->nm_keg; ?>"/>
+                                <input id="nm_keg" type="text" name="nm_keg" class="form-control" required="" autocomplete="off" value="<?php echo $detil->nm_keg; ?>"/>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="tgl_awal_keg">Tanggal Awal Kegiatan:</label>
-                                <input id="tgl_awal_keg" type="text" name="tgl_awal_keg" class="form-control datepicker" required="" autocomplete="off" onchange="Awal()" onkeydown="return false;" value="<?php echo $kegiatan->tgl_awal_keg; ?>"/>
+                                <input id="tgl_awal_keg" type="text" name="tgl_awal_keg" class="form-control datepicker" required="" autocomplete="off" onchange="Awal()" onkeydown="return false;" value="<?php echo $detil->tgl_awal_keg; ?>"/>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="tgl_akhir_keg">Tanggal Akhir Kegiatan:</label>
-                                <input id="tgl_akhir_keg" type="text" name="tgl_akhir_keg" class="form-control datepicker" required="" autocomplete="off" onchange="Tgl()" onkeydown="return false;" value="<?php echo $kegiatan->tgl_akhir_keg; ?>"/>
+                                <input id="tgl_akhir_keg" type="text" name="tgl_akhir_keg" class="form-control datepicker" required="" autocomplete="off" onchange="Tgl()" onkeydown="return false;" value="<?php echo $detil->tgl_akhir_keg; ?>"/>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="esti_keg">Estimasi Peserta:</label>
-                                <input id="esti_keg" type="text" name="esti_keg" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)" value="<?php echo $kegiatan->esti_keg; ?>"/>
+                                <input id="esti_keg" type="text" name="esti_keg" class="form-control" required="" autocomplete="off" onkeypress="return isNumber(event)" value="<?php echo $detil->esti_keg; ?>"/>
                             </div>
                         </div>
                     </div>
@@ -140,7 +147,7 @@
                                 <label for="lembaga">Lembaga:</label>
                                 <select name="lembaga" class="form-control custom-select" required="" onchange="return Lembaga(this.value)">
                                     <?php
-                                    if ($kegiatan->lemb_keg == "Perorangan") {
+                                    if ($detil->lemb_keg == "Perorangan") {
                                         $Perorangan = 'selected=""';
                                     } else {
                                         $Lembaga = 'selected=""';
@@ -153,118 +160,254 @@
                             </div>
                             <div class="form-group">
                                 <label for="alamat_kegiatan">Lokasi Kegiatan:</label>
-                                <input id="alamat_kegiatan" type="text" name="alamat_kegiatan" class="form-control" autocomplete="off" required="" value="<?php echo $kegiatan->alamat_keg; ?>"/>
+                                <input id="alamat_kegiatan" type="text" name="alamat_keg" class="form-control" autocomplete="off" required="" value="<?php echo $detil->alamat_keg; ?>"/>
                             </div>
                             
                         </div>
                         <div class="col-md">
                             <div class="form-group" id="nm_lemb">
                                 <label for="lemb_keg">Nama Lembaga:</label>
-                                <input id="lemb_keg" type="text" name="lemb_keg" class="form-control" autocomplete="off" required="" value="<?php echo $kegiatan->lemb_keg; ?>"/>
+                                <input id="lemb_keg" type="text" name="lemb_keg" class="form-control" autocomplete="off" required="" value="<?php echo $detil->lemb_keg; ?>"/>
                             </div>
                             <div class="form-group">
                                 <label for="keterangan_kegiatan">Keterangan Kegiatan:</label>
-                                <textarea id="keterangan_kegiatan" name="keterangan_kegiatan" class="form-control" required="" rows="5"><?php echo $kegiatan->ket_keg; ?></textarea>
+                                <textarea id="keterangan_kegiatan" name="ket_keg" class="form-control" required="" rows="5"><?php echo $detil->ket_keg; ?></textarea>
                             </div>
                         </div>
                     </div>
+                    <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Perbaharui</button>
+                    <button type="button" class="btn btn-danger"><i class="fa fa-times"></i> Batal</button>
+                    </form>
                 </div>
 
                 <div class="tab-pane fade" id="narsum" role="tabpanel" aria-labelledby="narsum-tab">
-                    <?php foreach ($detil as $key => $narsum) { ?>
-                        <div class="text-center"> <b><u>Penceramah 1:</u></b> </div> <div style="clear:both;margin:10px 0"></div>
-                        <div class="row">
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="pasport">No. Passport:</label>
-                                    <input id="pasport" type="text" name="pasport[]" class="form-control" autocomplete="off" required=""/>
-                                </div>
-                            </div>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="ceramah">Nama:</label>
-                                    <input id="ceramah" type="text" name="ceramah[]" autocomplete="off" required="" class="form-control"/>
-                                </div>
-                            </div>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="jkel">Jenis Kelamin:</label>
-                                    <select id="jkel" name="jkel[]" class="form-control custom-select" required="">
-                                        <option value="">Pilih Jenis Kelamin</option>
-                                        <option value="1">Laki-Laki</option>
-                                        <option value="2">Perempuan</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="tmp_lahir">Tempat Lahir:</label>
-                                    <input id="tmp_lahir" type="text" name="tmp_lahir[]" class="form-control" autocomplete="off" required=""/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lahir_narsum">Tanggal Lahir:</label>
-                                    <input id="lahir_narsum" type="text" name="lahir_narsum[]" class="form-control datepicker" autocomplete="off" required="" onkeydown="return false;"/>
-                                </div>
-                            </div>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="provinsi_narsum">Provinsi:</label>
-                                    <!-- <select id="provinsi_narsum" name="provinsi_narsum[]" required="" class="form-control custom-select" onchange="Provinsi_narsum(this.value)">
-                                        <option value="">Pilih Provinsi</option>
-                                        <?php
-                                        foreach ($provinsi as $prov) {
-                                            if ($prov->nama == $detil[$key]->provinsi) {
-                                                $prov_selected = 'selected=""';
-                                            } else {
-                                                $prov_selected = '';
-                                            }
-                                            echo '<option value="' . $prov->id_provinsi . '" ' . $prov_selected . '>' . $prov->nama . '</option>';
-                                        }
-                                        ?>
-                                    </select> -->
-                                </div>
-                                <div class="form-group">
-                                    <label for="kectxt_narsum">Kecamatan:</label>
-                                    <!-- <select id="kectxt_narsum" name="kectxt_narsum[]" class="form-control custom-select" onchange="Kelshow_narsum(this.value)"></select> -->
-                                </div>
-                            </div>
-                            <div class="col-md">
-                                <div class="form-group">
-                                    <label for="kotkabtxt_narsum">Kabupaten:</label>
-                                    <!-- <select name="kabupaten_narsum[]" id="kotkabtxt_narsum" class="form-control custom-select" onchange="Kecshow_narsum(this.value)"></select> -->
-                                </div>
-                                <div class="form-group">
-                                    <label for="keltxt_narsum">Kelurahan:</label>
-                                    <!-- <select name="keltxt_narsum[]" id="keltxt_narsum" class="form-control custom-select"></select> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>CV Penceramah:</label>
-                                    <input id="cv_narsum" class="form-control" type="file" name="cv_narsum[]" required="">
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <label for="alamat">Alamat:</label>
-                                    <input type="text" name="alamat_ceramah[]" class="form-control" required="" autocomplete="off"/>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
+                    <table class="table table-striped table-striped">
+                        <thead style="background-color: #545d73; color: white;">
+                            <tr>
+                              <th scope="col">No.</th>
+                              <th scope="col">Nama Penceramah</th>
+                              <th scope="col">Tempat Lahir</th>
+                              <th scope="col">Tanggal Lahir</th>
+                              <th scope="col">Jenis Kelamin</th>
+                              <th scope="col">Alamat Penceramah</th>
+                              <th scope="col">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $no = 1; foreach ($penceramah as $narsum) { ?>
+                            <tr>
+                              <th scope="row"><?php echo $no++;?></th>
+                              <td><?php echo $narsum->narsum;?></td>
+                              <td><?php echo $narsum->tmp_lhr;?></td>
+                              <td><?php echo $narsum->tgl_lhr;?></td>
+                              <td><?php echo $narsum->jns_kelamin;?></td>
+                              <td><?php echo $narsum->almt_penceramah;?></td>
+                              <td>
+                                <a href="" data-toggle="modal" data-target="#Edit<?php echo $narsum->id;?>"><i class="fa fa-edit" style="color:orange; margin-right: 4px;"></i></a>
+                                <a href="" data-toggle="modal" data-target="#View<?php echo $narsum->id;?>"><i class="fa fa-eye" style="margin-left: 4px; margin-right: 4px;"></i></a>
+                            </td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="tab-pane fade" id="dokmohon" role="tabpanel" aria-labelledby="dokmohon-tab">
+                <?php foreach($penceramah as $narsum){?>
+                    <div class="modal fade" id="Edit<?php echo $narsum->id;?>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="EditLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="Edit<?php echo $narsum->id_penceramah;?>">Edit Data Penceramah, <?php echo $narsum->narsum;?></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <form method="post" action="<?php echo site_url('Urais/Layanan_3/UpdatePenceramah/');?>" enctype="multipart/form-data">
+                                <div style="clear: both; margin:10px 0;"></div>
+                                    <div class="row">
+                                                <input type="hidden" name="id" value="<?php echo $narsum->id;?>"/>
+                                                <input type="hidden" name="id_layanan" value="<?php echo $narsum->id_layanan;?>"/>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="ceramah">Nama:</label>
+                                                        <input id="ceramah" type="text" name="narsum" autocomplete="off" class="form-control" value="<?php echo $narsum->narsum;?>" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="tmp_lahir">Tempat Lahir:</label>
+                                                        <input id="tmp_lahir" type="text" name="tmp_lhr" class="form-control" autocomplete="off" value="<?php echo $narsum->tmp_lhr;?>"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="lahir_narsum">Tanggal Lahir:</label>
+                                                        <input id="lahir_narsum" type="text" name="tgl_lhr" class="form-control datepicker" autocomplete="off" onkeydown="return false;" value="<?php echo $narsum->tgl_lhr;?>" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="jkel">Jenis Kelamin:</label>
+                                                        <select id="jkel" name="jns_kelamin" class="form-control custom-select">
+                                                            <option value="">Pilih Jenis Kelamin</option>
+                                                            <option <?php if($narsum->jns_kelamin == 'laki-laki'){echo "selected"; } ?> value="1">Laki-laki</option>
+                                                            <option <?php if($narsum->jns_kelamin == 'perempuan'){echo "selected"; } ?> value="2">Perempuan</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="alamat">Alamat:</label>
+                                                        <input type="text" name="almt_penceramah" class="form-control" autocomplete="off" value="<?php echo $narsum->almt_penceramah;?>" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label>CV Penceramah:</label>
+                                                        <input class="form-control" type="file" name="cv">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="paspor_narsum">Fotocopy Passport:</label>
+                                                        <input class="form-control" type="file" name="fc_passport"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="ktp_docs">Scan KTP:</label>
+                                                        <input class="form-control" type="file" name="sc_ktp"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="foto_narsum">Pas Foto:</label>
+                                                        <input class="form-control" type="file" name="pas_foto"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                <div id="repeat_narsum"></div><br>
+                                <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Perbaharui</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+                                </form>
+                              </div>
+                            </div>
+                      </div>
+                    </div>
 
+                    <div class="modal fade" id="View<?php echo $narsum->id;?>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="EditLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="View<?php echo $narsum->id_penceramah;?>">Data Penceramah, <?php echo $narsum->narsum;?></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div style="clear: both; margin:10px 0;"></div>
+                                    <div class="row">
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="ceramah">Nama:</label>
+                                                        <input id="ceramah" type="text" name="ceramah" autocomplete="off" class="form-control" value="<?php echo $narsum->narsum;?>" readonly />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="tmp_lahir">Tempat Lahir:</label>
+                                                        <input id="tmp_lahir" type="text" name="tmp_lahir" class="form-control" autocomplete="off" value="<?php echo $narsum->tmp_lhr;?>" readonly/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="lahir_narsum">Tanggal Lahir:</label>
+                                                        <input id="lahir_narsum" type="text" name="lahir_narsum" class="form-control datepicker" autocomplete="off" onkeydown="return false;" value="<?php echo $narsum->tgl_lhr;?>" readonly />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="jkel">Jenis Kelamin:</label>
+                                                        <input id="pddk_non" type="text" name="pddk_non" autocomplete="off" class="form-control" value="<?php echo $narsum->jns_kelamin;?>" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="alamat">Alamat:</label>
+                                                        <input type="text" name="alamat_ceramah" class="form-control" autocomplete="off" value="<?php echo $narsum->almt_penceramah;?>" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label>CV Penceramah:</label><br>
+                                                        <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $narsum->cv;?>" width="200px" height="100px">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="paspor_narsum">Fotocopy Passport:</label><br>
+                                                        <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $narsum->fc_passport;?>" width="200px" height="100px">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="ktp_docs">Scan KTP:</label><br>
+                                                        <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $narsum->sc_ktp;?>" width="220px" height="100px">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <label for="foto_narsum">Pas Foto:</label><br>
+                                                        <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $narsum->pas_foto;?>" width="220px" height="100px">
+                                                    </div>
+                                                </div>
+                                            </div>
+                              </div>
+                            </div>
+                      </div>
+                    </div>
+                <?php }?>
+
+                <div class="tab-pane fade" id="dokmohon" role="tabpanel" aria-labelledby="dokmohon-tab">
+                    <form method="post" action="<?php echo site_url('Urais/Layanan_3/UpdateDokumen/');?>" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md"></div>
+                        <input type="hidden" name="id" value="<?php echo $detil->id_dokumen;?>"/>
+                            <input type="hidden" name="id_layanan" value="<?php echo $detil->id_layanan_dokumen;?>"/>
+                        <div class="col-md">
+                            <div class="form-group">
+                                <label for="ktp_keg" class="form-label">Surat Permohonan:</label>
+                                <br>
+                                <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $detil->surat_permohonan_dalam;?>" width="220px" height="100px"><br>
+                                <input class="form-control" type="file" name="surat_permohonan_dalam" value="<?php echo $detil->surat_permohonan_dalam; ?>">
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-group">
+                                <label for="proposal" class="form-label">Proposal:</label>
+                                <br>
+                                <img src="<?php echo base_url();?>assets/uploads/binsyar/<?php echo $detil->proposal_dalam;?>" width="220px" height="100px"><br>
+                                <input class="form-control" type="file" name="proposal_dalam" value="<?php echo $detil->proposal_dalam; ?>">
+                            </div>
+                        </div>
+                        <div class="col-md"></div>
+                    </div>
+                    <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Perbaharui</button>
+                    <button type="button" class="btn btn-danger"><i class="fa fa-times"></i> Batal</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</form>
 <script>
     window.onload = function () {
         Provinsi_narsum($('#provinsi_narsum option:selected').val());
@@ -479,7 +622,7 @@
         const today = moment();
         const todays = today.format("DD/MM/YYYY");
         const kegiatan = $('input[name="tgl_awal_keg"]').val();
-        if (kegiatan < todays) {
+        if (kegiatan = todays) {
             toastr.warning("Masukkan Tanggal Awal Kegiatan dengan benar!");
             $('input[name="tgl_awal_keg"]').val("");
         } else {
@@ -515,6 +658,10 @@
                     opt.value = data[i].id_kabupaten;
                     opt.text = data[i].kabupaten;
                     sel.add(opt, sel.options[i]);
+                    if (sel.options[i].innerHTML == "<?php echo $detil->kabupaten; ?>") {
+                        $('select option[value="' + opt.value + '"]').attr('selected', true);
+                        Kecshow_narsum(opt.value);
+                    }
                 }
             },
             error: function () {
@@ -537,6 +684,10 @@
                     opt.value = data[i].id_kecamatan;
                     opt.text = data[i].kecamatan;
                     sel.add(opt, sel.options[i]);
+                    if (sel.options[i].innerHTML == "<?php echo $detil->kecamatan;?>") {
+                        $('select option[value="' + opt.value + '"]').attr('selected', true);
+                        Kelshow_narsum(opt.value);
+                    }
                 }
             },
             error: function () {
@@ -559,6 +710,9 @@
                     opt.value = data[i].id_kelurahan;
                     opt.text = data[i].kelurahan;
                     sel.add(opt, sel.options[i]);
+                    if (sel.options[i].innerHTML == "<?php echo $detil->kelurahan; ?>") {
+                        $('select option[value="' + opt.value + '"]').attr('selected', true);
+                    }
                 }
             },
             error: function () {

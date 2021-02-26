@@ -53,7 +53,7 @@ echo $js_inlines;
                 remoteFilter: false,
                 remoteSort: false,
                 proxy: {
-                    url: '<?php echo base_url(); ?>Urais/L3_Setuju/Joinan_binsyar',
+                    url: '<?php echo base_url(); ?>Urais/L4_Setuju/Joinan_binsyar',
                     params: {}
                 },
             },
@@ -68,16 +68,16 @@ echo $js_inlines;
                 emptyText: 'Search',
                 paramsMenu: true,
                 paramsText: 'Columns'
-            }, <?php //if ($this->izin->add) : ?> {
+            }, <?php if ($this->izin->add) : ?> {
                     // type: 'button',
                     // text: '<i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Tambah Baru',
                     // cls: 'mejo-btn mejo-btn-blue',
                     // width: 120,
                     // handler: function() {
                     //     // alert("add")
-                    //     window.location.href = '<?php //echo site_url("Urais/Layanan_3/Tambah"); ?>';
+                    //     window.location.href = '<?php //echo site_url("Urais/Layanan_4/Tambah"); ?>';
                     // },
-                }, <?php //endif; ?>],
+                }, <?php endif; ?>],
             paging: true,
             defaults: {
                 type: 'string',
@@ -98,7 +98,7 @@ echo $js_inlines;
                         return o;
                     }
                 },{
-                    index: 'kode',
+                    index: 'id_formulir',
                     title: 'ID Formulir',
                     ellipsis: false,
                     width: 118,
@@ -114,7 +114,7 @@ echo $js_inlines;
                     index: 'fullname',
                     title: 'Nama Pemohon',
                     width: 110,
-                    // locked: true,
+                    locked: true,
                 },{
                     index: 'nik',
                     title: 'NIK Pemohon',
@@ -123,6 +123,7 @@ echo $js_inlines;
                 },{
                     index: 'nama_layanan',
                     title: 'Jenis Layanan',
+                    cellAlign: 'center',
                     width: 200,
                     // locked: true,
                 },{
@@ -153,16 +154,10 @@ echo $js_inlines;
                     cellAlign: 'center',
                 },
                 {
-                    index: 'jumlah',
-                    title: 'Penceramah',
-                    width: 80,
-                    cellAlign: 'center',
-                    rightLocked: true,
-                },
-                {
                     index: 'nama_stat',
                     title: 'Status',
-                    width: 100,
+                    cellAlign: 'center',
+                    width: 150,
                     rightLocked: true,
                 },
                 {
@@ -170,14 +165,14 @@ echo $js_inlines;
                     title: 'Control',
                     cellAlign: 'center',
                     ellipsis: false,
-                    width: 70,
+                    width: 60,
                     rightLocked: true,
                     render: function(o) {
                     o.style['text-align'] = 'center';
                     o.value = ''
 <?php if ($this->izin->delete) : ?>
                         +
-                                ('<a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Proses Permohonan"><i class="fa fa-eye text-success"></i></a></div>')
+                                ('<a class="btn btn-default btn-xs" href="javascript:;" onclick="Page.Backward(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Revisi Rekomendasi"><i class="fas fa-backward text-danger"></i></a></div>')
 <?php endif; ?>
 <?php if ($this->izin->edit) : ?>
                         +
@@ -194,9 +189,87 @@ echo $js_inlines;
             ],
         });
     };
+    Page.Delete = function(id) {
+        // swal("Delete function is still under development!")
+        // console.log(id);
+        swal({
+            title: 'Ingin Menghapus Data Ini?',
+            text: "Data akan masuk status tidak aktif!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(function(result) {
+            if (result) {
+                App.IsLoading(true);
+                var data = {
+                    id: id,
+                };
+                var url = '<?php echo base_url(); ?>Urais/Layanan_4/Hapuss';
+                ajaxPost(url, data, function(data) {
+                    App.IsLoading(false);
+                    swal(
+                        'Dihapus!',
+                        'Data berhasil dihapus.',
+                        'success'
+                    ).then(function(result) {
+                        Page.InitGrid();
+                    });
+                }, function(data) {
+                    // do nothing for unsuccess transaction
+                    App.IsLoading(false);
+                });
+            }
+        }, function(dismiss) {
+            // do nothing for dismiss modal
+        });
+    };
+    // Page.Edit = function(id){
+    //     // console.log(id);
+    //     if (id != '') {
+    //         window.location.href = '<?php //echo base_url(); ?>Urais/Layanan_4/Edit/' + id;
+    //     }
+    // };
     Page.Detail = function (id){
         // console.log(id);
-    window.location.href = '<?php echo base_url('Urais/L3_Setuju/Detail/'); ?>' + id;
+    window.location.href = '<?php echo base_url('Urais/L4_Setuju/Detail/'); ?>' + id;
+    };
+    Page.Backward = function(id) {
+        // swal("Delete function is still under development!")
+        // console.log(id);
+        swal({
+            title: 'Yakin Ingin Merubah Status?',
+            text: "Status Direkomendasi Menjadi Proses",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Konfirmasi'
+        }).then(function(result) {
+            if (result) {
+                App.IsLoading(true);
+                var data = {
+                    id: id,
+                };
+                var url = '<?php echo base_url(); ?>Urais/Layanan_4/DiProses';
+                ajaxPost(url, data, function(data) {
+                    App.IsLoading(false);
+                    swal(
+                        'Selamat!',
+                        'Status Diperbaharui Menjadi Diproses.',
+                        'success'
+                    ).then(function(result) {
+                        Page.InitGrid();
+                    });
+                }, function(data) {
+                    // do nothing for unsuccess transaction
+                    App.IsLoading(false);
+                });
+            }
+        }, function(dismiss) {
+            // do nothing for dismiss modal
+        });
     };
     $(function() {
         Page.InitGrid();
