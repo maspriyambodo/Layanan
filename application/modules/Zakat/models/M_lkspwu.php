@@ -197,9 +197,45 @@ class M_lkspwu extends CI_Model {
             ];
         } else {
             mysqli_next_result($this->db->conn_id);
+            $result = $this->Update_instansi($data);
+        }
+        return $result;
+    }
+
+    private function Update_instansi($data) {
+        $exec = $this->db->query('CALL update_instansi_lkspwu("' . $data['dt_instansi']['sebelas'] . '",' . $data['dt_instansi']['duabelas'] . ',' . $data['dt_instansi']['tigabelas'] . ',' . $data['dt_instansi']['empatbelas'] . ',"' . $data['dt_instansi']['limabelas'] . '","' . $data['dt_instansi']['enambelas'] . '","' . $data['dt_instansi']['tujuhbelas'] . '","' . $data['dt_instansi']['delapanbelas'] . '",' . $data['dt_instansi']['sembilanbelas'] . ',' . $data['dt_instansi']['duapuluh'] . ',' . $data['user_login'] . ',' . $data['id_layanan'] . ',' . $data['id_instansi'] . ');');
+        if ($exec->result()[0]->track_no != 3) {
+            log_message('error', APPPATH . 'modules/Zakat/models/M_lkspwu/Update_instansi ->' . 'error ketika update dt_instansi');
+            log_message('error', $exec->result()[0]->track_no . '->' . $exec->result()[0]->pesan_eror);
+            $result = [
+                'status' => false,
+                'pesan' => 'gagal ketika mengubah data instansi'
+            ];
+        } else {
+            mysqli_next_result($this->db->conn_id);
+            $result = $this->Update_layanan($data);
+        }
+        return $result;
+    }
+
+    private function Update_layanan($data) {
+        $exec = $this->db->query('CALL update_dt_layanan(' . $data['id_layanan'] . ',' . $data['dt_layanan']['tujuh'] . ',' . $data['dt_layanan']['delapan'] . ',' . $data['dt_layanan']['sembilan'] . ',"' . $data['dt_layanan']['sepuluh'] . '","' . $data['dt_layanan']['keterangan_kegiatan'] . '",' . $data['user_login'] . ');');
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', APPPATH . 'modules/Zakat/models/M_lkspwu/Update_layanan ->' . 'error ketika update dt_layanan');
+            $result = [
+                'status' => false,
+                'pesan' => 'gagal ketika mengubah data layanan'
+            ];
+        } else {
+            mysqli_next_result($this->db->conn_id);
             $result['status'] = true;
         }
         return $result;
+    }
+
+    public function Verif($data) {
+        $query = $this->db->query('CALL update_proses_layanan(' . $data['id_layanan'] . ',' . $data['user_id'] . ',' . $data['status_id'] . ')');
+        return $query->conn_id->affected_rows;
     }
 
 }

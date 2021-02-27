@@ -365,27 +365,12 @@ unset($_SESSION['sukses']);
         } else if (b) {
             toastr.success(b);
         }
-        var wil_pemohon = {
-            provinsi: n,
-            kabupaten: o,
-            kecamatan: p,
-            kelurahan: q
-        };
-        var wil_instansi = {
-            provinsi: j,
-            kabupaten: k,
-            kecamatan: l,
-            kelurahan: m
-        };
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd'
         });
-        Provinsi_pemohon(wil_pemohon);
-        Kecshow_pemohon(wil_pemohon);
-        Kelshow_pemohon(wil_pemohon);
-        Provinsi_instansi(wil_instansi);
-        Kecshow_instansi(wil_instansi);
-        Kelshow_instansi(wil_instansi);
+        $('.custom-select').select2();
+        Provinsi_pemohon(n);
+        Provinsi_instansi(j);
     };
     function validateEmail($email) {
         var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
@@ -403,8 +388,9 @@ unset($_SESSION['sukses']);
         $('#kectxt_pemohon').children('option').remove();
         $('#kabupaten_pemohon').children('option').remove();
         $('#keltxt_pemohon').children('option').remove();
+        var kabupaten_pemohon = $('input[name="id_kab_user"]').val();
         $.ajax({
-            url: "<?php echo base_url('Urais/Layanan_1/Getkab?id_provinsi='); ?>" + val['provinsi'],
+            url: "<?php echo base_url('Urais/Layanan_1/Getkab?id_provinsi='); ?>" + val,
             type: 'get',
             dataType: 'json',
             cache: false,
@@ -416,8 +402,9 @@ unset($_SESSION['sukses']);
                     opt.value = data[i].id_kabupaten;
                     opt.text = data[i].kabupaten;
                     sel.add(opt, sel.options[i]);
-                    if (opt.value == val['kabupaten']) {
+                    if (opt.value == kabupaten_pemohon) {
                         $('select option[value="' + opt.value + '"]').attr('selected', true);
+                        Kecshow_pemohon(opt.value);
                     }
                 }
             },
@@ -428,8 +415,9 @@ unset($_SESSION['sukses']);
     }
     function Kecshow_pemohon(val) {
         $('#keltxt_pemohon').children('option').remove();
+        var kectxt_pemohon = $('input[name="id_kec_user"]').val();
         $.ajax({
-            url: "<?php echo base_url('Urais/Layanan_1/Getkec?id_kabupaten='); ?>" + val['kabupaten'],
+            url: "<?php echo base_url('Urais/Layanan_1/Getkec?id_kabupaten='); ?>" + val,
             type: 'get',
             dataType: 'json',
             cache: false,
@@ -441,8 +429,9 @@ unset($_SESSION['sukses']);
                     opt.value = data[i].id_kecamatan;
                     opt.text = data[i].kecamatan;
                     sel.add(opt, sel.options[i]);
-                    if (opt.value == val['kecamatan']) {
+                    if (opt.value == kectxt_pemohon) {
                         $('select option[value="' + opt.value + '"]').attr('selected', true);
+                        Kelshow_pemohon(opt.value);
                     }
                 }
             },
@@ -453,8 +442,9 @@ unset($_SESSION['sukses']);
     }
     function Kelshow_pemohon(val) {
         $('#keltxt_pemohon').children('option').remove();
+        var keltxt_pemohon = $('input[name="id_kel_user"]').val();
         $.ajax({
-            url: "<?php echo base_url('Urais/Layanan_1/Getkel?id_kecamatan='); ?>" + val['kecamatan'],
+            url: "<?php echo base_url('Urais/Layanan_1/Getkel?id_kecamatan='); ?>" + val,
             type: 'get',
             dataType: 'json',
             cache: false,
@@ -466,7 +456,7 @@ unset($_SESSION['sukses']);
                     opt.value = data[i].id_kelurahan;
                     opt.text = data[i].kelurahan;
                     sel.add(opt, sel.options[i]);
-                    if (opt.value == val['kelurahan']) {
+                    if (opt.value == keltxt_pemohon) {
                         $('select option[value="' + opt.value + '"]').attr('selected', true);
                     }
                 }
@@ -480,8 +470,9 @@ unset($_SESSION['sukses']);
         $('#kec_instansi').children('option').remove();
         $('#kab_instansi').children('option').remove();
         $('#kel_instansi').children('option').remove();
+        var kabupaten_instansi = $('input[name="id_kab_instansi"]').val();
         $.ajax({
-            url: "<?php echo base_url('Urais/Layanan_1/Getkab?id_provinsi='); ?>" + val['provinsi'],
+            url: "<?php echo base_url('Urais/Layanan_1/Getkab?id_provinsi='); ?>" + val,
             type: 'get',
             dataType: 'json',
             cache: false, success: function (data) {
@@ -492,8 +483,9 @@ unset($_SESSION['sukses']);
                     opt.value = data[i].id_kabupaten;
                     opt.text = data[i].kabupaten;
                     sel.add(opt, sel.options[i]);
-                    if (opt.value == val['kabupaten']) {
+                    if (opt.value == kabupaten_instansi) {
                         $('select option[value="' + opt.value + '"]').attr('selected', true);
+                        Kecshow_instansi(opt.value);
                     }
                 }
             },
@@ -504,8 +496,9 @@ unset($_SESSION['sukses']);
     }
     function Kecshow_instansi(val) {
         $('#kel_instansi').children('option').remove();
+        var kec_instansi = $('input[name="id_kec_instansi"]').val();
         $.ajax({
-            url: "<?php echo base_url('Urais/Layanan_1/Getkec?id_kabupaten='); ?>" + val['kabupaten'],
+            url: "<?php echo base_url('Urais/Layanan_1/Getkec?id_kabupaten='); ?>" + val,
             type: 'get',
             dataType: 'json',
             cache: false, success: function (data) {
@@ -516,8 +509,9 @@ unset($_SESSION['sukses']);
                     opt.value = data[i].id_kecamatan;
                     opt.text = data[i].kecamatan;
                     sel.add(opt, sel.options[i]);
-                    if (opt.value == val['kecamatan']) {
+                    if (opt.value == kec_instansi) {
                         $('select option[value="' + opt.value + '"]').attr('selected', true);
+                        Kelshow_instansi(opt.value);
                     }
                 }
             },
@@ -528,8 +522,9 @@ unset($_SESSION['sukses']);
     }
     function Kelshow_instansi(val) {
         $('#kel_instansi').children('option').remove();
+        var kel_instansi = $('input[name="id_kel_instansi"]').val();
         $.ajax({
-            url: "<?php echo base_url('Urais/Layanan_1/Getkel?id_kecamatan='); ?>" + val['kecamatan'],
+            url: "<?php echo base_url('Urais/Layanan_1/Getkel?id_kecamatan='); ?>" + val,
             type: 'get',
             dataType: 'json',
             cache: false, success: function (data) {
@@ -540,7 +535,7 @@ unset($_SESSION['sukses']);
                     opt.value = data[i].id_kelurahan;
                     opt.text = data[i].kelurahan;
                     sel.add(opt, sel.options[i]);
-                    if (opt.value == val['kelurahan']) {
+                    if (opt.value == kel_instansi) {
                         $('select option[value="' + opt.value + '"]').attr('selected', true);
                     }
                 }
