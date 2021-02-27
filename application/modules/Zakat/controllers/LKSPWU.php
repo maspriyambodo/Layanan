@@ -433,4 +433,30 @@ class LKSPWU extends CI_Controller {
         return $direct;
     }
 
+    public function Status() {
+        $this->template->setPageId($this->input->post_get('setPageId'));
+        $data = [];
+        $data['stat_id'] = $this->input->post_get('id');
+        $data['msg'] = ['gagal' => $this->session->flashdata('gagal'), 'sukses' => $this->session->flashdata('sukses')];
+        $sitetitle = "Daftar Status Permohonan";
+        $pagetitle = "Daftar Status Permohonan";
+        $view = "lkspwu/status";
+        $breadcrumbs = [["title" => "Status Permohonan", "link" => "", "is_actived" => true]];
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data["js_inlines"] = $js_inlines;
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
 }
