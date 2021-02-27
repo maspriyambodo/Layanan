@@ -199,14 +199,13 @@ unset($_SESSION['sukses']);
                     rightLocked: true,
                     render: function (o) {
                     o.style['text-align'] = 'center';
-                    if (o.data.id_stat == 1){
+                    if (o.data.id_stat == 2){
                     o.value = ''
 <?php if ($this->izin->edit): ?>
-                        + '<a class="text-success" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Approve permohonan"><i class="fas fa-check"></i></a>'
-                                + '<a class="text-warning" href="javascript:;" onclick="Page.Edit(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Edit Permohonan" style="margin:0px 10px;"><i class="far fa-edit"></i></a>'
+                        
 <?php endif; ?>
 <?php if ($this->izin->delete): ?>
-                        + '<a class="text-danger" href="javascript:;" onclick="Page.Hapus(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Hapus Permohonan"><i class="far fa-trash-alt"></i></a>'
+                        + ('<a class="text-success" href="javascript:;" onclick="Page.Detail(\'' + o.value + '\')" data-toggle="tooltip" data-html="true" title="Approve permohonan" style="margin-right:10px;"><i class="fas fa-check"></i></a>');
 <?php endif; ?>
 <?php if ($this->izin->gapunya): ?>
                         + ''
@@ -237,7 +236,7 @@ unset($_SESSION['sukses']);
     var data = {
     id: id
     };
-    var url = '<?php echo base_url('Zakat/LKSPWU/Hapus/'); ?>';
+    var url = '<?php echo base_url('Urais/Layanan_1/Hapus/'); ?>';
     ajaxPost(url, data, function (data) {
     App.IsLoading(false);
     if (data.success === false) {

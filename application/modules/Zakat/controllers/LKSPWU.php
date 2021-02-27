@@ -317,6 +317,7 @@ class LKSPWU extends CI_Controller {
             'stat_id' => null
         ];
         $data['detil'] = $this->M_lkspwu->Detail($detil_param);
+        $data['stat'] = $this->M_lkspwu->Stat($id);
         if (empty($data['detil'])) {
             redirect(base_url(''), 'refresh');
         } else {
@@ -334,7 +335,7 @@ class LKSPWU extends CI_Controller {
             $breadcrumbs = [
                 [
                     "title" => "Permohonan Masuk",
-                    "link" => base_url('Urais/Layanan_1/index/'),
+                    "link" => base_url('Zakat/LKSPWU/index/'),
                     "is_actived" => false
                 ],
                 [
@@ -369,6 +370,62 @@ class LKSPWU extends CI_Controller {
         ];
         $exec = $this->M_lkspwu->Verif($data);
         if (empty($exec) or $exec == 0) {
+            $direct = toJSON(resultError("Error", 0));
+        } else {
+            $direct = toJSON(resultSuccess("OK", 1));
+        }
+        return $direct;
+    }
+
+    public function Proses() {
+        $this->template->setPageId("DIPROSES_IPLKSPWU");
+        $data = [];
+        $data['msg'] = ['gagal' => $this->session->flashdata('gagal'), 'sukses' => $this->session->flashdata('sukses')];
+        $sitetitle = "Permohonan dalam Proses";
+        $pagetitle = "Daftar Permohonan di Proses";
+        $view = "lkspwu/proses";
+        $breadcrumbs = [["title" => "Proses Permohonan", "link" => "", "is_actived" => true]];
+        $sql = "";
+        $mejo = new Mejo();
+        $mejo->setQuery($sql);
+        $tampilan = $mejo->metungul();
+        $metune = $tampilan->metune;
+        $js_lib_files = $tampilan->js_lib_files;
+        $css_lib_files = $tampilan->css_lib_files;
+        $js_inlines = $tampilan->js_inlines;
+        $this->template->setCssFiles($css_lib_files);
+        $this->template->setJsFiles($js_lib_files);
+        $data["js_inlines"] = $js_inlines;
+        $this->template->setSiteTitle($sitetitle);
+        $this->template->setPageTitle($pagetitle);
+        $this->template->setBreadcrumbs($breadcrumbs);
+        $this->template->load($view, $data, $this->template->getDefaultLayout(), $metune);
+    }
+
+    public function Proses_verif() {
+        if (empty($this->input->post('alasan'))) {
+            $alasan = "NULL";
+        } else {
+            $alasan = '"' . $this->input->post('alasan') . '"';
+        }
+        $data = ['a' => $this->input->post('hasil'), 'b' => $alasan, 'c' => $this->session->userdata('DX_user_id'), 'd' => date("Y-m-d H:i:s"), 'e' => $this->input->post('id_layanan')];
+        $exec = $this->M_lkspwu->Proses_verif($data);
+        if ($exec['status'] == true) {
+            $result = redirect(base_url('Zakat/LKSPWU/Proses/'), $this->session->set_flashdata('sukses', 'Berhasil verifikasi permohonan!'));
+        } else {
+            $result = redirect(base_url('Zakat/LKSPWU/Detail/' . $this->input->post('id_layanan')), $this->session->set_flashdata('gagal', $exec['pesan']));
+        }
+        return $result;
+    }
+
+    public function Hapus() {
+        $data = [
+            'id_layanan' => $this->input->post('id'),
+            'user_id' => $this->session->userdata('DX_user_id'),
+            'status_id' => 3
+        ];
+        $exec = $this->M_lkspwu->Delete_layanan($data);
+        if (empty($exec) or $exec->conn_id->sqlstate != 00000) {
             $direct = toJSON(resultError("Error", 0));
         } else {
             $direct = toJSON(resultSuccess("OK", 1));

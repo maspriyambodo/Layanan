@@ -238,4 +238,31 @@ class M_lkspwu extends CI_Model {
         return $query->conn_id->affected_rows;
     }
 
+    public function Stat() {
+        $exec = $this->db->select()
+                ->from('`admin_IKK_persetujuan`')
+                ->get()
+                ->result();
+        return $exec;
+    }
+
+    public function Proses_verif($param) {
+        $exec = $this->db->query('CALL verif_IKK(' . $param['e'] . ',' . $param['a'] . ',' . $param['b'] . ',' . $param['c'] . ',"' . $param['d'] . '")');
+        if ($exec->conn_id->sqlstate != 00000) {
+            log_message('error', APPPATH . 'modules/Urais/models/M_lkspwu -> function Proses_verif' . 'error ketika verifikasi permohonan');
+            $result = [
+                'status' => false,
+                'pesan' => 'kesalahan saat verifikasi permohonan!'
+            ];
+        } else {
+            $result['status'] = true;
+        }
+        return $result;
+    }
+
+    public function Delete_layanan($param) {
+        $query = $this->db->query('CALL delete_dt_layanan(' . $param['id_layanan'] . ',' . $param['user_id'] . ',' . $param['status_id'] . ')');
+        return $query;
+    }
+
 }
