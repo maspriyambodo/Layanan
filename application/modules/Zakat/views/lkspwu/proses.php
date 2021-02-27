@@ -65,7 +65,7 @@ unset($_SESSION['sukses']);
                     remoteFilter: false,
                     remoteSort: false,
                     proxy: {
-                    url: '<?php echo base_url('Zakat/LKSPWU/Get_all?id=null&jenis_layanan=6'); ?>'
+                    url: '<?php echo base_url('Zakat/LKSPWU/Get_all?id=2&jenis_layanan=6'); ?>'
                     }
             },
             trackOver: true,
