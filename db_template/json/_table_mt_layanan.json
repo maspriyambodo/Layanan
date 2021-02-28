@@ -159,6 +159,19 @@
     "sysupdatedate": "2021-02-02 12:41:56",
     "sysdeleteuser": "0",
     "sysdeletedate": "2021-02-02 12:42:12"
+},
+{
+    "id": "13",
+    "nama_layanan": "Izin Safari Dakwah Dalam Negeri",
+    "keterangan": null,
+    "jenis_layanan": "2",
+    "stat": "1",
+    "syscreateuser": "1",
+    "syscreatedate": "2021-01-26 14:15:36",
+    "sysupdateuser": null,
+    "sysupdatedate": null,
+    "sysdeleteuser": null,
+    "sysdeletedate": null
 }
 ]
 

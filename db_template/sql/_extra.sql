@@ -4,13 +4,21 @@
 --
 
 --
+-- Indexes for table `dt_instansi`
+--
+ALTER TABLE `dt_instansi`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `id` (`id`) USING BTREE,
+  ADD KEY `id_layanan` (`id_layanan`) USING BTREE;
+
+--
 -- Indexes for table `dt_kegiatan`
 --
 ALTER TABLE `dt_kegiatan`
   ADD PRIMARY KEY (`id`) USING BTREE,
   ADD KEY `id` (`id`) USING BTREE,
   ADD KEY `id_layanan` (`id_layanan`) USING BTREE,
-  ADD KEY `dt_kegiatan_ibfk_2` (`code_negara`);
+  ADD KEY `code_negara` (`code_negara`) USING BTREE;
 
 --
 -- Indexes for table `dt_layanan`
@@ -34,16 +42,16 @@ ALTER TABLE `dt_layanan_dokumen`
 -- Indexes for table `dt_penceramah`
 --
 ALTER TABLE `dt_penceramah`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `dt_penceramah_ibfk_1` (`id_layanan`),
-  ADD KEY `negara_asl` (`negara_asl`);
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `dt_penceramah_ibfk_1` (`id_layanan`) USING BTREE,
+  ADD KEY `negara_asl` (`negara_asl`) USING BTREE;
 
 --
 -- Indexes for table `dt_pendidikan`
 --
 ALTER TABLE `dt_pendidikan`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `dt_pendidikan_ibfk` (`id_crmh`);
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `dt_pendidikan_ibfk` (`id_crmh`) USING BTREE;
 
 --
 -- Indexes for table `mt_country`
@@ -76,50 +84,50 @@ ALTER TABLE `mt_status_layanan`
 -- Indexes for table `mt_wil_jenis`
 --
 ALTER TABLE `mt_wil_jenis`
-  ADD PRIMARY KEY (`id_jenis`);
+  ADD PRIMARY KEY (`id_jenis`) USING BTREE;
 
 --
 -- Indexes for table `mt_wil_kabupaten`
 --
 ALTER TABLE `mt_wil_kabupaten`
-  ADD PRIMARY KEY (`id_kabupaten`);
+  ADD PRIMARY KEY (`id_kabupaten`) USING BTREE;
 
 --
 -- Indexes for table `mt_wil_kecamatan`
 --
 ALTER TABLE `mt_wil_kecamatan`
-  ADD PRIMARY KEY (`id_kecamatan`);
+  ADD PRIMARY KEY (`id_kecamatan`) USING BTREE;
 
 --
 -- Indexes for table `mt_wil_kelurahan`
 --
 ALTER TABLE `mt_wil_kelurahan`
-  ADD PRIMARY KEY (`id_kelurahan`);
+  ADD PRIMARY KEY (`id_kelurahan`) USING BTREE;
 
 --
 -- Indexes for table `mt_wil_provinsi`
 --
 ALTER TABLE `mt_wil_provinsi`
-  ADD PRIMARY KEY (`id_provinsi`);
+  ADD PRIMARY KEY (`id_provinsi`) USING BTREE;
 
 --
 -- Indexes for table `sys_access_log`
 --
 ALTER TABLE `sys_access_log`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- Indexes for table `sys_ci_sessions`
 --
 ALTER TABLE `sys_ci_sessions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `ci_sessions_timestamp` (`timestamp`);
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `ci_sessions_timestamp` (`timestamp`) USING BTREE;
 
 --
 -- Indexes for table `sys_login_attempts`
 --
 ALTER TABLE `sys_login_attempts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- Indexes for table `sys_menu`
@@ -132,7 +140,7 @@ ALTER TABLE `sys_menu`
 -- Indexes for table `sys_param`
 --
 ALTER TABLE `sys_param`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- Indexes for table `sys_permissions`
@@ -144,42 +152,48 @@ ALTER TABLE `sys_permissions`
 -- Indexes for table `sys_roles`
 --
 ALTER TABLE `sys_roles`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- Indexes for table `sys_users`
 --
 ALTER TABLE `sys_users`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `username` (`username`);
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `username` (`username`) USING BTREE;
 
 --
 -- Indexes for table `sys_user_approval`
 --
 ALTER TABLE `sys_user_approval`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- Indexes for table `sys_user_autologin`
 --
 ALTER TABLE `sys_user_autologin`
-  ADD PRIMARY KEY (`key_id`,`user_id`);
+  ADD PRIMARY KEY (`key_id`,`user_id`) USING BTREE;
 
 --
 -- Indexes for table `sys_user_profile`
 --
 ALTER TABLE `sys_user_profile`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- Indexes for table `sys_user_temp`
 --
 ALTER TABLE `sys_user_temp`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `dt_instansi`
+--
+ALTER TABLE `dt_instansi`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `dt_kegiatan`
@@ -294,6 +308,12 @@ ALTER TABLE `sys_user_temp`
 --
 
 --
+-- Constraints for table `dt_instansi`
+--
+ALTER TABLE `dt_instansi`
+  ADD CONSTRAINT `dt_instansi_ibfk_1` FOREIGN KEY (`id_layanan`) REFERENCES `dt_layanan` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
 -- Constraints for table `dt_kegiatan`
 --
 ALTER TABLE `dt_kegiatan`
@@ -318,8 +338,9 @@ ALTER TABLE `dt_layanan_dokumen`
 -- Constraints for table `dt_penceramah`
 --
 ALTER TABLE `dt_penceramah`
-  ADD CONSTRAINT `dt_penceramah_ibfk_1` FOREIGN KEY (`id_layanan`) REFERENCES `dt_layanan` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `dt_penceramah_ibfk_1` FOREIGN KEY (`id_layanan`) REFERENCES `dt_layanan` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `dt_penceramah_ibfk_2` FOREIGN KEY (`negara_asl`) REFERENCES `mt_country` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
 --
 -- Constraints for table `dt_pendidikan`
 --

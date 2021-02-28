@@ -5,6 +5,7 @@
 -- Table structure for table `mt_layanan`
 --
 
+DROP TABLE IF EXISTS `mt_layanan`;
 CREATE TABLE `mt_layanan` (
   `id` int NOT NULL,
   `nama_layanan` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
@@ -18,3 +19,9 @@ CREATE TABLE `mt_layanan` (
   `sysdeleteuser` int DEFAULT NULL COMMENT 'diambil dari session login user/relasi dengan table user',
   `sysdeletedate` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+--
+-- RELATIONSHIPS FOR TABLE `mt_layanan`:
+--   `jenis_layanan`
+--       `mt_direktorat` -> `id`
+--

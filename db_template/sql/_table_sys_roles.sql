@@ -5,6 +5,7 @@
 -- Table structure for table `sys_roles`
 --
 
+DROP TABLE IF EXISTS `sys_roles`;
 CREATE TABLE `sys_roles` (
   `id` int NOT NULL,
   `parent_id` int NOT NULL DEFAULT '0',
@@ -15,4 +16,8 @@ CREATE TABLE `sys_roles` (
   `created_on` datetime DEFAULT NULL,
   `modified_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `modified_on` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+
+--
+-- RELATIONSHIPS FOR TABLE `sys_roles`:
+--

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 10, 2021 at 07:37 PM
+-- Generation Time: Feb 28, 2021 at 04:46 PM
 -- Server version: 8.0.21
 -- PHP Version: 7.4.11
 
@@ -20,3 +20,5 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_adminskelethon`
 --
+CREATE DATABASE IF NOT EXISTS `db_adminskelethon` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `db_adminskelethon`;

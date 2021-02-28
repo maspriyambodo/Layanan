@@ -5,6 +5,7 @@
 -- Table structure for table `sys_permissions`
 --
 
+DROP TABLE IF EXISTS `sys_permissions`;
 CREATE TABLE `sys_permissions` (
   `id` int NOT NULL,
   `role_id` int NOT NULL,
@@ -22,3 +23,7 @@ CREATE TABLE `sys_permissions` (
   `modified_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `modified_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+
+--
+-- RELATIONSHIPS FOR TABLE `sys_permissions`:
+--

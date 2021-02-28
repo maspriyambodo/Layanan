@@ -5,6 +5,7 @@
 -- Table structure for table `sys_menu`
 --
 
+DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `id` varchar(8) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_parent` varchar(8) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
@@ -24,3 +25,7 @@ CREATE TABLE `sys_menu` (
   `modified_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `modified_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+
+--
+-- RELATIONSHIPS FOR TABLE `sys_menu`:
+--

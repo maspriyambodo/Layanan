@@ -5,6 +5,7 @@
 -- Table structure for table `mt_direktorat`
 --
 
+DROP TABLE IF EXISTS `mt_direktorat`;
 CREATE TABLE `mt_direktorat` (
   `id` int NOT NULL,
   `nama` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
@@ -17,3 +18,7 @@ CREATE TABLE `mt_direktorat` (
   `sysdeleteuser` int DEFAULT NULL,
   `sysdeletedate` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+--
+-- RELATIONSHIPS FOR TABLE `mt_direktorat`:
+--
