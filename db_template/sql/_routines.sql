@@ -62,7 +62,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `insert_dai_keluar`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_dai_keluar` (IN `layanan_id` INT, IN `nama_kegiatan` VARCHAR(50), IN `jumlah_peserta` INT, IN `lembaga` VARCHAR(50), IN `tmt_awal` DATE, IN `tmt_akhir` DATE, IN `alamat_kegiatan` TEXT, IN `negara_tujuan` INT)  BEGIN
-INSERT INTO `db_adminskelethon`.`dt_kegiatan`(
+INSERT INTO `db_layanan`.`dt_kegiatan`(
 `id_layanan`, 
 `nm_keg`, 
 `esti_keg`, 
@@ -114,8 +114,7 @@ proposal
 END$$
 
 DROP PROCEDURE IF EXISTS `Insert_dokmohon_lkspwu`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Insert_dokmohon_lkspwu` (IN `layanan_id` INT, IN `sp_1` VARCHAR(100), IN `anggaran_dasar` VARCHAR(100), IN `sk_hukum` VARCHAR(100), IN `skdutxt` VARCHAR(100), IN `lapkeu` VARCHAR(100))  NO SQL
-BEGIN INSERT INTO `dt_layanan_dokumen`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Insert_dokmohon_lkspwu` (IN `layanan_id` INT, IN `sp_1` VARCHAR(100), IN `anggaran_dasar` VARCHAR(100), IN `sk_hukum` VARCHAR(100), IN `skdutxt` VARCHAR(100), IN `lapkeu` VARCHAR(100))  BEGIN INSERT INTO `dt_layanan_dokumen`(
   `dt_layanan_dokumen`.`id_layanan`, 
   `dt_layanan_dokumen`.`srt_prmhn_kementri_lkspwu`, 
   `dt_layanan_dokumen`.`agrn_dsr_lkspwu`, 
@@ -131,7 +130,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `insert_dt_kegiatan`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_dt_kegiatan` (IN `layanan_id` INT, IN `nama_kegiatan` VARCHAR(50), IN `jumlah_peserta` INT, IN `lembaga` VARCHAR(50), IN `tmt_awal` DATE, IN `tmt_akhir` DATE, IN `alamat_kegiatan` TEXT)  BEGIN
-INSERT INTO `db_adminskelethon`.`dt_kegiatan`(
+INSERT INTO `db_layanan`.`dt_kegiatan`(
 `id_layanan`, 
 `nm_keg`, 
 `esti_keg`, 
@@ -155,7 +154,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `insert_dt_layanan`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_dt_layanan` (IN `user_id` INT, IN `provinsi` INT, IN `kabupaten` INT, IN `kecamatan` INT, IN `kelurahan` CHAR(10), IN `keterangan_kegiatan` TEXT, IN `mt_layanan` INT, OUT `id_layanan` INT)  BEGIN
-INSERT INTO `db_adminskelethon`.`dt_layanan`(
+INSERT INTO `db_layanan`.`dt_layanan`(
 `id_user`,
 `id_stat`,
 `id_provinsi`,
@@ -397,7 +396,7 @@ WHERE `id` = id_user;
 END$$
 
 DROP PROCEDURE IF EXISTS `update_user_lkspwu`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_user_lkspwu` (IN `ktp` INT, IN `lahir_pemohon` DATE, IN `mali` VARCHAR(100), IN `telpon` VARCHAR(20), IN `nama` VARCHAR(64), IN `user_login` INT, IN `id_sys_user` INT)  BEGIN 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_user_lkspwu` (IN `ktp` BIGINT, IN `lahir_pemohon` DATE, IN `mali` VARCHAR(100), IN `telpon` VARCHAR(20), IN `nama` VARCHAR(64), IN `user_login` INT, IN `id_sys_user` INT)  BEGIN 
 
 DECLARE track_no INT DEFAULT 0;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION, NOT FOUND, SQLWARNING
